@@ -2,6 +2,7 @@ import {MDCTextField} from '@material/textfield'
 import {MDCFormField} from '@material/form-field';
 import {MDCCheckbox} from '@material/checkbox';
 import {MDCRipple} from '@material/ripple/index';
+import {MDCDialog} from '@material/dialog'
 
 window.input_init = function () {
     console.log('Train Ticket');
@@ -23,6 +24,10 @@ window.register_init = function () {
     new MDCRipple(document.querySelector('.register-button'));
     new MDCRipple(document.querySelector('.register-reset-button'));
     new MDCRipple(document.querySelector('.jump-login-button'));
+};
+
+window.login_info_init = function () {
+    window.login_info_dialog = new MDCDialog(document.querySelector('.login-info-dialog'));
 };
 
 // new MDCRipple(document.querySelector('.foo-button'));

@@ -30,9 +30,7 @@ def login():
                 flask.session['current_user'] = username
                 return flask.redirect(flask.url_for('main_page'))
             elif result == 'Fail':
-                return flask.render_template('login_info.html', title='登录失败', messages='用户名和密码不匹配')
-                # flask.flash('登录失败')
-                # return flask.redirect(flask.url_for('login'))
+                return flask.render_template('login.html', form=form, show_alert=True, title='登录失败', messages=['用户名和密码不匹配'])
             else:
                 flask.flash('未知错误')
                 return flask.redirect(flask.url_for('login'))
@@ -65,4 +63,4 @@ def main_page():
 
 if __name__ == '__main__':
     app.config.from_object('config')
-    app.run(host="127.0.0.1", port=8083, debug=True)
+    app.run(host="0.0.0.0", port=8083, debug=True)

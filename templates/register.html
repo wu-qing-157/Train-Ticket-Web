@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>注册 - Train Ticket</title>
+    <link href="../static/base.css" rel="stylesheet">
     <link href="../static/bundle.css" rel="stylesheet">
     <link href="../static/register.css" rel="stylesheet">
     <script src="../static/bundle.js"></script>
+    <meta name="viewport"
+          content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 </head>
 <body>
 <div class="wrapper">
@@ -43,12 +46,12 @@
                 <span class="mdc-button__label">注册</span>
             </button>
         </div>
-        <div class="jump-login-div">
-            <button class="jump-login-button mdc-button" onclick="location.href='/register'">
-                <span class="mdc-button__label">已有账号？点此登录</span>
-            </button>
-        </div>
     </form>
+    <div class="jump-login-div">
+        <button class="jump-login-button mdc-button" onclick="location.href='/login'">
+            <span class="mdc-button__label">已有账号？点此登录</span>
+        </button>
+    </div>
     <script async>window.register_init()</script>
 </div>
 </body>

@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>登录 - Train Ticket</title>
+    <link href="../static/base.css" rel="stylesheet">
     <link href="../static/bundle.css" rel="stylesheet">
     <link href="../static/login.css" rel="stylesheet">
     <script src="../static/bundle.js"></script>
+    <meta name="viewport"
+          content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 </head>
 <body>
 <div class="wrapper">
@@ -36,7 +39,40 @@
             <span class="mdc-button__label">没有账号？点此创建</span>
         </button>
     </div>
-    <script async>window.input_init()</script>
 </div>
+{% if show_alert %}
+    <div class="alert-wrapper">
+        <div class="login-info-dialog mdc-dialog--open"
+             role="alertdialog"
+             aria-modal="true"
+             aria-labelledby="dialog-title"
+             aria-describedby="dialog-content">
+            <div class="login-info-container mdc-dialog__container">
+                <div class="mdc-dialog__surface">
+                    <h2 class="mdc-dialog__title" id="dialog-title">
+                        {{ title }}
+                    </h2>
+                    <div class="mdc-dialog__content" id="dialog-content">
+                        {% for info in messages %}
+                            <p>{{ info }}</p>
+                        {% endfor %}
+                    </div>
+                    <footer class="mdc-dialog__actions">
+                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                            <span class="mdc-button__label">╮(╯-╰)╭</span>
+                        </button>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+<script async>
+    window.input_init();
+    {% if show_alert %}
+        window.login_info_init();
+        window.login_info_dialog.open();
+    {% endif %}
+</script>
 </body>
 </html>
