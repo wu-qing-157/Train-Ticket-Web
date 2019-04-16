@@ -1,0 +1,30 @@
+.wrapper {
+    text-align: center;
+    background: whitesmoke;
+    border-radius: 20px;
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.id-hint {
+    display: block;
+    text-align: left;
+    width: 300px;
+    margin: 20px;
+}
+
+.password, .password-repeat, .email, .phone, .register-buttons, .jump-login-div {
+    display: block;
+    width: 300px;
+    margin: 20px;
+}
+
+.register-button {
+    width: 120px;
+}

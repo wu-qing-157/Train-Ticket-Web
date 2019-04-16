@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>登录 - Train Ticket</title>
+    <link href="../static/bundle.css" rel="stylesheet">
+    <link href="../static/login.css" rel="stylesheet">
+    <script src="../static/bundle.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <h1>登录</h1>
+    <form action="" method="post" name="login">
+        {{ form.hidden_tag() }}
+        <div class="username mdc-text-field">
+            {{ form.username(class_="mdc-text-field__input") }}
+            <label class="mdc-floating-label" for="username">用户名</label>
+            <div class="mdc-line-ripple"></div>
+        </div>
+        <div class="password mdc-text-field">
+            {{ form.password(class_="mdc-text-field__input") }}
+            <label class="mdc-floating-label" for="password">密码</label>
+            <div class="mdc-line-ripple"></div>
+        </div>
+        <div class="login-buttons">
+            <button type="reset" class="login-reset-button mdc-button">
+                <span class="mdc-button__label">重置</span>
+            </button>
+            <button type="submit" class="login-button mdc-button mdc-button--raised">
+                <span class="mdc-button__label">登录</span>
+            </button>
+        </div>
+    </form>
+    <div class="jump-register-div">
+        <button class="jump-register-button mdc-button" onclick="location.href='/register'">
+            <span class="mdc-button__label">没有账号？点此创建</span>
+        </button>
+    </div>
+    <script async>window.input_init()</script>
+</div>
+</body>
+</html>
