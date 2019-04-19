@@ -8,6 +8,15 @@ app = flask.Flask(__name__)
 
 @app.route('/')
 def index():
+    if 'current_user' in flask.session:
+        return flask.redirect(flask.url_for('main_page'))
+    else:
+        return flask.redirect(flask.url_for('login'))
+
+
+@app.route('/logout')
+def logout():
+    flask.session.pop('current_user')
     return flask.redirect(flask.url_for('login'))
 
 
@@ -28,6 +37,25 @@ def login():
             app.logger.info("login result {}".format(result))
             if result == '1':
                 flask.session['current_user'] = user_id
+                sk.close()
+                sk = socket.socket()
+                sk.connect(back_end)
+                sk.sendall(bytes("query_profile {}".format(flask.session['current_user']), encoding='utf-8'))
+                result = str(sk.recv(1024).strip(), encoding='utf-8').split(" ")
+                name = result[0]
+                privilege = result[3]
+                flask.session['current_user'] = user_id
+                if privilege == '2':
+                    flask.session['username'] = name
+                    flask.session['administrator'] = True
+                elif privilege == '1':
+                    flask.session['username'] = name
+                    flask.session['administrator'] = False
+                else:
+                    return flask.render_template('login.html',
+                                                 form=form,
+                                                 fail_alert=True,
+                                                 message='未知错误')
                 return flask.redirect(flask.url_for('main_page'))
             elif result == '0':
                 return flask.render_template('login.html',
@@ -69,16 +97,29 @@ def register():
             sk = socket.socket()
             sk.settimeout(10)
             sk.connect(back_end)
-            sk.sendall(bytes("register {} {} {} {}".format(password, name, email, phone), encoding='utf-8'))
+            sk.sendall(bytes("register {} {} {} {}".format(name, password, email, phone), encoding='utf-8'))
             result = str(sk.recv(1024).strip(), encoding='utf-8')
             app.logger.info("register result {}".format(result))
             if result != '0':
                 user_id = result
+                sk.close()
+                sk = socket.socket()
+                sk.connect(back_end)
+                sk.sendall(bytes("query_profile {}".format(flask.session['current_user']), encoding='utf-8'))
+                result = str(sk.recv(1024).strip(), encoding='utf-8').split(" ")
+                privilege = result[3]
                 flask.session['current_user'] = user_id
-                return flask.render_template('register.html',
-                                             form=form,
-                                             success_alert=True,
-                                             user_id=user_id)
+                if privilege == '2':
+                    flask.session['username'] = name
+                    flask.session['administrator'] = True
+                elif privilege == '1':
+                    flask.session['username'] = name
+                    flask.session['administrator'] = False
+                else:
+                    return flask.render_template('register.html',
+                                                 form=form,
+                                                 fail_alert=True,
+                                                 message='未知错误')
             else:
                 return flask.render_template('register.html',
                                              form=form,
@@ -106,7 +147,11 @@ def register():
 
 @app.route('/main_page')
 def main_page():
-    return flask.render_template('main_page.html', username=flask.session['current_user'])
+    if not 'current_user' in flask.session:
+        return flask.redirect(flask.url_for('login'))
+    return flask.render_template('main_page.html',
+                                 username=flask.session['username'],
+                                 administrator=flask.session['administrator'])
 
 
 if __name__ == '__main__':

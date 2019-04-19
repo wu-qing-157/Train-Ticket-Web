@@ -1,0 +1,15 @@
+.welcome-para, .administrator-para {
+    margin: 20px;
+}
+
+.administrator-para {
+    color: crimson;
+}
+
+.administrator-item {
+    color: crimson;
+}
+
+.main-dev-no-margin {
+    margin-left: 0 !important;
+}

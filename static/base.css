@@ -1,4 +1,33 @@
+body {
+    display: flex;
+    height: 100vh;
+}
+
+.mdc-drawer-app-content {
+    flex: auto;
+    overflow: auto;
+    position: relative;
+}
+
+.app-bar {
+    position: absolute;
+    z-index: 7;
+}
+
 .wrapper {
+    text-align: center;
+    background: whitesmoke;
+    border-radius: 20px;
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+    position: absolute;
+    top: 96px;
+    left: 0;
+    right: 0;
+}
+
+.center-wrapper {
     text-align: center;
     background: whitesmoke;
     border-radius: 20px;
@@ -25,4 +54,11 @@
 
 .mdc-dialog__surface {
     background: #ffffffff;
+}
+
+.mdc-top-app-bar {
+    margin: 0;
+    top: 0;
+    left: 0;
+    right: 0;
 }
