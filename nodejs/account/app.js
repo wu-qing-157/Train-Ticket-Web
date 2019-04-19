@@ -1,20 +1,11 @@
-import {MDCTextField} from '@material/textfield'
-import {MDCRipple} from '@material/ripple/index';
-import {MDCDialog} from '@material/dialog'
+import {MDCTopAppBar} from '@material/top-app-bar/index';
+import {MDCDrawer} from "@material/drawer";
 
-window.login_init = function () {
-    console.log('Train Ticket');
-    new MDCTextField(document.querySelector('.id'));
-    new MDCTextField(document.querySelector('.password'));
-    new MDCRipple(document.querySelector('.login-button'));
-    new MDCRipple(document.querySelector('.login-reset-button'));
-    new MDCRipple(document.querySelector('.jump-register-button'));
+window.main_page_init = function() {
+    const appBar = MDCTopAppBar.attachTo(document.getElementById('app-bar'));
+    appBar.setScrollTarget(document.getElementById('main-content'));
+    window.drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+    appBar.listen('MDCTopAppBar:nav', () => {
+        window.drawer.open = !window.drawer.open;
+    });
 };
-
-window.login_info_init = function () {
-    window.login_info_dialog = new MDCDialog(document.querySelector('.login-info-dialog'));
-};
-
-// new MDCRipple(document.querySelector('.foo-button'));
-// new MDCFloatingLabel(document.querySelector('.mdc-floating-label'));
-// new MDCLineRipple(document.querySelector('.mdc-line-ripple'));

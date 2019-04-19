@@ -17,7 +17,3 @@ window.register_init = function () {
 window.register_info_init = function() {
     window.register_info_dialog = new MDCDialog(document.querySelector('.register-info-dialog'));
 };
-
-// new MDCRipple(document.querySelector('.foo-button'));
-// new MDCFloatingLabel(document.querySelector('.mdc-floating-label'));
-// new MDCLineRipple(document.querySelector('.mdc-line-ripple'));

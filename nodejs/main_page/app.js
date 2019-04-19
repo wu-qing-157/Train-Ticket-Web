@@ -9,7 +9,3 @@ window.main_page_init = function() {
         window.drawer.open = !window.drawer.open;
     });
 };
-
-// new MDCRipple(document.querySelector('.foo-button'));
-// new MDCFloatingLabel(document.querySelector('.mdc-floating-label'));
-// new MDCLineRipple(document.querySelector('.mdc-line-ripple'));

@@ -28,7 +28,7 @@
 <aside class="mdc-drawer mdc-drawer--dismissible mdc-top-app-bar--fixed-adjust">
     <div class="mdc-drawer__content">
         <div class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated" aria-current="page">
+            <a class="mdc-list-item" onclick="location.href='main_page'" aria-current="page">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
                 <span class="mdc-list-item__text">首页</span>
             </a>
@@ -40,7 +40,7 @@
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">train</i>
                 <span class="mdc-list-item__text">已购车票</span>
             </a>
-            <a class="mdc-list-item" onclick="location.href='account'" aria-current="page">
+            <a class="mdc-list-item mdc-list-item--activated" aria-current="page">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">account_circle</i>
                 <span class="mdc-list-item__text">个人信息</span>
             </a>
@@ -61,10 +61,7 @@
      onclick="if (document.body.clientWidth <= 800) window.drawer.open = false">
     <main class="main-content" id="main-content">
         <div class="wrapper">
-            <p class="mdc-typography--body1 welcome-para">您好，{{ username }}！</p>
-            {% if administrator %}
-                <p class="mdc-typography--body1 administrator-para">您当前以管理员身份登录。</p>
-            {% endif %}
+            wrrlrlrlrlr
         </div>
     </main>
 </div>

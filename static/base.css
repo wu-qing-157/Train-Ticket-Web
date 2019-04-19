@@ -9,6 +9,14 @@ body {
     position: relative;
 }
 
+.main-dev-no-margin {
+    margin-left: 0 !important;
+}
+
+.administrator-item {
+    color: crimson;
+}
+
 .app-bar {
     position: absolute;
     z-index: 7;

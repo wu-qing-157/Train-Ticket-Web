@@ -3,7 +3,7 @@ const autoprefixer = require('autoprefixer');
 module.exports = [{
     entry: ['./app.scss', './app.js'],
     output: {
-        filename: 'login-bundle.js',
+        filename: 'account-bundle.js',
     },
     module: {
         rules: [
@@ -13,7 +13,7 @@ module.exports = [{
                     {
                         loader: 'file-loader',
                         options: {
-                            name: 'login-bundle.css',
+                            name: 'account-bundle.css',
                         },
                     },
                     {loader: 'extract-loader'},

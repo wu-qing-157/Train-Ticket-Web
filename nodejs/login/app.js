@@ -14,7 +14,3 @@ window.login_init = function () {
 window.login_info_init = function () {
     window.login_info_dialog = new MDCDialog(document.querySelector('.login-info-dialog'));
 };
-
-// new MDCRipple(document.querySelector('.foo-button'));
-// new MDCFloatingLabel(document.querySelector('.mdc-floating-label'));
-// new MDCLineRipple(document.querySelector('.mdc-line-ripple'));

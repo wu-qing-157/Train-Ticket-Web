@@ -154,6 +154,15 @@ def main_page():
                                  administrator=flask.session['administrator'])
 
 
+@app.route('/account')
+def account():
+    if not 'current_user' in flask.session:
+        return flask.redirect(flask.url_for('login'))
+    return flask.render_template('account.html',
+                                 username=flask.session['username'],
+                                 administrator=flask.session['administrator'])
+
+
 if __name__ == '__main__':
     app.config.from_object('config')
     app.run(host="0.0.0.0", port=8083, debug=True)
