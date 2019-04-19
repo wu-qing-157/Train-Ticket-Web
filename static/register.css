@@ -5,7 +5,7 @@
     margin: 20px;
 }
 
-.password, .password-repeat, .email, .phone, .register-buttons, .jump-login-div {
+.id, .password, .password-repeat, .name, .email, .phone, .register-buttons, .jump-login-div {
     display: block;
     width: 300px;
     margin: 20px;

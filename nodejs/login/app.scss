@@ -6,9 +6,3 @@
 @import "@material/checkbox/mdc-checkbox";
 @import "@material/button/mdc-button";
 @import "@material/dialog/mdc-dialog";
-
-
-.foo-button {
-  @include mdc-button-ink-color(teal);
-  @include mdc-states(teal);
-}

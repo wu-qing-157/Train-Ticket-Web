@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>注册 - Train Ticket</title>
     <link href="../static/base.css" rel="stylesheet">
-    <link href="../static/bundle.css" rel="stylesheet">
+    <link href="../static/register-bundle.css" rel="stylesheet">
     <link href="../static/register.css" rel="stylesheet">
-    <script src="../static/bundle.js"></script>
+    <script src="../static/register-bundle.js"></script>
     <meta name="viewport"
           content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 </head>
@@ -15,8 +15,10 @@
     <h1>注册</h1>
     <form action="" method="post" name="register">
         {{ form.hidden_tag() }}
-        <div class="id-hint">
-            <p>用户ID将自动生成...</p>
+        <div class="id mdc-text-field">
+            {{ form.id(class_="mdc-text-field__input", disabled="disabled") }}
+            <label class="mdc-floating-label" for="id">用户ID</label>
+            <div class="mdc-line-ripple"></div>
         </div>
         <div class="password mdc-text-field">
             {{ form.password(class_="mdc-text-field__input") }}
@@ -26,6 +28,11 @@
         <div class="password-repeat mdc-text-field">
             {{ form.password_repeat(class_="mdc-text-field__input") }}
             <label class="mdc-floating-label" for="password_repeat">重复密码</label>
+            <div class="mdc-line-ripple"></div>
+        </div>
+        <div class="name mdc-text-field">
+            {{ form.name(class_="mdc-text-field__input") }}
+            <label class="mdc-floating-label" for="name">姓名</label>
             <div class="mdc-line-ripple"></div>
         </div>
         <div class="email mdc-text-field">
@@ -52,7 +59,52 @@
             <span class="mdc-button__label">已有账号？点此登录</span>
         </button>
     </div>
-    <script async>window.register_init()</script>
 </div>
+{% if success_alert or fail_alert %}
+    <div class="alert-wrapper">
+        <div class="register-info-dialog mdc-dialog"
+             role="alertdialog"
+             aria-modal="true"
+             aria-labelledby="dialog-title"
+             aria-describedby="dialog-content">
+            <div class="mdc-dialog__container">
+                <div class="mdc-dialog__surface">
+                    <h2 class="mdc-dialog__title" id="dialog-title">
+                        {% if success_alert %}
+                            注册成功
+                        {% elif fail_alert %}
+                            注册失败
+                        {% endif %}
+                    </h2>
+                    <div class="mdc-dialog__content" id="dialog-content">
+                        {% if success_alert %}
+                            您的用户ID是 {{ user_id }} ，请牢记。
+                        {% elif fail_alert %}
+                            {{ message }}
+                        {% endif %}
+                    </div>
+                    <footer class="mdc-dialog__actions">
+                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                            <span class="mdc-button__label">
+                                {% if success_alert %}
+                                    b（￣▽￣）d　
+                                {% elif fail_alert %}
+                                    ╮(╯-╰)╭
+                                {% endif %}
+                            </span>
+                        </button>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+<script async>
+    window.register_init();
+    {% if success_alert or fail_alert %}
+        window.register_info_init();
+        window.register_info_dialog.open();
+    {% endif %}
+</script>
 </body>
 </html>
