@@ -61,13 +61,59 @@
      onclick="if (document.body.clientWidth <= 800) window.drawer.open = false">
     <main class="main-content" id="main-content">
         <div class="wrapper">
-            wrrlrlrlrlr
+            <h1 class="mdc-typography--body1">用户信息</h1>
+            <form action="" method="post" name="login">
+                {{ form.hidden_tag() }}
+                <div class="id mdc-text-field">
+                    {{ form.id(class_="mdc-text-field__input", disabled="disabled") }}
+                    <label class="mdc-floating-label" for="id">用户ID（无法修改）</label>
+                    <div class="mdc-line-ripple"></div>
+                </div>
+                <div class="old-password mdc-text-field">
+                    {{ form.old_password(class_="mdc-text-field__input") }}
+                    <label class="mdc-floating-label" for="old_password">旧密码</label>
+                    <div class="mdc-line-ripple"></div>
+                </div>
+                <div class="name mdc-text-field">
+                    {{ form.name(class_="mdc-text-field__input") }}
+                    <label class="mdc-floating-label" for="name">姓名</label>
+                    <div class="mdc-line-ripple"></div>
+                </div>
+                <div class="email mdc-text-field">
+                    {{ form.email(class_="mdc-text-field__input") }}
+                    <label class="mdc-floating-label" for="email">邮箱地址</label>
+                    <div class="mdc-line-ripple"></div>
+                </div>
+                <div class="phone mdc-text-field">
+                    {{ form.phone(class_="mdc-text-field__input") }}
+                    <label class="mdc-floating-label" for="phone">电话号码</label>
+                    <div class="mdc-line-ripple"></div>
+                </div>
+                <div class="new-password mdc-text-field">
+                    {{ form.new_password(class_="mdc-text-field__input") }}
+                    <label class="mdc-floating-label" for="new_password">新密码（留空以不修改密码）</label>
+                    <div class="mdc-line-ripple"></div>
+                </div>
+                <div class="new-password-repeat mdc-text-field">
+                    {{ form.new_password_repeat(class_="mdc-text-field__input") }}
+                    <label class="mdc-floating-label" for="new_password_repeat">重复新密码（留空以不修改密码）</label>
+                    <div class="mdc-line-ripple"></div>
+                </div>
+                <div class="modify-buttons">
+                    <button type="reset" class="modify-reset-button mdc-button">
+                        <span class="mdc-button__label">重置</span>
+                    </button>
+                    <button type="submit" class="modify-button mdc-button mdc-button--raised">
+                        <span class="mdc-button__label">注册</span>
+                    </button>
+                </div>
+            </form>
         </div>
     </main>
 </div>
 
 <script async>
-    window.main_page_init();
+    account_init();
     const mainDiv = document.getElementById('main-div');
     if (document.body.clientWidth <= 800)
         mainDiv.classList.add('main-dev-no-margin', 'mdc-drawer-app-content', 'mdc-top-app-bar--fixed-adjust');
@@ -81,7 +127,6 @@
             drawer.open = true;
         }
     };
-    window.drawer.open = true;
 </script>
 </body>
 </html>

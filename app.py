@@ -1,8 +1,7 @@
 import flask, socket
 
-import forms
+import forms, backend
 
-back_end = ("127.0.0.1", 8081)
 app = flask.Flask(__name__)
 
 
@@ -22,26 +21,17 @@ def logout():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    global sk
     form = forms.LoginForm()
     if form.validate_on_submit():
         user_id = flask.request.form['id']
         password = flask.request.form['password']
         app.logger.debug("login {} {}".format(user_id, password))
         try:
-            sk = socket.socket()
-            sk.settimeout(10)
-            sk.connect(back_end)
-            sk.sendall(bytes("login {} {}".format(user_id, password), encoding='utf-8'))
-            result = str(sk.recv(1024).strip(), encoding='utf-8')
+            result = backend.get_result("login {} {}".format(user_id, password), 1024)
             app.logger.info("login result {}".format(result))
             if result == '1':
                 flask.session['current_user'] = user_id
-                sk.close()
-                sk = socket.socket()
-                sk.connect(back_end)
-                sk.sendall(bytes("query_profile {}".format(flask.session['current_user']), encoding='utf-8'))
-                result = str(sk.recv(1024).strip(), encoding='utf-8').split(" ")
+                result = backend.get_result("query_profile {}".format(flask.session['current_user']), 1024).split(' ')
                 name = result[0]
                 privilege = result[3]
                 flask.session['current_user'] = user_id
@@ -78,15 +68,11 @@ def login():
                                          form=form,
                                          show_alert=True,
                                          message='登录服务器超时')
-        finally:
-            if sk:
-                sk.close()
     return flask.render_template('login.html', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    global sk
     form = forms.RegisterForm()
     if form.validate_on_submit():
         password = flask.request.form['password']
@@ -94,24 +80,19 @@ def register():
         email = flask.request.form['email']
         phone = flask.request.form['phone']
         try:
-            sk = socket.socket()
-            sk.settimeout(10)
-            sk.connect(back_end)
-            sk.sendall(bytes("register {} {} {} {}".format(name, password, email, phone), encoding='utf-8'))
-            result = str(sk.recv(1024).strip(), encoding='utf-8')
-            app.logger.info("register result {}".format(result))
+            result = backend.get_result("register {} {} {} {}".format(name, password, email, phone), 1024)
             if result != '0':
                 user_id = result
-                sk.close()
-                sk = socket.socket()
-                sk.connect(back_end)
-                sk.sendall(bytes("query_profile {}".format(flask.session['current_user']), encoding='utf-8'))
-                result = str(sk.recv(1024).strip(), encoding='utf-8').split(" ")
+                result = backend.get_result("query_profile {}".format(user_id), 1024).split(' ')
                 privilege = result[3]
                 flask.session['current_user'] = user_id
                 if privilege == '2':
                     flask.session['username'] = name
                     flask.session['administrator'] = True
+                    return flask.render_template('register.html',
+                                                 form=form,
+                                                 success_alert=True,
+                                                 user_id=user_id)
                 elif privilege == '1':
                     flask.session['username'] = name
                     flask.session['administrator'] = False
@@ -135,13 +116,17 @@ def register():
                                          form=form,
                                          fail_alert=True,
                                          message='登录服务器连接超时')
-        finally:
-            if sk:
-                sk.close()
     if flask.request.method == 'POST':
+        msg = ''
         for field, message in form.errors.items():
-            app.logger.info('{} {}'.format(field, message))
-        form.password.data = flask.request.form['password']
+            for item in message:
+                if msg != '':
+                    msg = msg + '；'
+                msg = msg + item
+        return flask.render_template('register.html',
+                                     form=form,
+                                     fail_alert=True,
+                                     message=msg)
     return flask.render_template('register.html', form=form)
 
 
@@ -158,9 +143,12 @@ def main_page():
 def account():
     if not 'current_user' in flask.session:
         return flask.redirect(flask.url_for('login'))
+    [username, email, phone, _] = backend.get_result(
+        'query_profile {}'.format(flask.session['current_user']), 1024).split(' ')
+    form = forms.AccountForm(flask.session['current_user'], username, email, phone)
     return flask.render_template('account.html',
-                                 username=flask.session['username'],
-                                 administrator=flask.session['administrator'])
+                                 username=username,
+                                 form=form)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,9 @@
+.id, .old-password, .name, .email, .phone, .new-password, .new-password-repeat, .modify-buttons {
+    display: block;
+    width: 300px;
+    margin: 20px;
+}
+
+.modify-button {
+    width: 120px;
+}

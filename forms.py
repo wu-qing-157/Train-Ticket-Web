@@ -19,11 +19,16 @@ class RegisterForm(FlaskForm):
 
 
 class AccountForm(FlaskForm):
-    def __init__(self, id_t, name_t, email_t, phone_t):
-        self.id = StringField('id', default=id_t)
-        self.old_password = PasswordField('old_password', validators=[DataRequired()])
-        self.name = StringField('name', default=name_t, validators=[DataRequired()])
-        self.email = StringField('email', default=email_t, validators=[DataRequired()])
-        self.phone = StringField('phone', default=phone_t, validators=[DataRequired()])
-        self.new_password = PasswordField('new_password')
-        self.new_password_repeat = PasswordField('new_password_repeat')
+    id = StringField('id')
+    old_password = PasswordField('old_password', validators=[DataRequired()])
+    name = StringField('name', validators=[DataRequired()])
+    email = StringField('email', validators=[DataRequired()])
+    phone = StringField('phone', validators=[DataRequired()])
+    new_password = PasswordField('new_password')
+    new_password_repeat = PasswordField('new_password_repeat')
+    def __init__(self, id_t, name_t, email_t, phone_t, *args, **kwargs):
+        super(AccountForm, self).__init__(*args, **kwargs)
+        self.id.data = id_t
+        self.name.data = name_t
+        self.email.data = email_t
+        self.phone.data = phone_t
