@@ -1,9 +1,17 @@
-.id, .old-password, .name, .email, .phone, .new-password, .new-password-repeat, .modify-buttons {
+#account-info-title {
+    padding: 20px;
+}
+
+.button-div {
     display: block;
     width: 300px;
     margin: 20px;
 }
 
-.modify-button {
+#modify-button {
     width: 120px;
+}
+
+#verify-to-modify-button {
+    width: 180px;
 }

@@ -4,40 +4,43 @@
     <meta charset="UTF-8">
     <title>登录 - Train Ticket</title>
     <link href="../static/base.css" rel="stylesheet">
-    <link href="../static/login-bundle.css" rel="stylesheet">
+    <link href="../static/mdc-bundle.css" rel="stylesheet">
     <link href="../static/login.css" rel="stylesheet">
-    <script src="../static/login-bundle.js"></script>
+    <script src="../static/mdc-bundle.js"></script>
     <meta name="viewport"
           content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 </head>
 <body>
 <div class="center-wrapper">
-    <h1 class="mdc-typography--body1">登录</h1>
-    <form action="" method="post" name="login">
-        {{ form.hidden_tag() }}
-        <div class="id mdc-text-field">
-            {{ form.id(class_="mdc-text-field__input") }}
-            <label class="mdc-floating-label" for="id">用户ID</label>
-            <div class="mdc-line-ripple"></div>
-        </div>
-        <div class="password mdc-text-field">
-            {{ form.password(class_="mdc-text-field__input") }}
-            <label class="mdc-floating-label" for="password">密码</label>
-            <div class="mdc-line-ripple"></div>
-        </div>
-        <div class="login-buttons">
-            <button type="reset" class="login-reset-button mdc-button">
-                <span class="mdc-button__label">重置</span>
+    <div class="surface">
+        <h1 class="mdc-typography--headline3" id="login-title">登录</h1>
+        <form action="" method="post" name="login">
+            {{ form.hidden_tag() }}
+            <div class="input mdc-text-field" id="id-text-field">
+                {{ form.id(class_="mdc-text-field__input") }}
+                <label class="mdc-floating-label" for="id">用户ID</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="input mdc-text-field" id="password-text-field">
+                {{ form.password(class_="mdc-text-field__input") }}
+                <label class="mdc-floating-label" for="password">密码</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="login-buttons">
+                <button type="reset" class="login-reset-button mdc-button" id="login-reset-button">
+                    <span class="mdc-button__label">重置</span>
+                </button>
+                <button type="submit" class="login-button mdc-button mdc-button--raised" id="login-button">
+                    <span class="mdc-button__label">登录</span>
+                </button>
+            </div>
+        </form>
+        <div class="jump-register-div">
+            <button class="jump-register-button mdc-button" id="jump-register-button"
+                    onclick="location.href='/register'">
+                <span class="mdc-button__label">没有账号？点此创建</span>
             </button>
-            <button type="submit" class="login-button mdc-button mdc-button--raised">
-                <span class="mdc-button__label">登录</span>
-            </button>
         </div>
-    </form>
-    <div class="jump-register-div">
-        <button class="jump-register-button mdc-button" onclick="location.href='/register'">
-            <span class="mdc-button__label">没有账号？点此创建</span>
-        </button>
     </div>
 </div>
 {% if show_alert %}

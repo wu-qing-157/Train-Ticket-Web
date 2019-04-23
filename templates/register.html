@@ -4,60 +4,62 @@
     <meta charset="UTF-8">
     <title>注册 - Train Ticket</title>
     <link href="../static/base.css" rel="stylesheet">
-    <link href="../static/register-bundle.css" rel="stylesheet">
+    <link href="../static/mdc-bundle.css" rel="stylesheet">
     <link href="../static/register.css" rel="stylesheet">
-    <script src="../static/register-bundle.js"></script>
+    <script src="../static/mdc-bundle.js"></script>
     <meta name="viewport"
           content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 </head>
 <body>
 <div class="center-wrapper">
-    <h1 class="mdc-typography--body1">注册</h1>
-    <form action="" method="post" name="register">
-        {{ form.hidden_tag() }}
-        <div class="id mdc-text-field">
-            {{ form.id(class_="mdc-text-field__input", disabled="disabled") }}
-            <label class="mdc-floating-label" for="id">用户ID</label>
-            <div class="mdc-line-ripple"></div>
-        </div>
-        <div class="password mdc-text-field">
-            {{ form.password(class_="mdc-text-field__input") }}
-            <label class="mdc-floating-label" for="password">密码</label>
-            <div class="mdc-line-ripple"></div>
-        </div>
-        <div class="password-repeat mdc-text-field">
-            {{ form.password_repeat(class_="mdc-text-field__input") }}
-            <label class="mdc-floating-label" for="password_repeat">重复密码</label>
-            <div class="mdc-line-ripple"></div>
-        </div>
-        <div class="name mdc-text-field">
-            {{ form.name(class_="mdc-text-field__input") }}
-            <label class="mdc-floating-label" for="name">姓名</label>
-            <div class="mdc-line-ripple"></div>
-        </div>
-        <div class="email mdc-text-field">
-            {{ form.email(class_="mdc-text-field__input") }}
-            <label class="mdc-floating-label" for="email">邮箱地址</label>
-            <div class="mdc-line-ripple"></div>
-        </div>
-        <div class="phone mdc-text-field">
-            {{ form.phone(class_="mdc-text-field__input") }}
-            <label class="mdc-floating-label" for="phone">电话号码</label>
-            <div class="mdc-line-ripple"></div>
-        </div>
-        <div class="register-buttons">
-            <button type="reset" class="register-reset-button mdc-button">
-                <span class="mdc-button__label">重置</span>
+    <div class="surface">
+        <h1 class="mdc-typography--headline3" id="register-title">注册</h1>
+        <form action="" method="post" name="register">
+            {{ form.hidden_tag() }}
+            <div class="input mdc-text-field">
+                {{ form.id(class_="mdc-text-field__input", disabled="disabled") }}
+                <label class="mdc-floating-label" for="id">用户ID</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="password mdc-text-field">
+                {{ form.password(class_="mdc-text-field__input") }}
+                <label class="mdc-floating-label" for="password">密码</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="password-repeat mdc-text-field">
+                {{ form.password_repeat(class_="mdc-text-field__input") }}
+                <label class="mdc-floating-label" for="password_repeat">重复密码</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="name mdc-text-field">
+                {{ form.name(class_="mdc-text-field__input") }}
+                <label class="mdc-floating-label" for="name">姓名</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="email mdc-text-field">
+                {{ form.email(class_="mdc-text-field__input") }}
+                <label class="mdc-floating-label" for="email">邮箱地址</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="phone mdc-text-field">
+                {{ form.phone(class_="mdc-text-field__input") }}
+                <label class="mdc-floating-label" for="phone">电话号码</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="register-buttons">
+                <button type="reset" class="register-reset-button mdc-button">
+                    <span class="mdc-button__label">重置</span>
+                </button>
+                <button type="submit" class="register-button mdc-button mdc-button--raised">
+                    <span class="mdc-button__label">注册</span>
+                </button>
+            </div>
+        </form>
+        <div class="jump-login-div">
+            <button class="jump-login-button mdc-button" onclick="location.href='/login'">
+                <span class="mdc-button__label">已有账号？点此登录</span>
             </button>
-            <button type="submit" class="register-button mdc-button mdc-button--raised">
-                <span class="mdc-button__label">注册</span>
-            </button>
         </div>
-    </form>
-    <div class="jump-login-div">
-        <button class="jump-login-button mdc-button" onclick="location.href='/login'">
-            <span class="mdc-button__label">已有账号？点此登录</span>
-        </button>
     </div>
 </div>
 {% if success_alert or fail_alert %}

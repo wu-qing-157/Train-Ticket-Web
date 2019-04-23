@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>首页 - Train Ticket</title>
+    <title>{% block webpage_title %}{% endblock %}</title>
     <link href="../static/mdc-bundle.css" rel="stylesheet">
     <link href="../static/material-icons.css" rel="stylesheet">
     <link href="../static/base.css" rel="stylesheet">
-    <link href="../static/main_page.css" rel="stylesheet">
     <script src="../static/mdc-bundle.js"></script>
     <meta name="viewport"
           content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    {% block child_header %}{% endblock %}
 </head>
 <body>
 <header class="app-bar mdc-top-app-bar" id="app-bar">
@@ -28,7 +28,7 @@
 <aside class="mdc-drawer mdc-drawer--dismissible mdc-top-app-bar--fixed-adjust">
     <div class="mdc-drawer__content">
         <div class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated" aria-current="page">
+            <a class="mdc-list-item" onclick="location.href='main_page'" aria-current="page">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
                 <span class="mdc-list-item__text">首页</span>
             </a>
@@ -40,7 +40,7 @@
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">train</i>
                 <span class="mdc-list-item__text">已购车票</span>
             </a>
-            <a class="mdc-list-item" onclick="location.href='account'" aria-current="page">
+            <a class="mdc-list-item mdc-list-item--activated" aria-current="page">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">account_circle</i>
                 <span class="mdc-list-item__text">个人信息</span>
             </a>
@@ -60,17 +60,46 @@
 <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust" id="main-div"
      onclick="if (document.body.clientWidth <= 800) window.drawer.open = false">
     <main class="main-content" id="main-content">
-        <div class="surface">
-            <p class="mdc-typography--body1 welcome-para">您好，{{ username }}！</p>
-            {% if administrator %}
-                <p class="mdc-typography--body1 administrator-para">您当前以管理员身份登录。</p>
-            {% endif %}
+        <div class="wrapper">
+            {% block content %}{% endblock %}
         </div>
     </main>
 </div>
-
+<div class="alert-wrapper">
+    <div class="mdc-dialog"
+         id="verify-dialog"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="dialog-title"
+         aria-describedby="dialog-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <form action="" method="post" name="register">
+                    {{ verify_form.hidden_tag() }}
+                    <h2 class="mdc-dialog__title" id="dialog-title">需要再次验证你的密码...</h2>
+                    <div class="mdc-dialog__content" id="dialog-content">
+                        <p><span class="mdc-typography--body1">涉及到的操作：<span id="verify-operation"></span></span>
+                            <br><span id="verify-warning"></span>
+                        </p>
+                        <div class="input mdc-text-field" id="verify-password-text-field">
+                            {{ verify_form.verify_password(class_="mdc-text-field__input") }}
+                            <label class="mdc-floating-label" for="password">密码</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+                    </div>
+                    <footer class="mdc-dialog__actions">
+                        <button type="submit" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                            <span class="mdc-button__label">好啦~(￣▽￣)~*</span>
+                        </button>
+                    </footer>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script async>
-    window.main_page_init();
+    base_init();
+    verify_init();
     const mainDiv = document.getElementById('main-div');
     if (document.body.clientWidth <= 800)
         mainDiv.classList.add('main-dev-no-margin', 'mdc-drawer-app-content', 'mdc-top-app-bar--fixed-adjust');
@@ -84,8 +113,7 @@
             drawer.open = true;
         }
     };
-    window.drawer.open = true;
+    {% block script %}{% endblock %}
 </script>
-
 </body>
 </html>

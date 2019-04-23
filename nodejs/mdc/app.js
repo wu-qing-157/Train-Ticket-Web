@@ -1,0 +1,69 @@
+import {MDCTopAppBar} from '@material/top-app-bar/index';
+import {MDCDrawer} from "@material/drawer";
+import {MDCTextField} from '@material/textfield';
+import {MDCRipple} from '@material/ripple/index';
+import {MDCDialog} from '@material/dialog';
+
+window.account_init = function () {
+    new MDCTextField(document.getElementById('id-text-field'));
+    new MDCTextField(document.getElementById('name-text-field'));
+    new MDCTextField(document.getElementById('email-text-field'));
+    new MDCTextField(document.getElementById('phone-text-field'));
+    new MDCTextField(document.getElementById('new_password-text-field'));
+    new MDCTextField(document.getElementById('new_password_repeat-text-field'));
+    new MDCRipple(document.getElementById('modify-reset-button'));
+    new MDCRipple(document.getElementById('modify-button'));
+};
+
+window.register_init = function () {
+    new MDCTextField(document.querySelector('.id'));
+    new MDCTextField(document.querySelector('.password'));
+    new MDCTextField(document.querySelector('.password-repeat'));
+    new MDCTextField(document.querySelector('.name'));
+    new MDCTextField(document.querySelector('.email'));
+    new MDCTextField(document.querySelector('.phone'));
+    new MDCRipple(document.querySelector('.register-button'));
+    new MDCRipple(document.querySelector('.register-reset-button'));
+    new MDCRipple(document.querySelector('.jump-login-button'));
+};
+
+window.register_info_init = function () {
+    window.register_info_dialog = new MDCDialog(document.querySelector('.register-info-dialog'));
+};
+
+window.login_init = function () {
+    console.log('Train Ticket');
+    new MDCTextField(document.getElementById('id-text-field'));
+    new MDCTextField(document.getElementById('password-text-field'));
+    new MDCRipple(document.getElementById('login-button'));
+    new MDCRipple(document.getElementById('login-reset-button'));
+    new MDCRipple(document.getElementById('jump-register-button'));
+};
+
+window.login_info_init = function () {
+    window.login_info_dialog = new MDCDialog(document.querySelector('.login-info-dialog'));
+};
+
+window.base_init = function () {
+    const appBar = MDCTopAppBar.attachTo(document.getElementById('app-bar'));
+    appBar.setScrollTarget(document.getElementById('main-content'));
+    window.drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+    appBar.listen('MDCTopAppBar:nav', () => {
+        window.drawer.open = !window.drawer.open;
+    });
+};
+
+window.verify_init = function () {
+    window.verify_dialog = new MDCDialog(document.getElementById('verify-dialog'));
+    const text_field = new MDCTextField(document.getElementById('verify-password-text-field'));
+    verify_dialog.listen('MDCDialog:opened', () => {
+        text_field.layout();
+    });
+    const verify_operation = document.getElementById('verify-operation');
+    const verify_warning = document.getElementById('verify-warning');
+    window.show_verify = function (operation, warning) {
+        verify_operation.innerText = operation;
+        verify_warning.innerText = warning;
+        verify_dialog.open();
+    }
+};

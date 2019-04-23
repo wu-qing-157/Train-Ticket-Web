@@ -146,8 +146,46 @@ def account():
     [username, email, phone, _] = backend.get_result(
         'query_profile {}'.format(flask.session['current_user']), 1024).split(' ')
     form = forms.AccountForm(flask.session['current_user'], username, email, phone)
+    verify_form = forms.VerifyForm()
     return flask.render_template('account.html',
                                  username=username,
+                                 form=form,
+                                 verify_form=verify_form)
+
+
+@app.route('/verify', methods=['GET', 'POST'])
+def verify():
+    message = flask.session['to_verify_message']
+    warning = flask.session['to_verify_warning']
+    form = forms.VerifyForm()
+    if flask.request.method == 'POST':
+        try:
+            result = backend.get_result(
+                "login {} {}".format(flask.session['current_user'], flask.request.form['password']), 1024)
+            if result == '1':
+                what = flask.session['to_verify']
+                flask.session[what] = True
+            else:
+                return flask.render_template('verify.html',
+                                             message=message,
+                                             warning=warning,
+                                             form=form,
+                                             error=True)
+        except ConnectionRefusedError:
+            return flask.render_template('verify.html',
+                                         message=message,
+                                         warning=warning,
+                                         form=form,
+                                         error=True)
+        except socket.timeout:
+            return flask.render_template('verify.html',
+                                         message=message,
+                                         warning=warning,
+                                         form=form,
+                                         error=True)
+    return flask.render_template('verify.html',
+                                 message=message,
+                                 warning=warning,
                                  form=form)
 
 

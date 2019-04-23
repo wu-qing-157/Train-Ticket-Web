@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>二次验证 - Train Ticket</title>
+    <link href="../static/base.css" rel="stylesheet">
+    <link href="../static/mdc-bundle.css" rel="stylesheet">
+    <link href="../static/verify.css" rel="stylesheet">
+    <script src="../static/mdc-bundle.js"></script>
+    <meta name="viewport"
+          content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+</head>
+<body>
+<div class="alert-wrapper">
+    <div class="verify-dialog mdc-dialog"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="dialog-title"
+         aria-describedby="dialog-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <form action="" method="post" name="register">
+                    {{ verify_form.hidden_tag() }}
+                    <h2 class="mdc-dialog__title" id="dialog-title">可能需要再次验证你的密码...</h2>
+                    <div class="mdc-dialog__content" id="dialog-content">
+                        <p><span class="mdc-typography--body1">涉及到的操作：{{ message }}</span>
+                            {% if warning != '' %}
+                                <br><span class="warning mdc-typography--body1">{{ warning }}</span>
+                            {% endif %}
+                        </p>
+                        <div class="password mdc-text-field">
+                            {{ verify_form.password(class_="mdc-text-field__input") }}
+                            <label class="mdc-floating-label" for="password">密码</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+                    </div>
+                    <footer class="mdc-dialog__actions">
+                        <button type="submit" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                            <span class="mdc-button__label">好啦~(￣▽￣)~*</span>
+                        </button>
+                    </footer>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script async>
+    window.verify_init();
+    window.verify_dialog.open();
+</script>
+</body>
+</html>

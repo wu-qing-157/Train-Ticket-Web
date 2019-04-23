@@ -1,132 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>个人信息 - Train Ticket</title>
-    <link href="../static/account-bundle.css" rel="stylesheet">
-    <link href="../static/material-icons.css" rel="stylesheet">
-    <link href="../static/base.css" rel="stylesheet">
+{% extends "base.html" %}
+{% block webpage_title %}
+    个人信息 - Train Ticket
+{% endblock %}
+{% block child_header %}
     <link href="../static/account.css" rel="stylesheet">
-    <script src="../static/account-bundle.js"></script>
-    <meta name="viewport"
-          content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-</head>
-<body>
-<header class="app-bar mdc-top-app-bar" id="app-bar">
-    <div class="mdc-top-app-bar__row">
-        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-            <a class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
-            <span class="mdc-top-app-bar__title">Train Ticket</span>
-        </section>
-        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-            <span class="mdc-top-app-bar__title">{{ username }}</span>
-            <a onclick="location.href='logout'" class="material-icons mdc-top-app-bar__action-item"
-               aria-label="Download">exit_to_app</a>
-        </section>
-    </div>
-</header>
-<aside class="mdc-drawer mdc-drawer--dismissible mdc-top-app-bar--fixed-adjust">
-    <div class="mdc-drawer__content">
-        <div class="mdc-list">
-            <a class="mdc-list-item" onclick="location.href='main_page'" aria-current="page">
-                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
-                <span class="mdc-list-item__text">首页</span>
-            </a>
-            <a class="mdc-list-item" onclick="location.href='order'" aria-current="page">
-                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_shopping_cart</i>
-                <span class="mdc-list-item__text">订购车票</span>
-            </a>
-            <a class="mdc-list-item" onclick="location.href='ordered'" aria-current="page">
-                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">train</i>
-                <span class="mdc-list-item__text">已购车票</span>
-            </a>
-            <a class="mdc-list-item mdc-list-item--activated" aria-current="page">
-                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">account_circle</i>
-                <span class="mdc-list-item__text">个人信息</span>
-            </a>
-            {% if administrator %}
-                <a class="mdc-list-item" onclick="location.href='train_manage'" aria-current="page">
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">device_hub</i>
-                    <span class="administrator-item mdc-list-item__text">车次管理</span>
-                </a>
-                <a class="mdc-list-item" onclick="location.href='account_manage'" aria-current="page">
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">folder_shared</i>
-                    <span class="administrator-item mdc-list-item__text">账号管理</span>
-                </a>
-            {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="surface">
+        <h1 class="mdc-typography--headline5" id="account-info-title">修改用户信息</h1>
+        <div class="button-div">
+            <button onclick="show_verify('修改个人信息', '个人信息（包括密码）将可以被修改')" class="mdc-button mdc-button--raised"
+                    id="verify-to-modify-button">验证
+            </button>
         </div>
+        <form action="" method="post" name="login">
+            {{ form.hidden_tag() }}
+            <div class="input mdc-text-field" id="id-text-field">
+                {{ form.id(class_="mdc-text-field__input", disabled="disabled") }}
+                <label class="mdc-floating-label" for="id">用户ID（无法修改）</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="input mdc-text-field" id="name-text-field">
+                {{ form.name(class_="mdc-text-field__input") }}
+                <label class="mdc-floating-label" for="name">姓名</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="input mdc-text-field" id="email-text-field">
+                {{ form.email(class_="mdc-text-field__input") }}
+                <label class="mdc-floating-label" for="email">邮箱地址</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="input mdc-text-field" id="phone-text-field">
+                {{ form.phone(class_="mdc-text-field__input") }}
+                <label class="mdc-floating-label" for="phone">电话号码</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="input mdc-text-field" id="new_password-text-field">
+                {{ form.new_password(class_="mdc-text-field__input") }}
+                <label class="mdc-floating-label" for="new_password">新密码（留空以不修改密码）</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="input mdc-text-field" id="new_password_repeat-text-field">
+                {{ form.new_password_repeat(class_="mdc-text-field__input") }}
+                <label class="mdc-floating-label" for="new_password_repeat">重复新密码（留空以不修改密码）</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="button-div" id="modify-buttons">
+                <button type="reset" class="mdc-button" id="modify-reset-button">
+                    <span class="mdc-button__label">重置</span>
+                </button>
+                <button type="submit" class="mdc-button mdc-button--raised" id="modify-button">
+                    <span class="mdc-button__label">修改</span>
+                </button>
+            </div>
+        </form>
     </div>
-</aside>
-<div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust" id="main-div"
-     onclick="if (document.body.clientWidth <= 800) window.drawer.open = false">
-    <main class="main-content" id="main-content">
-        <div class="wrapper">
-            <h1 class="mdc-typography--body1">用户信息</h1>
-            <form action="" method="post" name="login">
-                {{ form.hidden_tag() }}
-                <div class="id mdc-text-field">
-                    {{ form.id(class_="mdc-text-field__input", disabled="disabled") }}
-                    <label class="mdc-floating-label" for="id">用户ID（无法修改）</label>
-                    <div class="mdc-line-ripple"></div>
-                </div>
-                <div class="old-password mdc-text-field">
-                    {{ form.old_password(class_="mdc-text-field__input") }}
-                    <label class="mdc-floating-label" for="old_password">旧密码</label>
-                    <div class="mdc-line-ripple"></div>
-                </div>
-                <div class="name mdc-text-field">
-                    {{ form.name(class_="mdc-text-field__input") }}
-                    <label class="mdc-floating-label" for="name">姓名</label>
-                    <div class="mdc-line-ripple"></div>
-                </div>
-                <div class="email mdc-text-field">
-                    {{ form.email(class_="mdc-text-field__input") }}
-                    <label class="mdc-floating-label" for="email">邮箱地址</label>
-                    <div class="mdc-line-ripple"></div>
-                </div>
-                <div class="phone mdc-text-field">
-                    {{ form.phone(class_="mdc-text-field__input") }}
-                    <label class="mdc-floating-label" for="phone">电话号码</label>
-                    <div class="mdc-line-ripple"></div>
-                </div>
-                <div class="new-password mdc-text-field">
-                    {{ form.new_password(class_="mdc-text-field__input") }}
-                    <label class="mdc-floating-label" for="new_password">新密码（留空以不修改密码）</label>
-                    <div class="mdc-line-ripple"></div>
-                </div>
-                <div class="new-password-repeat mdc-text-field">
-                    {{ form.new_password_repeat(class_="mdc-text-field__input") }}
-                    <label class="mdc-floating-label" for="new_password_repeat">重复新密码（留空以不修改密码）</label>
-                    <div class="mdc-line-ripple"></div>
-                </div>
-                <div class="modify-buttons">
-                    <button type="reset" class="modify-reset-button mdc-button">
-                        <span class="mdc-button__label">重置</span>
-                    </button>
-                    <button type="submit" class="modify-button mdc-button mdc-button--raised">
-                        <span class="mdc-button__label">注册</span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </main>
-</div>
-
-<script async>
+{% endblock %}
+{% block script %}
+    {% if not verified %}
+        const to_disable_id = ['name', 'email', 'phone', 'new_password',
+        'new_password_repeat', 'modify-reset-button', "modify-button"].map((id) => {
+        return document.getElementById(id);
+        }).forEach((element) => {
+        element.disabled = 'disabled';
+        });
+    {% endif %}
     account_init();
-    const mainDiv = document.getElementById('main-div');
-    if (document.body.clientWidth <= 800)
-        mainDiv.classList.add('main-dev-no-margin', 'mdc-drawer-app-content', 'mdc-top-app-bar--fixed-adjust');
-    onresize = function () {
-        if (document.body.clientWidth <= 800) {
-            if (!mainDiv.classList.contains('main-dev-no-margin'))
-                mainDiv.classList.add('main-dev-no-margin');
-        } else {
-            if (mainDiv.classList.contains('main-dev-no-margin'))
-                mainDiv.classList.remove('main-dev-no-margin');
-            drawer.open = true;
-        }
-    };
-</script>
-</body>
-</html>
+{% endblock %}

@@ -13,7 +13,7 @@ body {
     margin-left: 0 !important;
 }
 
-.administrator-item {
+.administrator-item, #verify-warning {
     color: crimson;
 }
 
@@ -22,27 +22,35 @@ body {
     z-index: 7;
 }
 
-.wrapper {
+.input {
+    display: block !important;
+    width: 300px;
+    margin: 20px;
+}
+
+.surface {
     text-align: center;
     background: whitesmoke;
     border-radius: 20px;
     width: fit-content;
     height: fit-content;
     margin: auto;
+}
+
+.wrapper {
     position: absolute;
-    top: 96px;
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
     left: 0;
     right: 0;
 }
 
 .center-wrapper {
-    text-align: center;
-    background: whitesmoke;
-    border-radius: 20px;
+    position: absolute;
     width: fit-content;
     height: fit-content;
     margin: auto;
-    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;

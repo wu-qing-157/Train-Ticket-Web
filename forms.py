@@ -32,3 +32,7 @@ class AccountForm(FlaskForm):
         self.name.data = name_t
         self.email.data = email_t
         self.phone.data = phone_t
+
+
+class VerifyForm(FlaskForm):
+    verify_password = PasswordField('password', validators=[DataRequired()])
