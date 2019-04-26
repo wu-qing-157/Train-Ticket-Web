@@ -1,5 +1,15 @@
-#welcome-para, #administrator-para {
+#welcome-para, #administrator-para, #hitokoto-title {
     padding: 20px 20px 0 20px;
+}
+
+#hitokot {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    left: 0;
+    right: 0;
 }
 
 #administrator-para {

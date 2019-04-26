@@ -13,7 +13,7 @@
         <div class="surface">
             <h1>用户信息</h1>
             <button onclick="document.getElementById('show_info').hidden = true; document.getElementById('edit_info').hidden = false;"
-                    class="mdc-button mdc-button--raised" id="start_edit">
+                    class="mdc-button mdc-button--raised" id="start-edit">
                 <span class="mdc-button__label">修改个人信息</span>
             </button>
         </div>
@@ -24,14 +24,12 @@
             {% endif %}>
         <div class="surface">
             <h1 class="mdc-typography--headline5" id="account-info-title">修改用户信息</h1>
-            {% if not verifyed %}
-                <div class="button-div">
-                    <button onclick="show_verify('修改个人信息', '个人信息（包括密码）将可以被修改')" class="mdc-button mdc-button--raised"
-                            id="verify-edit">
-                        <span class="mdc-button__label">验证</span>
-                    </button>
-                </div>
-            {% endif %}
+            <div class="button-div" {% if verified %}hidden="hidden"{% endif %}>
+                <button onclick="show_verify('修改个人信息', '个人信息（包括密码）将可以被修改')" class="mdc-button mdc-button--raised"
+                        id="verify-edit">
+                    <span class="mdc-button__label">验证</span>
+                </button>
+            </div>
             <form action="" method="post" name="login">
                 {{ form.hidden_tag() }}
                 <div class="input mdc-text-field" id="id-text-field">
@@ -54,12 +52,26 @@
                     <label class="mdc-floating-label" for="phone">电话号码</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
-                <div class="input mdc-text-field" id="new_password-text-field">
+                <div class="mdc-form-field" id="modify_password-form-field">
+                    <div class="mdc-checkbox" id="modify_password-checkbox">
+                        {{ form.modify_password(class_="mdc-checkbox__native-control", onclick="modify_password_handle()") }}
+                        <div class="mdc-checkbox__background">
+                            <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                <path class="mdc-checkbox__checkmark-path"
+                                      fill="none"
+                                      d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+                            </svg>
+                            <div class="mdc-checkbox__mixedmark"></div>
+                        </div>
+                    </div>
+                    <label for="modify_password">修改密码</label>
+                </div>
+                <div class="input mdc-text-field" id="new_password-text-field" hidden="hidden">
                     {{ form.new_password(class_="mdc-text-field__input") }}
                     <label class="mdc-floating-label" for="new_password">新密码</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
-                <div class="input mdc-text-field" id="new_password_repeat-text-field">
+                <div class="input mdc-text-field" id="new_password_repeat-text-field" hidden="hidden">
                     {{ form.new_password_repeat(class_="mdc-text-field__input") }}
                     <label class="mdc-floating-label" for="new_password_repeat">重复新密码</label>
                     <div class="mdc-line-ripple"></div>

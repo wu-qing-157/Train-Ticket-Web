@@ -3,6 +3,8 @@ import {MDCDrawer} from "@material/drawer";
 import {MDCTextField} from '@material/textfield';
 import {MDCRipple} from '@material/ripple/index';
 import {MDCDialog} from '@material/dialog';
+import {MDCFormField} from '@material/form-field';
+import {MDCCheckbox} from '@material/checkbox';
 
 window.account_init = function () {
     new MDCTextField(document.getElementById('id-text-field'));
@@ -14,7 +16,20 @@ window.account_init = function () {
     new MDCRipple(document.getElementById('modify-reset-button'));
     new MDCRipple(document.getElementById('modify-button'));
     new MDCRipple(document.getElementById('start-edit'));
-    new MDCRipple(document.getElementById('verify-edit'))
+    new MDCRipple(document.getElementById('verify-edit'));
+    const modify_password_checkbox = new MDCCheckbox(document.getElementById('modify_password-checkbox'));
+    const modify_password_form_field = new MDCFormField(document.getElementById('modify_password-form-field'));
+    modify_password_form_field.input = modify_password_checkbox;
+    window.modify_password_handle = function () {
+        console.log(modify_password_checkbox.checked);
+        if (modify_password_checkbox.checked) {
+            document.getElementById('new_password-text-field').hidden = false;
+            document.getElementById('new_password_repeat-text-field').hidden = false;
+        } else {
+            document.getElementById('new_password-text-field').hidden = true;
+            document.getElementById('new_password_repeat-text-field').hidden = true;
+        }
+    };
 };
 
 window.register_init = function () {
@@ -34,7 +49,6 @@ window.register_info_init = function () {
 };
 
 window.login_init = function () {
-    console.log('Train Ticket');
     new MDCTextField(document.getElementById('id-text-field'));
     new MDCTextField(document.getElementById('password-text-field'));
     new MDCRipple(document.getElementById('login-button'));

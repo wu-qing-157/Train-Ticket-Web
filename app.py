@@ -132,6 +132,7 @@ def register():
 
 @app.route('/main_page')
 def main_page():
+    flask.session['verified'] = 'none'
     if not 'current_user' in flask.session:
         return flask.redirect(flask.url_for('login'))
     return flask.render_template('main_page.html',
@@ -139,17 +140,29 @@ def main_page():
                                  administrator=flask.session['administrator'])
 
 
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 def account():
+    edit = False
+    if flask.session.get('verified') != 'account':
+        flask.session['verified'] = 'none'
     if not 'current_user' in flask.session:
         return flask.redirect(flask.url_for('login'))
     [username, email, phone, _] = backend.get_result(
         'query_profile {}'.format(flask.session['current_user']), 1024).split(' ')
     form = forms.AccountForm(flask.session['current_user'], username, email, phone)
     verify_form = forms.VerifyForm()
+    if flask.request.method == 'POST':
+        edit = True
+        if 'verify_password' in flask.request.form:
+            result = backend.get_result(
+                'login {} {}'.format(flask.session['current_user'], flask.request.form['verify_password']), 1024)
+            if result == '1':
+                flask.session['verified'] = 'account'
     return flask.render_template('account.html',
                                  username=username,
                                  administrator=flask.session['administrator'],
+                                 verified=flask.session['verified'] == 'account',
+                                 edit=edit,
                                  form=form,
                                  verify_form=verify_form)
 

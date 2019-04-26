@@ -24,6 +24,7 @@ class AccountForm(FlaskForm):
     name = StringField('name', validators=[DataRequired()])
     email = StringField('email', validators=[DataRequired()])
     phone = StringField('phone', validators=[DataRequired()])
+    modify_password = BooleanField('modify_password')
     new_password = PasswordField('new_password')
     new_password_repeat = PasswordField('new_password_repeat')
     def __init__(self, id_t, name_t, email_t, phone_t, *args, **kwargs):
