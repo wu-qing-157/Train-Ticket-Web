@@ -1,20 +1,18 @@
-.id-hint {
+.button-div {
     display: block;
-    text-align: left;
-    width: 300px;
+    width: available;
     margin: 20px;
+    box-sizing: border-box;
 }
 
-.id, .password, .password-repeat, .name, .email, .phone, .register-buttons, .jump-login-div {
-    display: block;
-    width: 300px;
-    margin: 20px;
-}
-
-.register-button {
+#register-button {
     width: 120px;
 }
 
 #register-title {
     padding: 20px;
+}
+
+.center-wrapper {
+    width: 400px;
 }

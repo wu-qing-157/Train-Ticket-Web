@@ -4,14 +4,15 @@
 
 .button-div {
     display: block;
-    width: 300px;
+    width: available;
     margin: 20px;
+    box-sizing: border-box;
 }
 
 #modify-button {
     width: 120px;
 }
 
-#verify-to-modify-button {
-    width: 180px;
+#verify-edit {
+    width: 80%;
 }

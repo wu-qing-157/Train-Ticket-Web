@@ -28,28 +28,29 @@
 <aside class="mdc-drawer mdc-drawer--dismissible mdc-top-app-bar--fixed-adjust">
     <div class="mdc-drawer__content">
         <div class="mdc-list">
-            <a class="mdc-list-item" onclick="location.href='main_page'" aria-current="page">
+            <a class="mdc-list-item" id="main_page" onclick="location.href='main_page'" aria-current="page">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
                 <span class="mdc-list-item__text">首页</span>
             </a>
-            <a class="mdc-list-item" onclick="location.href='order'" aria-current="page">
+            <a class="mdc-list-item" id="order" onclick="location.href='order'" aria-current="page">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_shopping_cart</i>
                 <span class="mdc-list-item__text">订购车票</span>
             </a>
-            <a class="mdc-list-item" onclick="location.href='ordered'" aria-current="page">
+            <a class="mdc-list-item" id="ordered" onclick="location.href='ordered'" aria-current="page">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">train</i>
                 <span class="mdc-list-item__text">已购车票</span>
             </a>
-            <a class="mdc-list-item mdc-list-item--activated" aria-current="page">
+            <a class="mdc-list-item" id="account" onclick="location.href='account'" aria-current="page">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">account_circle</i>
                 <span class="mdc-list-item__text">个人信息</span>
             </a>
             {% if administrator %}
-                <a class="mdc-list-item" onclick="location.href='train_manage'" aria-current="page">
+                <a class="mdc-list-item" id="train_manage" onclick="location.href='train_manage'" aria-current="page">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">device_hub</i>
                     <span class="administrator-item mdc-list-item__text">车次管理</span>
                 </a>
-                <a class="mdc-list-item" onclick="location.href='account_manage'" aria-current="page">
+                <a class="mdc-list-item" id="account_manage" onclick="location.href='account_manage'"
+                   aria-current="page">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">folder_shared</i>
                     <span class="administrator-item mdc-list-item__text">账号管理</span>
                 </a>
@@ -57,7 +58,7 @@
         </div>
     </div>
 </aside>
-<div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust" id="main-div"
+<div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust main-dev-no-margin" id="main-div"
      onclick="if (document.body.clientWidth <= 800) window.drawer.open = false">
     <main class="main-content" id="main-content">
         <div class="wrapper">
@@ -73,16 +74,22 @@
          aria-labelledby="dialog-title"
          aria-describedby="dialog-content">
         <div class="mdc-dialog__container">
-            <div class="mdc-dialog__surface">
+            <div class="mdc-dialog__surface" id="verify-surface">
                 <form action="" method="post" name="register">
-                    {{ verify_form.hidden_tag() }}
+                    {% if verify_form %}
+                        {{ verify_form.hidden_tag() }}
+                    {% endif %}
                     <h2 class="mdc-dialog__title" id="dialog-title">需要再次验证你的密码...</h2>
                     <div class="mdc-dialog__content" id="dialog-content">
                         <p><span class="mdc-typography--body1">涉及到的操作：<span id="verify-operation"></span></span>
                             <br><span id="verify-warning"></span>
                         </p>
                         <div class="input mdc-text-field" id="verify-password-text-field">
-                            {{ verify_form.verify_password(class_="mdc-text-field__input") }}
+                            {% if verify_form %}
+                                {{ verify_form.verify_password(class_="mdc-text-field__input") }}
+                            {% else %}
+                                <input class="mdc-text-field__input" id="password">
+                            {% endif %}
                             <label class="mdc-floating-label" for="password">密码</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
@@ -101,17 +108,11 @@
     base_init();
     verify_init();
     const mainDiv = document.getElementById('main-div');
-    if (document.body.clientWidth <= 800)
-        mainDiv.classList.add('main-dev-no-margin', 'mdc-drawer-app-content', 'mdc-top-app-bar--fixed-adjust');
+    if (document.body.clientWidth > 800)
+        drawer.open = true;
     onresize = function () {
-        if (document.body.clientWidth <= 800) {
-            if (!mainDiv.classList.contains('main-dev-no-margin'))
-                mainDiv.classList.add('main-dev-no-margin');
-        } else {
-            if (mainDiv.classList.contains('main-dev-no-margin'))
-                mainDiv.classList.remove('main-dev-no-margin');
+        if (document.body.clientWidth > 800)
             drawer.open = true;
-        }
     };
     {% block script %}{% endblock %}
 </script>

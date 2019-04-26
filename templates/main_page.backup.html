@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页 - Train Ticket</title>
+    <link href="../static/mdc-bundle.css" rel="stylesheet">
+    <link href="../static/material-icons.css" rel="stylesheet">
+    <link href="../static/base.css" rel="stylesheet">
+    <link href="../static/main_page.css" rel="stylesheet">
+    <script src="../static/mdc-bundle.js"></script>
+    <meta name="viewport"
+          content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+</head>
+<body>
+<header class="app-bar mdc-top-app-bar" id="app-bar">
+    <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <a class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+            <span class="mdc-top-app-bar__title">Train Ticket</span>
+        </section>
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+            <span class="mdc-top-app-bar__title">{{ username }}</span>
+            <a onclick="location.href='logout'" class="material-icons mdc-top-app-bar__action-item"
+               aria-label="Download">exit_to_app</a>
+        </section>
+    </div>
+</header>
+<aside class="mdc-drawer mdc-drawer--dismissible mdc-top-app-bar--fixed-adjust">
+    <div class="mdc-drawer__content">
+        <div class="mdc-list">
+            <a class="mdc-list-item mdc-list-item--activated" aria-current="page">
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
+                <span class="mdc-list-item__text">首页</span>
+            </a>
+            <a class="mdc-list-item" onclick="location.href='order'" aria-current="page">
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_shopping_cart</i>
+                <span class="mdc-list-item__text">订购车票</span>
+            </a>
+            <a class="mdc-list-item" onclick="location.href='ordered'" aria-current="page">
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">train</i>
+                <span class="mdc-list-item__text">已购车票</span>
+            </a>
+            <a class="mdc-list-item" onclick="location.href='account'" aria-current="page">
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">account_circle</i>
+                <span class="mdc-list-item__text">个人信息</span>
+            </a>
+            {% if administrator %}
+                <a class="mdc-list-item" onclick="location.href='train_manage'" aria-current="page">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">device_hub</i>
+                    <span class="administrator-item mdc-list-item__text">车次管理</span>
+                </a>
+                <a class="mdc-list-item" onclick="location.href='account_manage'" aria-current="page">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">folder_shared</i>
+                    <span class="administrator-item mdc-list-item__text">账号管理</span>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</aside>
+<div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust" id="main-div"
+     onclick="if (document.body.clientWidth <= 800) window.drawer.open = false">
+    <main class="main-content" id="main-content">
+
+    </main>
+</div>
+
+<script async>
+    window.main_page_init();
+    const mainDiv = document.getElementById('main-div');
+    if (document.body.clientWidth <= 800)
+        mainDiv.classList.add('main-dev-no-margin', 'mdc-drawer-app-content', 'mdc-top-app-bar--fixed-adjust');
+    onresize = function () {
+        if (document.body.clientWidth <= 800) {
+            if (!mainDiv.classList.contains('main-dev-no-margin'))
+                mainDiv.classList.add('main-dev-no-margin');
+        } else {
+            if (mainDiv.classList.contains('main-dev-no-margin'))
+                mainDiv.classList.remove('main-dev-no-margin');
+            drawer.open = true;
+        }
+    };
+    window.drawer.open = true;
+</script>
+
+</body>
+</html>

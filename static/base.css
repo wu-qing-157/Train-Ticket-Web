@@ -9,8 +9,28 @@ body {
     position: relative;
 }
 
-.main-dev-no-margin {
-    margin-left: 0 !important;
+@media only screen and (max-width: 800px) {
+    .main-dev-no-margin {
+        margin-left: 0 !important;
+    }
+
+    #verify-surface {
+        width: available !important;
+    }
+
+    #verify-dialog {
+        width: 80% !important;
+        position: absolute;
+        margin: auto;
+        left: 0;
+        right: 0;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .fill-1200 {
+        width: 100% !important;
+    }
 }
 
 .administrator-item, #verify-warning {
@@ -24,31 +44,48 @@ body {
 
 .input {
     display: block !important;
-    width: 300px;
+    width: available;
     margin: 20px;
+    box-sizing: border-box;
 }
 
 .surface {
     text-align: center;
     background: whitesmoke;
     border-radius: 20px;
-    width: fit-content;
+    width: available;
     height: fit-content;
-    margin: auto;
+    margin: 20px 0;
+    box-sizing: border-box;
+}
+
+.rect-surface {
+    text-align: center;
+    background: whitesmoke;
+    width: available;
+    height: fit-content;
+    margin: 0;
 }
 
 .wrapper {
-    position: absolute;
-    width: fit-content;
+    position: relative;
     height: fit-content;
     margin: auto;
     left: 0;
     right: 0;
 }
 
+.inline-wrapper {
+    position: relative;
+    display: inline-block;
+    padding: 0 20px;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
 .center-wrapper {
     position: absolute;
-    width: fit-content;
+    width: available;
     height: fit-content;
     margin: auto;
     top: 0;
@@ -77,4 +114,16 @@ body {
     top: 0;
     left: 0;
     right: 0;
+}
+
+.width-33 {
+    width: 33%;
+}
+
+.width-66 {
+    width: 66%;
+}
+
+#verify-surface {
+    width: 600px;
 }

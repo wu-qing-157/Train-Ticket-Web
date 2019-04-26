@@ -13,22 +13,24 @@ window.account_init = function () {
     new MDCTextField(document.getElementById('new_password_repeat-text-field'));
     new MDCRipple(document.getElementById('modify-reset-button'));
     new MDCRipple(document.getElementById('modify-button'));
+    new MDCRipple(document.getElementById('start-edit'));
+    new MDCRipple(document.getElementById('verify-edit'))
 };
 
 window.register_init = function () {
-    new MDCTextField(document.querySelector('.id'));
-    new MDCTextField(document.querySelector('.password'));
-    new MDCTextField(document.querySelector('.password-repeat'));
-    new MDCTextField(document.querySelector('.name'));
-    new MDCTextField(document.querySelector('.email'));
-    new MDCTextField(document.querySelector('.phone'));
-    new MDCRipple(document.querySelector('.register-button'));
-    new MDCRipple(document.querySelector('.register-reset-button'));
-    new MDCRipple(document.querySelector('.jump-login-button'));
+    new MDCTextField(document.getElementById('id-text-field'));
+    new MDCTextField(document.getElementById('password-text-field'));
+    new MDCTextField(document.getElementById('password_repeat-text-field'));
+    new MDCTextField(document.getElementById('name-text-field'));
+    new MDCTextField(document.getElementById('email-text-field'));
+    new MDCTextField(document.getElementById('phone-text-field'));
+    new MDCRipple(document.getElementById('register-button'));
+    new MDCRipple(document.getElementById('register-reset-button'));
+    new MDCRipple(document.getElementById('jump-login-button'));
 };
 
 window.register_info_init = function () {
-    window.register_info_dialog = new MDCDialog(document.querySelector('.register-info-dialog'));
+    window.register_info_dialog = new MDCDialog(document.getElementById('register-info-dialog'));
 };
 
 window.login_init = function () {
@@ -66,4 +68,13 @@ window.verify_init = function () {
         verify_warning.innerText = warning;
         verify_dialog.open();
     }
+};
+
+window.main_page_init = function () {
+    const appBar = MDCTopAppBar.attachTo(document.getElementById('app-bar'));
+    appBar.setScrollTarget(document.getElementById('main-content'));
+    window.drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+    appBar.listen('MDCTopAppBar:nav', () => {
+        window.drawer.open = !window.drawer.open;
+    });
 };

@@ -1,7 +1,8 @@
-.id, .password, .login-buttons, .jump-register-div {
+.button-div {
     display: block;
-    width: 300px;
+    width: available;
     margin: 20px;
+    box-sizing: border-box;
 }
 
 .login-button {
@@ -10,4 +11,8 @@
 
 #login-title {
     padding: 20px;
+}
+
+.center-wrapper {
+    width: 400px;
 }

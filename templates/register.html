@@ -16,47 +16,47 @@
         <h1 class="mdc-typography--headline3" id="register-title">注册</h1>
         <form action="" method="post" name="register">
             {{ form.hidden_tag() }}
-            <div class="input mdc-text-field">
+            <div class="input mdc-text-field" id="id-text-field">
                 {{ form.id(class_="mdc-text-field__input", disabled="disabled") }}
                 <label class="mdc-floating-label" for="id">用户ID</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="password mdc-text-field">
+            <div class="input mdc-text-field" id="password-text-field">
                 {{ form.password(class_="mdc-text-field__input") }}
                 <label class="mdc-floating-label" for="password">密码</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="password-repeat mdc-text-field">
+            <div class="input mdc-text-field" id="password_repeat-text-field">
                 {{ form.password_repeat(class_="mdc-text-field__input") }}
                 <label class="mdc-floating-label" for="password_repeat">重复密码</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="name mdc-text-field">
+            <div class="input mdc-text-field" id="name-text-field">
                 {{ form.name(class_="mdc-text-field__input") }}
                 <label class="mdc-floating-label" for="name">姓名</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="email mdc-text-field">
+            <div class="input mdc-text-field" id="email-text-field">
                 {{ form.email(class_="mdc-text-field__input") }}
                 <label class="mdc-floating-label" for="email">邮箱地址</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="phone mdc-text-field">
+            <div class="input mdc-text-field" id="phone-text-field">
                 {{ form.phone(class_="mdc-text-field__input") }}
                 <label class="mdc-floating-label" for="phone">电话号码</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="register-buttons">
-                <button type="reset" class="register-reset-button mdc-button">
+            <div class="button-div">
+                <button type="reset" class="mdc-button" id="register-reset-button">
                     <span class="mdc-button__label">重置</span>
                 </button>
-                <button type="submit" class="register-button mdc-button mdc-button--raised">
+                <button type="submit" class="mdc-button mdc-button--raised" id="register-button">
                     <span class="mdc-button__label">注册</span>
                 </button>
             </div>
         </form>
-        <div class="jump-login-div">
-            <button class="jump-login-button mdc-button" onclick="location.href='/login'">
+        <div class="button-div">
+            <button class="mdc-button" id="jump-login-button" onclick="location.href='/login'">
                 <span class="mdc-button__label">已有账号？点此登录</span>
             </button>
         </div>
@@ -64,7 +64,8 @@
 </div>
 {% if success_alert or fail_alert %}
     <div class="alert-wrapper">
-        <div class="register-info-dialog mdc-dialog"
+        <div class="mdc-dialog"
+             id="register-info-dialog"
              role="alertdialog"
              aria-modal="true"
              aria-labelledby="dialog-title"
