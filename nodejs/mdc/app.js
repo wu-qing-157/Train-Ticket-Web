@@ -21,7 +21,7 @@ window.account_init = function () {
     const modify_password_form_field = new MDCFormField(document.getElementById('modify_password-form-field'));
     modify_password_form_field.input = modify_password_checkbox;
     window.modify_password_handle = function () {
-        console.log(modify_password_checkbox.checked);
+        // console.log(modify_password_checkbox.checked);
         if (modify_password_checkbox.checked) {
             document.getElementById('new_password-text-field').hidden = false;
             document.getElementById('new_password_repeat-text-field').hidden = false;

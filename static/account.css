@@ -4,7 +4,7 @@
 
 .button-div {
     display: block;
-    width: available;
+    width: 100%;
     margin: 20px;
     box-sizing: border-box;
 }
