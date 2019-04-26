@@ -167,6 +167,6 @@ def account():
                                  verify_form=verify_form)
 
 
+app.config.from_object('config')
 if __name__ == '__main__':
-    app.config.from_object('config')
     app.run(host="0.0.0.0", port=8083, debug=True)
