@@ -1,6 +1,7 @@
 body {
     display: flex;
     height: 100vh;
+    margin: 0;
 }
 
 .mdc-drawer-app-content {
@@ -44,8 +45,7 @@ body {
 
 .input {
     display: block !important;
-    width: available;
-    margin: 20px;
+    margin: 20px 20px;
     box-sizing: border-box;
 }
 
@@ -73,6 +73,16 @@ body {
     margin: auto;
     left: 0;
     right: 0;
+}
+
+.wrapper-margin {
+    position: relative;
+    height: fit-content;
+    margin: auto;
+    padding: 8px;
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
 }
 
 .inline-wrapper {
@@ -126,4 +136,8 @@ body {
 
 #verify-surface {
     width: 600px;
+}
+
+.hidden {
+    display: none !important;
 }

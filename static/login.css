@@ -1,7 +1,7 @@
 .button-div {
     display: block;
     width: 100%;
-    margin: 20px;
+    padding: 20px;
     box-sizing: border-box;
 }
 

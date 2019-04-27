@@ -20,14 +20,18 @@ window.account_init = function () {
     const modify_password_checkbox = new MDCCheckbox(document.getElementById('modify_password-checkbox'));
     const modify_password_form_field = new MDCFormField(document.getElementById('modify_password-form-field'));
     modify_password_form_field.input = modify_password_checkbox;
+    window.start_edit = function () {
+        document.getElementById('show_info').classList.add('hidden');
+        document.getElementById('edit_info').classList.remove('hidden');
+    };
     window.modify_password_handle = function () {
         // console.log(modify_password_checkbox.checked);
         if (modify_password_checkbox.checked) {
-            document.getElementById('new_password-text-field').hidden = false;
-            document.getElementById('new_password_repeat-text-field').hidden = false;
+            document.getElementById('new_password-text-field').classList.remove('hidden');
+            document.getElementById('new_password_repeat-text-field').classList.remove('hidden');
         } else {
-            document.getElementById('new_password-text-field').hidden = true;
-            document.getElementById('new_password_repeat-text-field').hidden = true;
+            document.getElementById('new_password-text-field').classList.add('hidden');
+            document.getElementById('new_password_repeat-text-field').classList.add('hidden');
         }
     };
 };

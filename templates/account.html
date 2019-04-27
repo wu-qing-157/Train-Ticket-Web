@@ -6,25 +6,18 @@
     <link href="../static/account.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
-    <div class="wrapper" id="show_info"
-            {% if edit %}
-         hidden="hidden"
-            {% endif %}>
+    <div class="wrapper {% if edit %}hidden{% endif %}" id="show_info">
         <div class="surface">
             <h1>用户信息</h1>
-            <button onclick="document.getElementById('show_info').hidden = true; document.getElementById('edit_info').hidden = false;"
-                    class="mdc-button mdc-button--raised" id="start-edit">
+            <button onclick="start_edit()" class="mdc-button mdc-button--raised" id="start-edit">
                 <span class="mdc-button__label">修改个人信息</span>
             </button>
         </div>
     </div>
-    <div class="wrapper" id="edit_info"
-            {% if not edit %}
-         hidden="hidden"
-            {% endif %}>
+    <div class="wrapper {% if not edit %}hidden{% endif %}" id="edit_info">
         <div class="surface">
             <h1 class="mdc-typography--headline5" id="account-info-title">修改用户信息</h1>
-            <div class="button-div" {% if verified %}hidden="hidden"{% endif %}>
+            <div class="button-div {% if verified %}hidden{% endif %}" id="verify-edit-div">
                 <button onclick="show_verify('修改个人信息', '个人信息（包括密码）将可以被修改')" class="mdc-button mdc-button--raised"
                         id="verify-edit">
                     <span class="mdc-button__label">验证</span>
@@ -66,12 +59,12 @@
                     </div>
                     <label for="modify_password">修改密码</label>
                 </div>
-                <div class="input mdc-text-field" id="new_password-text-field" hidden="hidden">
+                <div class="input mdc-text-field hidden" id="new_password-text-field" hidden="hidden">
                     {{ form.new_password(class_="mdc-text-field__input") }}
                     <label class="mdc-floating-label" for="new_password">新密码</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
-                <div class="input mdc-text-field" id="new_password_repeat-text-field" hidden="hidden">
+                <div class="input mdc-text-field hidden" id="new_password_repeat-text-field" hidden="hidden">
                     {{ form.new_password_repeat(class_="mdc-text-field__input") }}
                     <label class="mdc-floating-label" for="new_password_repeat">重复新密码</label>
                     <div class="mdc-line-ripple"></div>
