@@ -23,3 +23,7 @@
     width: 100%;
     box-sizing: border-box;
 }
+
+#show_info, #edit_info {
+    max-width: 800px;
+}

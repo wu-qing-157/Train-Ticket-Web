@@ -34,6 +34,10 @@ window.account_init = function () {
             document.getElementById('new_password_repeat-text-field').classList.add('hidden');
         }
     };
+    window.modify_password_hide = function () {
+        document.getElementById('new_password-text-field').classList.add('hidden');
+        document.getElementById('new_password_repeat-text-field').classList.add('hidden');
+    };
 };
 
 window.register_init = function () {
