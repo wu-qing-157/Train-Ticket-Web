@@ -34,7 +34,7 @@ body {
     }
 }
 
-.administrator-item, #verify-warning {
+.crimson {
     color: crimson;
 }
 
@@ -55,8 +55,10 @@ body {
     border-radius: 20px;
     width: 100%;
     height: fit-content;
-    margin: 20px 0;
+    margin: 20px auto;
     box-sizing: border-box;
+    left: 0;
+    right: 0;
 }
 
 .rect-surface {
@@ -140,4 +142,12 @@ body {
 
 .hidden {
     display: none !important;
+}
+
+.scale-8 {
+    width: 80%;
+}
+
+.align-center {
+    text-align: center;
 }

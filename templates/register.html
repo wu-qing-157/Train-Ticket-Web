@@ -74,15 +74,13 @@
                 <div class="mdc-dialog__surface">
                     <h2 class="mdc-dialog__title" id="dialog-title">
                         {% if success_alert %}
-                            注册成功
+                            ( •̀ ω •́ )y
                         {% elif fail_alert %}
-                            注册失败
+                            Oops...
                         {% endif %}
                     </h2>
                     <div class="mdc-dialog__content" id="dialog-content">
-                        {% if success_alert %}
-                            您的用户ID是 {{ user_id }} ，请牢记。
-                        {% elif fail_alert %}
+                        {% if success_alert or fail_alert %}
                             {{ message }}
                         {% endif %}
                     </div>

@@ -8,17 +8,17 @@
 {% endblock %}
 {% block content %}
     <div class="inline-wrapper width-66 fill-1000">
-        <div class="surface">
+        <div class="surface align-center">
             <h1 class="mdc-typography--headline5" id="welcome-para">您好，{{ username }}！</h1>
         </div>
         {% if administrator %}
-            <div class="surface">
-                <h1 class="mdc-typography--headline5" id="administrator-para">您当前以管理员身份登录</h1>
+            <div class="surface align-center">
+                <h1 class="mdc-typography--headline5 crimson" id="administrator-para">您当前以管理员身份登录</h1>
             </div>
         {% endif %}
     </div>
     <div class="inline-wrapper width-33 fill-1000">
-        <div class="surface" id="hitokoto-surface">
+        <div class="surface scale-8 fill-1000 align-center" id="hitokoto-surface">
             <h1 class="mdc-typography--headline5" id="hitokoto-title">一言</h1>
             <p class="mdc-typography--body1" id="hitokot"></p>
         </div>

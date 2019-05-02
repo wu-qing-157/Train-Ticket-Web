@@ -47,12 +47,12 @@
             {% if administrator %}
                 <a class="mdc-list-item" id="train_manage" onclick="location.href='train_manage'" aria-current="page">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">device_hub</i>
-                    <span class="administrator-item mdc-list-item__text">车次管理</span>
+                    <span class="mdc-list-item__text crimson">车次管理</span>
                 </a>
                 <a class="mdc-list-item" id="account_manage" onclick="location.href='account_manage'"
                    aria-current="page">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">folder_shared</i>
-                    <span class="administrator-item mdc-list-item__text">账号管理</span>
+                    <span class="mdc-list-item__text crimson">账号管理</span>
                 </a>
             {% endif %}
         </div>
@@ -82,7 +82,7 @@
                     <h2 class="mdc-dialog__title" id="dialog-title">需要再次验证你的密码...</h2>
                     <div class="mdc-dialog__content" id="dialog-content">
                         <p><span class="mdc-typography--body1">涉及到的操作：<span id="verify-operation"></span></span>
-                            <br><span id="verify-warning"></span>
+                            <br><span class="crimson" id="verify-warning"></span>
                         </p>
                         <div class="input mdc-text-field" id="verify-password-text-field">
                             {% if verify_form %}
@@ -104,6 +104,47 @@
         </div>
     </div>
 </div>
+{% if success_alert or fail_alert %}
+    <div class="alert-wrapper">
+        <div class="mdc-dialog"
+             id="base-info-dialog"
+             role="alertdialog"
+             aria-modal="true"
+             aria-labelledby="dialog-title"
+             aria-describedby="dialog-content">
+            <div class="mdc-dialog__container">
+                <div class="mdc-dialog__surface">
+                    <h2 class="mdc-dialog__title" id="dialog-title">
+                        {% if success_alert %}
+                            ( •̀ ω •́ )y
+                        {% elif fail_alert %}
+                            Oops...
+                        {% endif %}
+                    </h2>
+                    <div class="mdc-dialog__content" id="dialog-content">
+                        {% if success_alert or fail_alert %}
+                            {{ message }}
+                        {% endif %}
+                    </div>
+                    <footer class="mdc-dialog__actions">
+                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close"
+                                {% if success_alert %}
+                                onclick="location.href='/main_page'"
+                                {% endif %}>
+                            <span class="mdc-button__label">
+                                {% if success_alert %}
+                                    b（￣▽￣）d　
+                                {% elif fail_alert %}
+                                    ╮(╯-╰)╭
+                                {% endif %}
+                            </span>
+                        </button>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
 <script async>
     base_init();
     verify_init();
@@ -115,6 +156,10 @@
             drawer.open = true;
     };
     {% block script %}{% endblock %}
+    {% if success_alert or fail_alert %}
+        window.base_info_init();
+        window.base_info_dialog.open();
+    {% endif %}
 </script>
 </body>
 </html>

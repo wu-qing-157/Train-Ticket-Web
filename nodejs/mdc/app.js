@@ -77,6 +77,10 @@ window.base_init = function () {
     });
 };
 
+window.base_info_init = function () {
+    window.base_info_dialog = new MDCDialog(document.getElementById('base-info-dialog'));
+};
+
 window.verify_init = function () {
     window.verify_dialog = new MDCDialog(document.getElementById('verify-dialog'));
     const text_field = new MDCTextField(document.getElementById('verify-password-text-field'));
