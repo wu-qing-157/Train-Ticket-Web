@@ -174,6 +174,16 @@ def main_page():
                                  username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR])
 
 
+@app.route('/order')
+def order():
+    return 'order'
+
+
+@app.route('/ordered')
+def ordered():
+    return 'ordered'
+
+
 @app.route('/account', methods=['GET', 'POST'])
 def account():
     if flask.session.get(S_VERIFY) != 'account':
@@ -260,6 +270,16 @@ def account():
             return flask.render_template('account.html', form=form, edit=edit,
                                          username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR],
                                          verified=flask.session[S_VERIFY] == 'account', verify_form=verify_form)
+
+
+@app.route('/train_manage')
+def train_manage():
+    return 'train_manage'
+
+
+@app.route('/account_manage')
+def account_manage():
+    return 'account_manage'
 
 
 app.config.from_object('config')
