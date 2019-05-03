@@ -22,9 +22,15 @@ SZ_REGISTER = 10
 SZ_QUERY_PROFILE = 100
 SZ_MODIFY_PROFILE = 10
 
+RE_USER_ID = r'\d{4,20}'
+RE_PASSWORD = r'[\u0020-\u007e]{6,20}'
+RE_NAME = r'\S{1,10}'
+RE_EMAIL = r'\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*'
+RE_PHONE = r'\+?[0-9]{3,}'
+
 RE_LOGIN = r'^[01]$'
-RE_REGISTER = r'^(-1)|(\d+)$'
-RE_QUERY_PROFILE = r'^\S+\s\S+@\S+\s\S+\s[12]$'
+RE_REGISTER = r'^(-1)|({})$'.format(RE_USER_ID)
+RE_QUERY_PROFILE = r'^{} {} {} [12]$'.format(RE_NAME, RE_EMAIL, RE_PHONE)
 RE_MODIFY_PROFILE = r'^[01]$'
 
 E_PASSWORD_NOT_MATCH = '用户名或密码错误'
