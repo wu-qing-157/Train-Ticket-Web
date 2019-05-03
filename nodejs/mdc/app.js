@@ -44,9 +44,9 @@ window.register_init = function () {
     new MDCTextField(document.getElementById('id-text-field'));
     new MDCTextField(document.getElementById('password-text-field'));
     new MDCTextField(document.getElementById('password_repeat-text-field'));
-    new MDCTextField(document.getElementById('name-text-field'));
-    new MDCTextField(document.getElementById('email-text-field'));
-    new MDCTextField(document.getElementById('phone-text-field'));
+    window.name_text_field = new MDCTextField(document.getElementById('name-text-field'));
+    window.email_text_field = new MDCTextField(document.getElementById('email-text-field'));
+    window.phone_text_field = new MDCTextField(document.getElementById('phone-text-field'));
     new MDCRipple(document.getElementById('register-button'));
     new MDCRipple(document.getElementById('register-reset-button'));
     new MDCRipple(document.getElementById('jump-login-button'));
@@ -57,7 +57,7 @@ window.register_info_init = function () {
 };
 
 window.login_init = function () {
-    new MDCTextField(document.getElementById('id-text-field'));
+    window.id_text_field = new MDCTextField(document.getElementById('id-text-field'));
     new MDCTextField(document.getElementById('password-text-field'));
     new MDCRipple(document.getElementById('login-button'));
     new MDCRipple(document.getElementById('login-reset-button'));

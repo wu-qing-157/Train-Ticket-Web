@@ -12,6 +12,10 @@ S_SUCCESS_MESSAGE = 'success_message'
 S_VERIFY = 'verified'
 S_PASSWORD = 'password'
 S_ACCOUNT_EDIT = 'edit'
+S_SET_USER_ID = 'set_id'
+S_SET_NAME = 'set_name'
+S_SET_EMAIL = 'set_email'
+S_SET_PHONE = 'set_phone'
 
 SZ_LOGIN = 10
 SZ_REGISTER = 10
@@ -51,9 +55,9 @@ def logout():
 def login():
     form = forms.LoginForm()
     if flask.request.method == 'POST':
+        user_id = flask.request.form['id']
+        password = flask.request.form['password']
         if form.validate_on_submit():
-            user_id = flask.request.form['id']
-            password = flask.request.form['password']
             try:
                 result = backend.get_result("login {} {}".format(user_id, password), SZ_LOGIN, RE_LOGIN)
                 if result == '1':
@@ -76,13 +80,19 @@ def login():
             except SyntaxError:
                 flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
         else:
-            flask.session[S_ERR_MESSAGE] = '；'.join(form.errors.items())
+            err_list = []
+            for _, info in form.errors.items():
+                err_list += info
+            flask.session[S_ERR_MESSAGE] = '；'.join(err_list)
+        flask.session[S_SET_USER_ID] = user_id
         return flask.redirect(flask.url_for('login', _method='GET'))
     else:
         if S_ERR_MESSAGE in flask.session:
             message = flask.session[S_ERR_MESSAGE]
+            user_id = flask.session[S_SET_USER_ID]
             flask.session.pop(S_ERR_MESSAGE)
-            return flask.render_template('login.html', form=form, show_alert=True, message=message)
+            flask.session.pop(S_SET_USER_ID)
+            return flask.render_template('login.html', form=form, show_alert=True, message=message, set_id=user_id)
         else:
             return flask.render_template('login.html', form=form)
 
@@ -91,11 +101,11 @@ def login():
 def register():
     form = forms.RegisterForm()
     if flask.request.method == 'POST':
+        password = flask.request.form['password']
+        name = flask.request.form['name']
+        email = flask.request.form['email']
+        phone = flask.request.form['phone']
         if form.validate_on_submit():
-            password = flask.request.form['password']
-            name = flask.request.form['name']
-            email = flask.request.form['email']
-            phone = flask.request.form['phone']
             try:
                 result = backend.get_result("register {} {} {} {}".format(name, password, email, phone),
                                             10, RE_REGISTER)
@@ -119,17 +129,37 @@ def register():
             except SyntaxError:
                 flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
         else:
-            flask.session[S_ERR_MESSAGE] = '；'.join(form.errors.items())
+            err_list = []
+            for _, info in form.errors.items():
+                err_list += info
+            flask.session[S_ERR_MESSAGE] = '；'.join(err_list)
+        flask.session[S_SET_NAME] = name
+        flask.session[S_SET_EMAIL] = email
+        flask.session[S_SET_PHONE] = phone
         return flask.redirect(flask.url_for('register', _method='GET'))
     else:
         if S_ERR_MESSAGE in flask.session:
             message = flask.session[S_ERR_MESSAGE]
+            name = flask.session[S_SET_NAME]
+            email = flask.session[S_SET_EMAIL]
+            phone = flask.session[S_SET_PHONE]
             flask.session.pop(S_ERR_MESSAGE)
-            return flask.render_template('register.html', form=form, fail_alert=True, message=message)
+            flask.session.pop(S_SET_NAME)
+            flask.session.pop(S_SET_EMAIL)
+            flask.session.pop(S_SET_PHONE)
+            return flask.render_template('register.html', form=form, fail_alert=True, message=message,
+                                         set_name=name, set_email=email, set_phone=phone)
         elif S_SUCCESS_MESSAGE in flask.session:
             message = flask.session[S_SUCCESS_MESSAGE]
+            name = flask.session[S_SET_NAME]
+            email = flask.session[S_SET_EMAIL]
+            phone = flask.session[S_SET_PHONE]
             flask.session.pop(S_SUCCESS_MESSAGE)
-            return flask.render_template('register.html', form=form, success_alert=True, message=message)
+            flask.session.pop(S_SET_NAME)
+            flask.session.pop(S_SET_EMAIL)
+            flask.session.pop(S_SET_PHONE)
+            return flask.render_template('register.html', form=form, success_alert=True, message=message,
+                                         set_name=name, set_email=email, set_phone=phone)
         else:
             return flask.render_template('register.html', form=form)
 

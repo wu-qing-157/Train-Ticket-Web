@@ -109,6 +109,15 @@
         window.register_info_init();
         window.register_info_dialog.open();
     {% endif %}
+    {% if set_name %}
+        window.name_text_field.value = '{{ set_name }}';
+    {% endif %}
+    {% if set_email %}
+        window.email_text_field.value = '{{ set_email }}';
+    {% endif %}
+    {% if set_phone %}
+        window.phone_text_field.value = '{{ set_phone }}';
+    {% endif %}
 </script>
 </body>
 </html>
