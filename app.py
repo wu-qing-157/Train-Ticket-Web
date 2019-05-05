@@ -193,8 +193,8 @@ def account():
                         password = flask.request.form['new_password']
                     else:
                         password = flask.session['password']
-                    result = backend.get_result('modify_profile {} {} {} {} {}'
-                                                .format(user_id, password, name, email, phone),
+                    result = backend.get_result('modify_profile {} {} {} {} {} {}'
+                                                .format(user_id, user_id, password, name, email, phone),
                                                 SZ_MODIFY_PROFILE, RE_MODIFY_PROFILE)
                     if result == '1':
                         flask.session[S_SUCCESS_MESSAGE] = '修改成功'
