@@ -6,19 +6,36 @@
     <link href="../static/account.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
-    <div class="wrapper {% if edit %}hidden{% endif %}" id="show_info">
+    <div class="wrapper max-width-800 {% if edit %}hidden{% endif %}" id="show_info">
         <div class="surface">
-            <h1>用户信息</h1>
-            <button onclick="start_edit()" class="mdc-button mdc-button--raised" id="start-edit">
-                <span class="mdc-button__label">修改个人信息</span>
-            </button>
+            <h2 class="mdc-typography--headline3 padding-20">个人信息</h2>
+            <table id="info_table">
+                <tr>
+                    <td><span class="mdc-typography--headline5">姓名</span></td>
+                    <td><span class="mdc-typography--body1">{{ username }}</span></td>
+                </tr>
+                <tr>
+                    <td><span class="mdc-typography--headline5">邮箱地址</span></td>
+                    <td><span class="mdc-typography--body1">{{ email }}</span></td>
+                </tr>
+                <tr>
+                    <td><span class="mdc-typography--headline5">电话号码</span></td>
+                    <td><span class="mdc-typography--body1">{{ phone }}</span></td>
+                </tr>
+            </table>
+            <div class="button-div">
+                <button onclick="start_edit()" class="mdc-button mdc-button--raised" id="start-edit">
+                    <span class="mdc-button__label">修改个人信息</span>
+                </button>
+            </div>
         </div>
     </div>
-    <div class="wrapper {% if not edit %}hidden{% endif %}" id="edit_info">
+    <div class="wrapper max-width-800 {% if not edit %}hidden{% endif %}" id="edit_info">
         <div class="surface">
-            <h1 class="mdc-typography--headline5" id="account-info-title">修改用户信息</h1>
+            <h2 class="mdc-typography--headline5 padding-20">修改用户信息</h2>
             <div class="button-div {% if verified %}hidden{% endif %}" id="verify-edit-div">
-                <button onclick="show_verify('修改个人信息', '个人信息（包括密码）将可以被修改')" class="mdc-button mdc-button--raised"
+                <button onclick="show_verify('修改个人信息', '个人信息（包括密码）将可以被修改')"
+                        class="mdc-button mdc-button--raised width-80"
                         id="verify-edit">
                     <span class="mdc-button__label">验证</span>
                 </button>
@@ -70,10 +87,10 @@
                     <div class="mdc-line-ripple"></div>
                 </div>
                 <div class="button-div" id="modify-buttons">
-                    <button type="reset" class="mdc-button" id="modify-reset-button" onclick="modify_password_hide()">
+                    <button type="button" class="mdc-button" id="modify-reset-button" onclick="reset_text_field()">
                         <span class="mdc-button__label">重置</span>
                     </button>
-                    <button type="submit" class="mdc-button mdc-button--raised" id="modify-button">
+                    <button type="submit" class="mdc-button mdc-button--raised width-120px" id="modify-button">
                         <span class="mdc-button__label">修改</span>
                     </button>
                 </div>
@@ -93,5 +110,16 @@
     account_init();
     document.getElementById('account').onclick = function (a, b) {};
     document.getElementById('account').classList.add('mdc-list-item--activated');
-    console.log(modify_password_handle);
+    id_text_field.value = '{{ id }}';
+    name_text_field.value = '{{ username }}';
+    email_text_field.value = '{{ email }}';
+    phone_text_field.value = '{{ phone }}';
+    window.reset_text_field = () => {
+    id_text_field.value = '{{ id }}';
+    name_text_field.value = '{{ username }}';
+    email_text_field.value = '{{ email }}';
+    phone_text_field.value = '{{ phone }}';
+    if (modify_password_checkbox.checked)
+    document.getElementById('modify_password').click();
+    };
 {% endblock %}

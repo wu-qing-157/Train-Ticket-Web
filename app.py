@@ -160,8 +160,7 @@ def account():
         flask.session[S_VERIFY] = 'none'
     if not S_CURRENT_USER in flask.session:
         return flask.redirect(flask.url_for('login'))
-    form = forms.AccountForm(flask.session[S_CURRENT_USER], flask.session[S_NAME], flask.session[S_EMAIL],
-                             flask.session[S_PHONE])
+    form = forms.AccountForm()
     verify_form = forms.VerifyForm()
     if flask.request.method == 'POST':
         if 'verify_password' in flask.request.form:
@@ -181,7 +180,7 @@ def account():
                 except SyntaxError:
                     flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
             else:
-                flask.session[S_ERR_MESSAGE] = '；'.join(verify_form.errors.items())
+                flask.session[S_ERR_MESSAGE] = forms.get_validator_errors(verify_form)
         else:
             if form.validate_on_submit():
                 try:
@@ -189,14 +188,14 @@ def account():
                     name = flask.request.form['name']
                     email = flask.request.form['email']
                     phone = flask.request.form['phone']
-                    modify_password = flask.request.form['modify_password'] == 'y'
+                    modify_password = 'modify_password' in flask.request.form
                     if modify_password:
                         password = flask.request.form['new_password']
                     else:
                         password = flask.session['password']
                     result = backend.get_result('modify_profile {} {} {} {} {}'
                                                 .format(user_id, password, name, email, phone),
-                                                SZ_QUERY_PROFILE, RE_QUERY_PROFILE)
+                                                SZ_MODIFY_PROFILE, RE_MODIFY_PROFILE)
                     if result == '1':
                         flask.session[S_SUCCESS_MESSAGE] = '修改成功'
                         flask.session[S_NAME] = name
@@ -212,10 +211,7 @@ def account():
                 except SyntaxError:
                     flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
             else:
-                err_list = []
-                for _, info in form.errors.items():
-                    err_list += info
-                flask.session[S_ERR_MESSAGE] = '；'.join(err_list)
+                flask.session[S_ERR_MESSAGE] = forms.get_validator_errors(form)
         flask.session[S_ACCOUNT_EDIT] = True
         return flask.redirect(flask.url_for('account', _method='GET'))
     else:
@@ -224,13 +220,17 @@ def account():
             flask.session.pop(S_ERR_MESSAGE)
             return flask.render_template('account.html', form=form, fail_alert=True, message=message, edit=True,
                                          username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR],
-                                         verified=flask.session[S_VERIFY] == 'account', verify_form=verify_form)
+                                         verified=flask.session[S_VERIFY] == 'account', verify_form=verify_form,
+                                         id=flask.session[S_CURRENT_USER],
+                                         email=flask.session[S_EMAIL], phone=flask.session[S_PHONE])
         elif S_SUCCESS_MESSAGE in flask.session:
             message = flask.session[S_SUCCESS_MESSAGE]
             flask.session.pop(S_SUCCESS_MESSAGE)
-            return flask.render_template('account.html', form=form, success_alert=True, message=message, edit=True,
+            return flask.render_template('account.html', form=form, success_alert=True, message=message, edit=False,
                                          username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR],
-                                         verified=flask.session[S_VERIFY] == 'account', verify_form=verify_form)
+                                         verified=flask.session[S_VERIFY] == 'account', verify_form=verify_form,
+                                         id=flask.session[S_CURRENT_USER],
+                                         email=flask.session[S_EMAIL], phone=flask.session[S_PHONE])
         else:
             if S_ACCOUNT_EDIT in flask.session:
                 edit = True
@@ -239,7 +239,9 @@ def account():
                 edit = False
             return flask.render_template('account.html', form=form, edit=edit,
                                          username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR],
-                                         verified=flask.session[S_VERIFY] == 'account', verify_form=verify_form)
+                                         verified=flask.session[S_VERIFY] == 'account', verify_form=verify_form,
+                                         id=flask.session[S_CURRENT_USER],
+                                         email=flask.session[S_EMAIL], phone=flask.session[S_PHONE])
 
 
 @app.route('/train_manage')

@@ -1,20 +1,8 @@
-#account-info-title {
-    padding: 20px;
-}
-
 .button-div {
     display: block;
     padding: 20px;
     width: 100%;
     box-sizing: border-box;
-}
-
-#modify-button {
-    width: 120px;
-}
-
-#verify-edit {
-    width: 80%;
 }
 
 #modify_password-form-field {
@@ -24,6 +12,22 @@
     box-sizing: border-box;
 }
 
-#show_info, #edit_info {
-    max-width: 800px;
+#info_table {
+    padding: 20px 0;
+    margin: 0 auto;
+    width: 80%;
+    box-sizing: border-box;
+    border-collapse: collapse;
+}
+
+#info_table td {
+    padding: 8px 0;
+}
+
+#info_table tr:nth-child(odd) {
+    background-color: white;
+}
+
+#info_table tr:hover {
+    background-color: bisque;
 }

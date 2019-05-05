@@ -7,17 +7,17 @@ import {MDCFormField} from '@material/form-field';
 import {MDCCheckbox} from '@material/checkbox';
 
 window.account_init = function () {
-    new MDCTextField(document.getElementById('id-text-field'));
-    new MDCTextField(document.getElementById('name-text-field'));
-    new MDCTextField(document.getElementById('email-text-field'));
-    new MDCTextField(document.getElementById('phone-text-field'));
-    new MDCTextField(document.getElementById('new_password-text-field'));
-    new MDCTextField(document.getElementById('new_password_repeat-text-field'));
+    window.id_text_field = new MDCTextField(document.getElementById('id-text-field'));
+    window.name_text_field = new MDCTextField(document.getElementById('name-text-field'));
+    window.email_text_field = new MDCTextField(document.getElementById('email-text-field'));
+    window.phone_text_field = new MDCTextField(document.getElementById('phone-text-field'));
+    window.new_password_text_field = new MDCTextField(document.getElementById('new_password-text-field'));
+    window.new_password_repeat_text_field = new MDCTextField(document.getElementById('new_password_repeat-text-field'));
     new MDCRipple(document.getElementById('modify-reset-button'));
     new MDCRipple(document.getElementById('modify-button'));
     new MDCRipple(document.getElementById('start-edit'));
     new MDCRipple(document.getElementById('verify-edit'));
-    const modify_password_checkbox = new MDCCheckbox(document.getElementById('modify_password-checkbox'));
+    window.modify_password_checkbox = new MDCCheckbox(document.getElementById('modify_password-checkbox'));
     const modify_password_form_field = new MDCFormField(document.getElementById('modify_password-form-field'));
     modify_password_form_field.input = modify_password_checkbox;
     window.start_edit = function () {
@@ -32,6 +32,8 @@ window.account_init = function () {
         } else {
             document.getElementById('new_password-text-field').classList.add('hidden');
             document.getElementById('new_password_repeat-text-field').classList.add('hidden');
+            new_password_text_field.value = '';
+            new_password_repeat_text_field.value = '';
         }
     };
     window.modify_password_hide = function () {

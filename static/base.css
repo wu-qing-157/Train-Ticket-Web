@@ -127,6 +127,18 @@ body {
     width: 66%;
 }
 
+.width-80 {
+    width: 80%;
+}
+
+.width-120px {
+    width: 120px;
+}
+
+.max-width-800 {
+    max-width: 800px;
+}
+
 #verify-surface {
     width: 600px;
 }
@@ -141,4 +153,8 @@ body {
 
 .align-center {
     text-align: center;
+}
+
+.padding-20 {
+    padding: 20px;
 }
