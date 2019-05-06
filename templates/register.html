@@ -66,32 +66,31 @@
     </div>
 </div>
 {% if success_alert or fail_alert %}
-    <div class="alert-wrapper">
-        <div class="mdc-dialog"
-             id="register-info-dialog"
-             role="alertdialog"
-             aria-modal="true"
-             aria-labelledby="dialog-title"
-             aria-describedby="dialog-content">
-            <div class="mdc-dialog__container">
-                <div class="mdc-dialog__surface">
-                    <h2 class="mdc-dialog__title" id="dialog-title">
-                        {% if success_alert %}
-                            ( •̀ ω •́ )y
-                        {% elif fail_alert %}
-                            Oops...
-                        {% endif %}
-                    </h2>
-                    <div class="mdc-dialog__content" id="dialog-content">
-                        {% if success_alert or fail_alert %}
-                            {{ message }}
-                        {% endif %}
-                    </div>
-                    <footer class="mdc-dialog__actions">
-                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close"
-                                {% if success_alert %}
-                                onclick="location.href='/main_page'"
-                                {% endif %}>
+    <div class="mdc-dialog"
+         id="register-info-dialog"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="dialog-title"
+         aria-describedby="dialog-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title" id="dialog-title">
+                    {% if success_alert %}
+                        ( •̀ ω •́ )y
+                    {% elif fail_alert %}
+                        Oops...
+                    {% endif %}
+                </h2>
+                <div class="mdc-dialog__content" id="dialog-content">
+                    {% if success_alert or fail_alert %}
+                        {{ message }}
+                    {% endif %}
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close"
+                            {% if success_alert %}
+                            onclick="location.href='/main_page'"
+                            {% endif %}>
                             <span class="mdc-button__label">
                                 {% if success_alert %}
                                     b（￣▽￣）d　
@@ -99,9 +98,8 @@
                                     ╮(╯-╰)╭
                                 {% endif %}
                             </span>
-                        </button>
-                    </footer>
-                </div>
+                    </button>
+                </footer>
             </div>
         </div>
     </div>

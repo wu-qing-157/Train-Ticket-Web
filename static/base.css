@@ -152,7 +152,7 @@ body {
 }
 
 .input_wrapper {
-    display: block !important;
+    display: block;
     margin: 20px;
     box-sizing: border-box;
 }
