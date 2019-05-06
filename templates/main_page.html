@@ -7,18 +7,18 @@
     <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokot" defer></script>
 {% endblock %}
 {% block content %}
-    <div class="inline-wrapper width-66 fill-1000">
+    <div class="inline-wrapper width-66 width-100-if-max-width-1000">
         <div class="surface align-center">
-            <h1 class="mdc-typography--headline5" id="welcome-para">您好，{{ username }}！</h1>
+            <span class="mdc-typography--headline5 margin-8" id="welcome-para">您好，{{ username }}！</span>
         </div>
         {% if administrator %}
             <div class="surface align-center">
-                <h1 class="mdc-typography--headline5 crimson" id="administrator-para">您当前以管理员身份登录</h1>
+                <span class="mdc-typography--headline5 crimson" id="administrator-para">您当前以管理员身份登录</span>
             </div>
         {% endif %}
     </div>
-    <div class="inline-wrapper width-33 fill-1000">
-        <div class="surface scale-8 fill-1000 align-center" id="hitokoto-surface">
+    <div class="inline-wrapper width-33 width-100-if-max-width-1000">
+        <div class="surface scale-8 width-100-if-max-width-1000 align-center" id="hitokoto-surface">
             <h1 class="mdc-typography--headline5" id="hitokoto-title">一言</h1>
             <p class="mdc-typography--body1" id="hitokot"></p>
         </div>

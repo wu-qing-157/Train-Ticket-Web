@@ -6,56 +6,59 @@
     <link href="../static/base.css" rel="stylesheet">
     <link href="../static/mdc-bundle.css" rel="stylesheet">
     <link href="../static/register.css" rel="stylesheet">
+    <link href="../static/material-icons.css" rel="stylesheet">
     <script src="../static/mdc-bundle.js"></script>
     <meta name="viewport"
           content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 </head>
 <body>
-<div class="center-wrapper">
+<div class="center-wrapper" id="register-wrapper">
     <div class="surface">
-        <h2 class="mdc-typography--headline3 padding-20">注册</h2>
+        <h3 class="mdc-typography--headline3 padding-20">注册</h3>
         <form action="" method="post" name="register">
             {{ form.hidden_tag() }}
-            <div class="input mdc-text-field" id="id-text-field">
+            <div class="input_wrapper mdc-text-field" id="id-text-field">
                 {{ form.id(class_="mdc-text-field__input", disabled="disabled") }}
                 <label class="mdc-floating-label" for="id">用户ID</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="input mdc-text-field" id="password-text-field">
+            <div class="input_wrapper mdc-text-field" id="password-text-field">
                 {{ form.password(class_="mdc-text-field__input") }}
                 <label class="mdc-floating-label" for="password">密码</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="input mdc-text-field" id="password_repeat-text-field">
+            <div class="input_wrapper mdc-text-field" id="password_repeat-text-field">
                 {{ form.password_repeat(class_="mdc-text-field__input") }}
                 <label class="mdc-floating-label" for="password_repeat">重复密码</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="input mdc-text-field" id="name-text-field">
+            <div class="input_wrapper mdc-text-field" id="name-text-field">
                 {{ form.name(class_="mdc-text-field__input") }}
                 <label class="mdc-floating-label" for="name">姓名</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="input mdc-text-field" id="email-text-field">
+            <div class="input_wrapper mdc-text-field" id="email-text-field">
                 {{ form.email(class_="mdc-text-field__input") }}
                 <label class="mdc-floating-label" for="email">邮箱地址</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="input mdc-text-field" id="phone-text-field">
+            <div class="input_wrapper mdc-text-field" id="phone-text-field">
                 {{ form.phone(class_="mdc-text-field__input") }}
                 <label class="mdc-floating-label" for="phone">电话号码</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="button-div">
+            <div class="button-wrapper">
                 <button type="reset" class="mdc-button" id="register-reset-button">
+                    <i class="material-icons mdc-button__icon" aria-hidden="true">clear</i>
                     <span class="mdc-button__label">重置</span>
                 </button>
-                <button type="submit" class="mdc-button mdc-button--raised" id="register-button">
+                <button type="submit" class="mdc-button mdc-button--raised width-120px" id="register-button">
+                    <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
                     <span class="mdc-button__label">注册</span>
                 </button>
             </div>
         </form>
-        <div class="button-div">
+        <div class="button-wrapper">
             <button class="mdc-button" id="jump-login-button" onclick="location.href='/login'">
                 <span class="mdc-button__label">已有账号？点此登录</span>
             </button>

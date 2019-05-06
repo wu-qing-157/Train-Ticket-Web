@@ -15,7 +15,8 @@ window.account_init = function () {
     window.new_password_repeat_text_field = new MDCTextField(document.getElementById('new_password_repeat-text-field'));
     new MDCRipple(document.getElementById('modify-reset-button'));
     new MDCRipple(document.getElementById('modify-button'));
-    new MDCRipple(document.getElementById('start-edit'));
+    const start_edit_button = new MDCRipple(document.getElementById('start-edit'));
+    start_edit_button.unbounded = true;
     new MDCRipple(document.getElementById('verify-edit'));
     window.modify_password_checkbox = new MDCCheckbox(document.getElementById('modify_password-checkbox'));
     const modify_password_form_field = new MDCFormField(document.getElementById('modify_password-form-field'));

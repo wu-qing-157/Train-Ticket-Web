@@ -1,14 +1,3 @@
-.button-div {
-    display: block;
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-#register-button {
-    width: 120px;
-}
-
-.center-wrapper {
+#register-wrapper {
     max-width: 400px;
 }

@@ -8,7 +8,7 @@
 {% block content %}
     <div class="wrapper max-width-800 {% if edit %}hidden{% endif %}" id="show_info">
         <div class="surface">
-            <h2 class="mdc-typography--headline3 padding-20">个人信息</h2>
+            <h3 class="mdc-typography--headline3">个人信息</h3>
             <table id="info_table">
                 <tr>
                     <td><span class="mdc-typography--headline5">姓名</span></td>
@@ -23,17 +23,15 @@
                     <td><span class="mdc-typography--body1">{{ phone }}</span></td>
                 </tr>
             </table>
-            <div class="button-div">
-                <button onclick="start_edit()" class="mdc-button mdc-button--raised" id="start-edit">
-                    <span class="mdc-button__label">修改个人信息</span>
-                </button>
+            <div class="top-right-wrapper">
+                <button onclick="start_edit()" class="material-icons mdc-icon-button" id="start-edit">create</button>
             </div>
         </div>
     </div>
     <div class="wrapper max-width-800 {% if not edit %}hidden{% endif %}" id="edit_info">
         <div class="surface">
-            <h2 class="mdc-typography--headline5 padding-20">修改用户信息</h2>
-            <div class="button-div {% if verified %}hidden{% endif %}" id="verify-edit-div">
+            <h5 class="mdc-typography--headline5 padding-20">修改用户信息</h5>
+            <div class="button-wrapper {% if verified %}hidden{% endif %}" id="verify-edit-div">
                 <button onclick="show_verify('修改个人信息', '个人信息（包括密码）将可以被修改')"
                         class="mdc-button mdc-button--raised width-80"
                         id="verify-edit">
@@ -42,27 +40,27 @@
             </div>
             <form action="" method="post" name="login">
                 {{ form.hidden_tag() }}
-                <div class="input mdc-text-field" id="id-text-field">
+                <div class="input_wrapper mdc-text-field" id="id-text-field">
                     {{ form.id(class_="mdc-text-field__input", disabled="disabled") }}
                     <label class="mdc-floating-label" for="id">用户ID（无法修改）</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
-                <div class="input mdc-text-field" id="name-text-field">
+                <div class="input_wrapper mdc-text-field" id="name-text-field">
                     {{ form.name(class_="mdc-text-field__input") }}
                     <label class="mdc-floating-label" for="name">姓名</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
-                <div class="input mdc-text-field" id="email-text-field">
+                <div class="input_wrapper mdc-text-field" id="email-text-field">
                     {{ form.email(class_="mdc-text-field__input") }}
                     <label class="mdc-floating-label" for="email">邮箱地址</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
-                <div class="input mdc-text-field" id="phone-text-field">
+                <div class="input_wrapper mdc-text-field" id="phone-text-field">
                     {{ form.phone(class_="mdc-text-field__input") }}
                     <label class="mdc-floating-label" for="phone">电话号码</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
-                <div class="mdc-form-field" id="modify_password-form-field">
+                <div class="mdc-form-field checkbox_wrapper" id="modify_password-form-field">
                     <div class="mdc-checkbox" id="modify_password-checkbox">
                         {{ form.modify_password(class_="mdc-checkbox__native-control", onclick="modify_password_handle()") }}
                         <div class="mdc-checkbox__background">
@@ -76,17 +74,17 @@
                     </div>
                     <label for="modify_password">修改密码</label>
                 </div>
-                <div class="input mdc-text-field hidden" id="new_password-text-field" hidden="hidden">
+                <div class="input_wrapper mdc-text-field hidden" id="new_password-text-field" hidden="hidden">
                     {{ form.new_password(class_="mdc-text-field__input") }}
                     <label class="mdc-floating-label" for="new_password">新密码</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
-                <div class="input mdc-text-field hidden" id="new_password_repeat-text-field" hidden="hidden">
+                <div class="input_wrapper mdc-text-field hidden" id="new_password_repeat-text-field" hidden="hidden">
                     {{ form.new_password_repeat(class_="mdc-text-field__input") }}
                     <label class="mdc-floating-label" for="new_password_repeat">重复新密码</label>
                     <div class="mdc-line-ripple"></div>
                 </div>
-                <div class="button-div" id="modify-buttons">
+                <div class="button-wrapper" id="modify-buttons">
                     <button type="button" class="mdc-button" id="modify-reset-button" onclick="reset_text_field()">
                         <span class="mdc-button__label">重置</span>
                     </button>

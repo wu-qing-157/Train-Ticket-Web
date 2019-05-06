@@ -6,36 +6,39 @@
     <link href="../static/base.css" rel="stylesheet">
     <link href="../static/mdc-bundle.css" rel="stylesheet">
     <link href="../static/login.css" rel="stylesheet">
+    <link href="../static/material-icons.css" rel="stylesheet">
     <script src="../static/mdc-bundle.js"></script>
     <meta name="viewport"
           content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 </head>
 <body>
-<div class="center-wrapper">
+<div class="center-wrapper" id="login-wrapper">
     <div class="surface">
-        <h2 class="mdc-typography--headline3 padding-20">登录</h2>
+        <h3 class="mdc-typography--headline3 padding-20">登录</h3>
         <form action="" method="post" name="login">
             {{ form.hidden_tag() }}
-            <div class="input mdc-text-field" id="id-text-field">
+            <div class="input_wrapper mdc-text-field" id="id-text-field">
                 {{ form.id(class_="mdc-text-field__input") }}
                 <label class="mdc-floating-label" for="id">用户ID</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="input mdc-text-field" id="password-text-field">
+            <div class="input_wrapper mdc-text-field" id="password-text-field">
                 {{ form.password(class_="mdc-text-field__input") }}
                 <label class="mdc-floating-label" for="password">密码</label>
                 <div class="mdc-line-ripple"></div>
             </div>
-            <div class="button-div">
-                <button type="reset" class="login-reset-button mdc-button" id="login-reset-button">
+            <div class="button-wrapper">
+                <button type="reset" class="mdc-button" id="login-reset-button">
+                    <i class="material-icons mdc-button__icon" aria-hidden="true">clear</i>
                     <span class="mdc-button__label">重置</span>
                 </button>
-                <button type="submit" class="login-button mdc-button mdc-button--raised" id="login-button">
+                <button type="submit" class="mdc-button mdc-button--raised width-120px" id="login-button">
+                    <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
                     <span class="mdc-button__label">登录</span>
                 </button>
             </div>
         </form>
-        <div class="button-div">
+        <div class="button-wrapper">
             <button class="jump-register-button mdc-button" id="jump-register-button"
                     onclick="location.href='/register'">
                 <span class="mdc-button__label">没有账号？点此创建</span>

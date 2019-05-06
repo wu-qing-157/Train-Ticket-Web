@@ -12,7 +12,7 @@
     {% block child_header %}{% endblock %}
 </head>
 <body>
-<header class="app-bar mdc-top-app-bar" id="app-bar">
+<header class="mdc-top-app-bar" id="app-bar">
     <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
             <a class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
@@ -61,7 +61,7 @@
 <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust main-dev-no-margin" id="main-div"
      onclick="if (document.body.clientWidth <= 800) window.drawer.open = false">
     <main class="main-content" id="main-content">
-        <div class="wrapper-margin">
+        <div class="wrapper padding-8">
             {% block content %}{% endblock %}
         </div>
     </main>
@@ -84,7 +84,7 @@
                         <p><span class="mdc-typography--body1">涉及到的操作：<span id="verify-operation"></span></span>
                             <br><span class="crimson" id="verify-warning"></span>
                         </p>
-                        <div class="input mdc-text-field" id="verify-password-text-field">
+                        <div class="input_wrapper mdc-text-field" id="verify-password-text-field">
                             {% if verify_form %}
                                 {{ verify_form.verify_password(class_="mdc-text-field__input") }}
                             {% else %}
