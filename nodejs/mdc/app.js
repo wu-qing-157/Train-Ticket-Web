@@ -5,6 +5,7 @@ import {MDCRipple} from '@material/ripple/index';
 import {MDCDialog} from '@material/dialog';
 import {MDCFormField} from '@material/form-field';
 import {MDCCheckbox} from '@material/checkbox';
+import {MDCTextFieldHelperText} from '@material/textfield/helper-text';
 
 window.account_init = function () {
     window.id_text_field = new MDCTextField(document.getElementById('id-text-field'));
@@ -46,6 +47,7 @@ window.account_init = function () {
 window.register_init = function () {
     new MDCTextField(document.getElementById('id-text-field'));
     new MDCTextField(document.getElementById('password-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('password-helper-text'));
     new MDCTextField(document.getElementById('password_repeat-text-field'));
     window.name_text_field = new MDCTextField(document.getElementById('name-text-field'));
     window.email_text_field = new MDCTextField(document.getElementById('email-text-field'));
@@ -61,14 +63,13 @@ window.register_info_init = function () {
 
 window.login_init = function () {
     window.id_text_field = new MDCTextField(document.getElementById('id-text-field'));
-    new MDCTextField(document.getElementById('password-text-field'));
+    window.password_text_field = new MDCTextField(document.getElementById('password-text-field'));
     new MDCRipple(document.getElementById('login-button'));
-    new MDCRipple(document.getElementById('login-reset-button'));
     new MDCRipple(document.getElementById('jump-register-button'));
 };
 
 window.login_info_init = function () {
-    window.login_info_dialog = new MDCDialog(document.querySelector('.login-info-dialog'));
+    window.login_info_dialog = new MDCDialog(document.getElementById('login-info-dialog'));
 };
 
 window.base_init = function () {

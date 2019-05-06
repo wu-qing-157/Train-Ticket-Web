@@ -4,20 +4,6 @@ from wtforms.validators import EqualTo, Regexp
 from const import *
 
 
-class LoginForm(FlaskForm):
-    id = StringField(validators=[Regexp(r'^{}$'.format(RE_USER_ID), message="用户ID不合法")])
-    password = PasswordField(validators=[Regexp(r'^{}$'.format(RE_PASSWORD), message="密码错误")])
-
-
-class RegisterForm(FlaskForm):
-    id = StringField(default="ID将自动生成...")
-    password = PasswordField(validators=[Regexp(r'^{}$'.format(RE_PASSWORD), message="密码长度必须在6-20位，可以包括数字、字母、符号")])
-    password_repeat = PasswordField(validators=[EqualTo('password', message="两次输入的密码不一致")])
-    name = StringField(validators=[Regexp(r'^{}$'.format(RE_NAME), message="姓名长度必须在1-10位，且不包括空格")])
-    email = StringField(validators=[Regexp(r'^{}$'.format(RE_EMAIL), message="请输入正确的邮箱地址")])
-    phone = StringField(validators=[Regexp(r'^{}$'.format(RE_PHONE), message="请输入正确的电话号码")])
-
-
 class AccountForm(FlaskForm):
     id = StringField()
     name = StringField(validators=[Regexp(r'^{}$'.format(RE_NAME), message="姓名长度必须在1-10位，且不包括空格")])

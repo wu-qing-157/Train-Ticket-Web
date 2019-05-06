@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block webpage_title %}
+    个人信息 - Train Ticket
+{% endblock %}
+{% block child_header %}
+    <link href="../static/account.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div class="wrapper max-width-800" id="account_info">
+        <div class="surface">
+            <h3 class="mdc-typography--headline3">管理账号信息</h3>
+            <table id="info_table">
+                <tr>
+                    <td><span class="mdc-typography--headline5">姓名</span></td>
+                    <td><span class="mdc-typography--body1" id="name_info">
+                        <i class="material-icons">clear</i>
+                        <span>请先输入需要查询的用户</span>
+                    </span></td>
+                </tr>
+                <tr>
+                    <td><span class="mdc-typography--headline5">邮箱地址</span></td>
+                    <td><span class="mdc-typography--body1">
+                        <i class="material-icons">clear</i>
+                        <span>请先输入需要查询的用户</span>
+                    </span></td>
+                </tr>
+                <tr>
+                    <td><span class="mdc-typography--headline5">电话号码</span></td>
+                    <td><span class="mdc-typography--body1">
+                        <i class="material-icons">clear</i>
+                        <span>请先输入需要查询的用户</span>
+                    </span></td>
+                </tr>
+                <tr>
+                    <td><span class="mdc-typography--headline5">用户权限</span></td>
+                    <td><span class="mdc-typography--body1" id="administrator_info">
+                        <i class="material-icons">clear</i>
+                        <span>请先输入需要查询的用户</span>
+                    </span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+{% endblock %}

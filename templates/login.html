@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>登录 - Train Ticket</title>
-    <link href="../static/base.css" rel="stylesheet">
     <link href="../static/mdc-bundle.css" rel="stylesheet">
+    <link href="../static/base.css" rel="stylesheet">
     <link href="../static/login.css" rel="stylesheet">
     <link href="../static/material-icons.css" rel="stylesheet">
     <script src="../static/mdc-bundle.js"></script>
@@ -16,24 +16,69 @@
     <div class="surface">
         <h3 class="mdc-typography--headline3 padding-20">登录</h3>
         <form action="" method="post" name="login">
-            {{ form.hidden_tag() }}
-            <div class="input_wrapper mdc-text-field" id="id-text-field">
-                {{ form.id(class_="mdc-text-field__input") }}
-                <label class="mdc-floating-label" for="id">用户ID</label>
-                <div class="mdc-line-ripple"></div>
+            <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                 id="id-text-field">
+                <i class="material-icons mdc-text-field__icon">account_box</i>
+                <input type="text" class="mdc-text-field__input" id="id" name="id"
+                       pattern="^\d{4,20}$" required
+                       oninput="
+                           document.getElementById('id-text-field').classList.remove('mdc-text-field--invalid');
+                           document.getElementById('id-icon').innerText = 'check';
+                           this.reportValidity();"
+                       oninvalid="
+                           event.preventDefault();
+                           document.getElementById('id-text-field').classList.add('mdc-text-field--invalid');
+                           document.getElementById('id-icon').innerText = 'error';"
+                       aria-controls="id-helper-text"
+                       aria-describedby="id-helper-text">
+                <i class="material-icons mdc-text-field__icon" id="id-icon">error</i>
+                <div class="mdc-notched-outline">
+                    <div class="mdc-notched-outline__leading"></div>
+                    <div class="mdc-notched-outline__notch">
+                        <label class="mdc-floating-label" for="id">用户ID</label>
+                    </div>
+                    <div class="mdc-notched-outline__trailing"></div>
+                </div>
             </div>
-            <div class="input_wrapper mdc-text-field" id="password-text-field">
-                {{ form.password(class_="mdc-text-field__input") }}
-                <label class="mdc-floating-label" for="password">密码</label>
-                <div class="mdc-line-ripple"></div>
+            <div class="mdc-text-field-helper-line">
+                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                     id="id-helper-text" aria-hidden="true">
+                    请输入符合格式的用户ID
+                </div>
+            </div>
+            <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                 id="password-text-field">
+                <i class="material-icons mdc-text-field__icon">vpn_key</i>
+                <input type="password" class="mdc-text-field__input" id="password" name="password"
+                       pattern="^[\u0020-\u007e]{6,20}$" required
+                       oninput="
+                           document.getElementById('password-text-field').classList.remove('mdc-text-field--invalid');
+                           document.getElementById('password-icon').innerText = 'check';
+                           this.reportValidity();"
+                       oninvalid="
+                           event.preventDefault();
+                           document.getElementById('password-text-field').classList.add('mdc-text-field--invalid');
+                           document.getElementById('password-icon').innerText = 'error';"
+                       aria-controls="password-helper-text"
+                       aria-describedby="password-helper-text">
+                <i class="material-icons mdc-text-field__icon" id="password-icon">error</i>
+                <div class="mdc-notched-outline">
+                    <div class="mdc-notched-outline__leading"></div>
+                    <div class="mdc-notched-outline__notch">
+                        <label class="mdc-floating-label" for="password">密码</label>
+                    </div>
+                    <div class="mdc-notched-outline__trailing"></div>
+                </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                     id="password-helper-text" aria-hidden="true">
+                    请输入符合格式的密码
+                </div>
             </div>
             <div class="button-wrapper">
-                <button type="reset" class="mdc-button" id="login-reset-button">
-                    <i class="material-icons mdc-button__icon" aria-hidden="true">clear</i>
-                    <span class="mdc-button__label">重置</span>
-                </button>
                 <button type="submit" class="mdc-button mdc-button--raised width-120px" id="login-button">
-                    <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
+                    <i class="material-icons mdc-button__icon" aria-hidden="true">check</i>
                     <span class="mdc-button__label">登录</span>
                 </button>
             </div>
@@ -47,11 +92,12 @@
     </div>
 </div>
 {% if show_alert %}
-    <div class="login-info-dialog mdc-dialog"
+    <div class="mdc-dialog"
          role="alertdialog"
          aria-modal="true"
          aria-labelledby="dialog-title"
-         aria-describedby="dialog-content">
+         aria-describedby="dialog-content"
+         id="login-info-dialog">
         <div class="mdc-dialog__container">
             <div class="mdc-dialog__surface">
                 <h2 class="mdc-dialog__title" id="dialog-title">Oops...</h2>
@@ -75,6 +121,9 @@
     {% endif %}
     {% if set_id %}
         window.id_text_field.value = '{{ set_id }}';
+        document.getElementById('id-text-field').classList.remove('mdc-text-field--invalid');
+        document.getElementById('id-icon').innerText = 'check';
+        document.getElementById('id').reportValidity();
     {% endif %}
 </script>
 </body>

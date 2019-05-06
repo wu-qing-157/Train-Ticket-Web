@@ -152,8 +152,9 @@ body {
 }
 
 .input_wrapper {
-    display: block;
-    margin: 20px;
+    width: 100%;
+    padding: 0 20px;
+    margin: 8px 0;
     box-sizing: border-box;
 }
 
