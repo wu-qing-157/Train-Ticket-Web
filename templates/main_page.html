@@ -5,6 +5,7 @@
 {% block child_header %}
     <link href="../static/main_page.css" rel="stylesheet">
     <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokot" defer></script>
+    <script src="../static/jquery.js"></script>
 {% endblock %}
 {% block content %}
     <div class="inline-wrapper width-66 width-100-if-max-width-1000">
@@ -18,9 +19,17 @@
         {% endif %}
     </div>
     <div class="inline-wrapper width-33 width-100-if-max-width-1000">
-        <div class="surface scale-8 width-100-if-max-width-1000 align-center" id="hitokoto-surface">
-            <h1 class="mdc-typography--headline5" id="hitokoto-title">一言</h1>
-            <p class="mdc-typography--body1" id="hitokot"></p>
+        <div class="wrapper">
+            <div class="surface scale-8 width-100-if-max-width-1000 align-center" id="hitokoto-surface">
+                <h1 class="mdc-typography--headline5" id="hitokoto-title">一言</h1>
+                <p class="mdc-typography--body1" id="hitokot"></p>
+                <div class="top-right-wrapper">
+                    <button onclick="$.getScript('https://v1.hitokoto.cn/?encode=js&select=%23hitokot')"
+                            class="material-icons mdc-icon-button"
+                            id="refresh">refresh
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

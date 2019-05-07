@@ -120,4 +120,6 @@ window.main_page_init = function () {
     appBar.listen('MDCTopAppBar:nav', () => {
         window.drawer.open = !window.drawer.open;
     });
+    const refresh_button = new MDCRipple(document.getElementById('refresh'));
+    refresh_button.unbounded = true;
 };
