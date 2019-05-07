@@ -119,12 +119,8 @@ body {
 .inline-wrapper {
     position: relative;
     display: inline-block;
-    height: fit-content;
     box-sizing: border-box;
     vertical-align: top;
-    margin: auto;
-    left: 0;
-    right: 0;
 }
 
 .center-wrapper {

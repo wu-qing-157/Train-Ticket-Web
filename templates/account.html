@@ -3,7 +3,7 @@
     个人信息 - Train Ticket
 {% endblock %}
 {% block child_header %}
-    <link href="../static/account.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='account.css') }}" rel="stylesheet">
 {% endblock %}
 {% block content %}
     <div class="wrapper max-width-800 {% if edit %}hidden{% endif %}" id="show_info">

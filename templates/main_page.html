@@ -3,9 +3,9 @@
     主页 - Train Ticket
 {% endblock %}
 {% block child_header %}
-    <link href="../static/main_page.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='main_page.css') }}" rel="stylesheet">
     <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokot" defer></script>
-    <script src="../static/jquery.js"></script>
+    <script src="{{ url_for('static', filename='jquery.js') }}"></script>
 {% endblock %}
 {% block content %}
     <div class="inline-wrapper width-66 width-100-if-max-width-1000">

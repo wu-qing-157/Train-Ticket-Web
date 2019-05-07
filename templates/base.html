@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block webpage_title %}{% endblock %}</title>
-    <link href="../static/mdc-bundle.css" rel="stylesheet">
-    <link href="../static/material-icons.css" rel="stylesheet">
-    <link href="../static/base.css" rel="stylesheet">
-    <script src="../static/mdc-bundle.js"></script>
+    <link href="{{ url_for('static', filename='mdc-bundle.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='material-icons.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='base.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='mdc-bundle.js') }}"></script>
     <meta name="viewport"
           content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
     {% block child_header %}{% endblock %}
