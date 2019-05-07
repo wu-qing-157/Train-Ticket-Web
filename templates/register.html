@@ -81,7 +81,7 @@
                 <input type="password" class="mdc-text-field__input" id="password_repeat" name="password_repeat"
                        required
                        oninput="
-                           if (this.value !== document.getElementById('password').value) {
+                           if (this.value === '' || this.value !== document.getElementById('password').value) {
                                document.getElementById('password_repeat-text-field').classList.add('mdc-text-field--invalid');
                                document.getElementById('password_repeat-icon').innerText = 'error';
                                setCustomValidity('密码不一致');

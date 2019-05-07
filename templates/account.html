@@ -214,7 +214,7 @@
                            name="new_password_repeat"
                            required
                            oninput="
-                               if (modify_password_checkbox.checked && this.value !== document.getElementById('new_password').value) {
+                               if (modify_password_checkbox.checked && (this.value === '' || this.value !== document.getElementById('new_password').value)) {
                                    document.getElementById('new_password_repeat-text-field').classList.add('mdc-text-field--invalid');
                                    document.getElementById('new_password_repeat-icon').innerText = 'error';
                                    setCustomValidity('密码不一致');
