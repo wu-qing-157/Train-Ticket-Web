@@ -196,7 +196,7 @@ def account():
         if S_ERR_MESSAGE in flask.session:
             message = flask.session[S_ERR_MESSAGE]
             flask.session.pop(S_ERR_MESSAGE)
-            return flask.render_template('account.html', form=form, fail_alert=True, message=message, edit=edit,
+            return flask.render_template('account.html', fail_alert=True, message=message, edit=edit,
                                          username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR],
                                          verified=flask.session[S_VERIFY] == 'account',
                                          id=flask.session[S_CURRENT_USER],
