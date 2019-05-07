@@ -75,22 +75,40 @@
     <div class="mdc-dialog__container">
         <div class="mdc-dialog__surface" id="verify-surface">
             <form action="" method="post" name="register">
-                {% if verify_form %}
-                    {{ verify_form.hidden_tag() }}
-                {% endif %}
                 <h2 class="mdc-dialog__title" id="dialog-title">需要再次验证你的密码...</h2>
                 <div class="mdc-dialog__content" id="dialog-content">
                     <p><span class="mdc-typography--body1">涉及到的操作：<span id="verify-operation"></span></span>
                         <br><span class="crimson" id="verify-warning"></span>
                     </p>
-                    <div class="input_wrapper mdc-text-field" id="verify-password-text-field">
-                        {% if verify_form %}
-                            {{ verify_form.verify_password(class_="mdc-text-field__input") }}
-                        {% else %}
-                            <input class="mdc-text-field__input" id="password">
-                        {% endif %}
-                        <label class="mdc-floating-label" for="password">密码</label>
-                        <div class="mdc-line-ripple"></div>
+                    <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                         id="verify_password-text-field">
+                        <i class="material-icons mdc-text-field__icon">vpn_key</i>
+                        <input type="password" class="mdc-text-field__input" id="verify_password" name="verify_password"
+                               pattern="^[\u0020-\u007e]{6,20}$" required
+                               oninput="
+                                   document.getElementById('verify_password-text-field').classList.remove('mdc-text-field--invalid');
+                                   document.getElementById('verify_password-icon').innerText = 'check';
+                                   this.reportValidity();"
+                               oninvalid="
+                                   event.preventDefault();
+                                   document.getElementById('verify_password-text-field').classList.add('mdc-text-field--invalid');
+                                   document.getElementById('verify_password-icon').innerText = 'error';"
+                               aria-controls="verify_password-helper-text"
+                               aria-describedby="verify_password-helper-text">
+                        <i class="material-icons mdc-text-field__icon" id="verify_password-icon">error</i>
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <label class="mdc-floating-label" for="verify_password">密码</label>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <div class="mdc-text-field-helper-line">
+                        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                             id="verify_password-helper-text" aria-hidden="true">
+                            请输入符合格式的密码
+                        </div>
                     </div>
                 </div>
                 <footer class="mdc-dialog__actions">

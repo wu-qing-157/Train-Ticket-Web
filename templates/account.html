@@ -24,7 +24,9 @@
                 </tr>
             </table>
             <div class="top-right-wrapper">
-                <button onclick="start_edit()" class="material-icons mdc-icon-button" id="start-edit">edit</button>
+                <button onclick="location.href = '/account?edit=True'" class="material-icons mdc-icon-button"
+                        id="start-edit">edit
+                </button>
             </div>
         </div>
     </div>
@@ -39,30 +41,122 @@
                 </button>
             </div>
             <form action="" method="post" name="login">
-                {{ form.hidden_tag() }}
-                <div class="input_wrapper mdc-text-field" id="id-text-field">
-                    {{ form.id(class_="mdc-text-field__input", disabled="disabled") }}
-                    <label class="mdc-floating-label" for="id">用户ID（无法修改）</label>
-                    <div class="mdc-line-ripple"></div>
+                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                     id="id-text-field">
+                    <i class="material-icons mdc-text-field__icon">account_box</i>
+                    <input type="text" class="mdc-text-field__input" id="id" name="id" value="{{ id }}"
+                           aria-controls="id-helper-text" aria-describedby="id-helper-text" disabled>
+                    <i class="material-icons mdc-text-field__icon" id="id-icon">check</i>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label" for="id">用户ID（无法修改）</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
                 </div>
-                <div class="input_wrapper mdc-text-field" id="name-text-field">
-                    {{ form.name(class_="mdc-text-field__input") }}
-                    <label class="mdc-floating-label" for="name">姓名</label>
-                    <div class="mdc-line-ripple"></div>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                         id="id-helper-text"
+                         aria-hidden="true">
+                        (+_+)?
+                    </div>
                 </div>
-                <div class="input_wrapper mdc-text-field" id="email-text-field">
-                    {{ form.email(class_="mdc-text-field__input") }}
-                    <label class="mdc-floating-label" for="email">邮箱地址</label>
-                    <div class="mdc-line-ripple"></div>
+                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                     id="name-text-field">
+                    <i class="material-icons mdc-text-field__icon">face</i>
+                    <input type="text" class="mdc-text-field__input" id="name" name="name" value="{{ username }}"
+                           pattern="^\S{1,10}$" required
+                           oninput="
+                               document.getElementById('name-text-field').classList.remove('mdc-text-field--invalid');
+                               document.getElementById('name-icon').innerText = 'check';
+                               this.reportValidity();"
+                           oninvalid="
+                               event.preventDefault();
+                               document.getElementById('name-text-field').classList.add('mdc-text-field--invalid');
+                               document.getElementById('name-icon').innerText = 'error';"
+                           aria-controls="name-helper-text"
+                           aria-describedby="name-helper-text">
+                    <i class="material-icons mdc-text-field__icon" id="name-icon">check</i>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label" for="name">姓名</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
                 </div>
-                <div class="input_wrapper mdc-text-field" id="phone-text-field">
-                    {{ form.phone(class_="mdc-text-field__input") }}
-                    <label class="mdc-floating-label" for="phone">电话号码</label>
-                    <div class="mdc-line-ripple"></div>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                         id="name-helper-text"
+                         aria-hidden="true">
+                        姓名长度必须在1-10之间，且不包括空格
+                    </div>
+                </div>
+                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                     id="email-text-field">
+                    <i class="material-icons mdc-text-field__icon">email</i>
+                    <input type="text" class="mdc-text-field__input" id="email" name="email" value="{{ email }}"
+                           pattern="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" required
+                           oninput="
+                               document.getElementById('email-text-field').classList.remove('mdc-text-field--invalid');
+                               document.getElementById('email-icon').innerText = 'check';
+                               this.reportValidity();"
+                           oninvalid="
+                               event.preventDefault();
+                               document.getElementById('email-text-field').classList.add('mdc-text-field--invalid');
+                               document.getElementById('email-icon').innerText = 'error';"
+                           aria-controls="email-helper-text"
+                           aria-describedby="email-helper-text">
+                    <i class="material-icons mdc-text-field__icon" id="email-icon">check</i>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label" for="email">电子邮箱</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </div>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                         id="email-helper-text" aria-hidden="true">
+                        请输入正确的电子邮箱地址
+                    </div>
+                </div>
+                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                     id="phone-text-field">
+                    <i class="material-icons mdc-text-field__icon">phone</i>
+                    <input type="text" class="mdc-text-field__input" id="phone" name="phone" value="{{ phone }}"
+                           pattern="^\+?[0-9]{3,}$" required
+                           oninput="
+                               document.getElementById('phone-text-field').classList.remove('mdc-text-field--invalid');
+                               document.getElementById('phone-icon').innerText = 'check';
+                               this.reportValidity();"
+                           oninvalid="
+                               event.preventDefault();
+                               document.getElementById('phone-text-field').classList.add('mdc-text-field--invalid');
+                               document.getElementById('phone-icon').innerText = 'error';"
+                           aria-controls="phone-helper-text"
+                           aria-describedby="phone-helper-text">
+                    <i class="material-icons mdc-text-field__icon" id="phone-icon">check</i>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label" for="phone">联系电话</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </div>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                         id="phone-helper-text" aria-hidden="true">
+                        请输入正确的联系电话
+                    </div>
                 </div>
                 <div class="mdc-form-field checkbox_wrapper" id="modify_password-form-field">
                     <div class="mdc-checkbox" id="modify_password-checkbox">
-                        {{ form.modify_password(class_="mdc-checkbox__native-control", onclick="modify_password_handle()") }}
+                        <input type="checkbox" class="mdc-checkbox__native-control" id="modify_password"
+                               name="modify_password" onclick="modify_password_handle()">
                         <div class="mdc-checkbox__background">
                             <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
                                 <path class="mdc-checkbox__checkmark-path"
@@ -74,15 +168,77 @@
                     </div>
                     <label for="modify_password">修改密码</label>
                 </div>
-                <div class="input_wrapper mdc-text-field hidden" id="new_password-text-field" hidden="hidden">
-                    {{ form.new_password(class_="mdc-text-field__input") }}
-                    <label class="mdc-floating-label" for="new_password">新密码</label>
-                    <div class="mdc-line-ripple"></div>
+                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon hidden"
+                     id="new_password-text-field">
+                    <i class="material-icons mdc-text-field__icon">vpn_key</i>
+                    <input type="password" class="mdc-text-field__input" id="new_password" name="new_password"
+                           pattern="^[\u0020-\u007e]{6,20}$"
+                           oninput="
+                               document.getElementById('new_password-text-field').classList.remove('mdc-text-field--invalid');
+                               document.getElementById('new_password-icon').innerText = 'check';
+                               this.reportValidity();
+                               if (modify_password_checkbox.checked && this.value !== document.getElementById('new_password_repeat').value) {
+                                   document.getElementById('new_password_repeat-text-field').classList.add('mdc-text-field--invalid');
+                                   document.getElementById('new_password_repeat-icon').innerText = 'error';
+                                   document.getElementById('new_password_repeat').setCustomValidity('密码不一致');
+                               } else {
+                                   document.getElementById('new_password_repeat-text-field').classList.remove('mdc-text-field--invalid');
+                                   document.getElementById('new_password_repeat-icon').innerText = 'check';
+                                   document.getElementById('new_password_repeat').setCustomValidity('');
+                               }"
+                           oninvalid="
+                               event.preventDefault();
+                               document.getElementById('new_password-text-field').classList.add('mdc-text-field--invalid');
+                               document.getElementById('new_password-icon').innerText = 'error';"
+                           aria-controls="new_password-helper-text"
+                           aria-describedby="new_password-helper-text">
+                    <i class="material-icons mdc-text-field__icon" id="new_password-icon">error</i>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label" for="new_password">新密码</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
                 </div>
-                <div class="input_wrapper mdc-text-field hidden" id="new_password_repeat-text-field" hidden="hidden">
-                    {{ form.new_password_repeat(class_="mdc-text-field__input") }}
-                    <label class="mdc-floating-label" for="new_password_repeat">重复新密码</label>
-                    <div class="mdc-line-ripple"></div>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                         id="new_password-helper-text" aria-hidden="true">
+                        长度在6-20位之间，允许包含特殊字符
+                    </div>
+                </div>
+                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon hidden"
+                     id="new_password_repeat-text-field">
+                    <i class="material-icons mdc-text-field__icon">vpn_key</i>
+                    <input type="password" class="mdc-text-field__input" id="new_password_repeat"
+                           name="new_password_repeat"
+                           required
+                           oninput="
+                               if (modify_password_checkbox.checked && this.value !== document.getElementById('new_password').value) {
+                                   document.getElementById('new_password_repeat-text-field').classList.add('mdc-text-field--invalid');
+                                   document.getElementById('new_password_repeat-icon').innerText = 'error';
+                                   setCustomValidity('密码不一致');
+                               } else {
+                                   document.getElementById('new_password_repeat-text-field').classList.remove('mdc-text-field--invalid');
+                                   document.getElementById('new_password_repeat-icon').innerText = 'check';
+                                   setCustomValidity('');
+                               }"
+                           aria-controls="new_password_repeat-helper-text"
+                           aria-describedby="new_password_repeat-helper-text">
+                    <i class="material-icons mdc-text-field__icon" id="new_password_repeat-icon">error</i>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label" for="new_password_repeat">重复新密码</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </div>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                         id="new_password-helper-text" aria-hidden="true">
+                        两次输入的密码不一致
+                    </div>
                 </div>
                 <div class="button-wrapper" id="modify-buttons">
                     <button type="button" class="mdc-button" id="modify-reset-button" onclick="reset_text_field()">
@@ -102,16 +258,12 @@
         'new_password_repeat', 'modify-reset-button', "modify-button"].map((id) => {
         return document.getElementById(id);
         }).forEach((element) => {
-        element.disabled = 'disabled';
+        element.disabled = true;
         });
     {% endif %}
     account_init();
     document.getElementById('account').onclick = function (a, b) {};
     document.getElementById('account').classList.add('mdc-list-item--activated');
-    id_text_field.value = '{{ id }}';
-    name_text_field.value = '{{ username }}';
-    email_text_field.value = '{{ email }}';
-    phone_text_field.value = '{{ phone }}';
     window.reset_text_field = () => {
     id_text_field.value = '{{ id }}';
     name_text_field.value = '{{ username }}';

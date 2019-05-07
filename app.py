@@ -1,6 +1,6 @@
 import flask, socket
 
-import forms, backend
+import backend
 
 from const import *
 
@@ -142,90 +142,77 @@ def ordered():
 
 @app.route('/account', methods=['GET', 'POST'])
 def account():
+    edit = 'edit' in flask.request.args
     if flask.session.get(S_VERIFY) != 'account':
         flask.session[S_VERIFY] = 'none'
     if not S_CURRENT_USER in flask.session:
         return flask.redirect(flask.url_for('login'))
-    form = forms.AccountForm()
-    verify_form = forms.VerifyForm()
     if flask.request.method == 'POST':
         if 'verify_password' in flask.request.form:
-            if verify_form.validate_on_submit():
-                try:
-                    verify_password = flask.request.form['verify_password']
-                    result = backend.get_result('login {} {}'.format(flask.session[S_NAME], verify_password),
-                                                SZ_LOGIN, RE_LOGIN)
-                    if result == '1':
-                        flask.session[S_VERIFY] = 'account'
-                    else:
-                        flask.session[S_ERR_MESSAGE] = E_PASSWORD_ERROR
-                except ConnectionRefusedError:
-                    flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
-                except socket.timeout:
-                    flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
-                except SyntaxError:
-                    flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
-            else:
-                flask.session[S_ERR_MESSAGE] = forms.get_validator_errors(verify_form)
+            try:
+                verify_password = flask.request.form['verify_password']
+                result = backend.get_result('login {} {}'.format(flask.session[S_CURRENT_USER], verify_password),
+                                            SZ_LOGIN, RE_LOGIN)
+                if result == '1':
+                    flask.session[S_VERIFY] = 'account'
+                else:
+                    flask.session[S_ERR_MESSAGE] = E_PASSWORD_ERROR
+            except ConnectionRefusedError:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
+            except socket.timeout:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
+            except SyntaxError:
+                flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
         else:
-            if form.validate_on_submit():
-                try:
-                    user_id = flask.session[S_CURRENT_USER]
-                    name = flask.request.form['name']
-                    email = flask.request.form['email']
-                    phone = flask.request.form['phone']
-                    modify_password = 'modify_password' in flask.request.form
-                    if modify_password:
-                        password = flask.request.form['new_password']
-                    else:
-                        password = flask.session['password']
-                    result = backend.get_result('modify_profile {} {} {} {} {} {}'
-                                                .format(user_id, user_id, password, name, email, phone),
-                                                SZ_MODIFY_PROFILE, RE_MODIFY_PROFILE)
-                    if result == '1':
-                        flask.session[S_SUCCESS_MESSAGE] = '修改成功'
-                        flask.session[S_NAME] = name
-                        flask.session[S_EMAIL] = email
-                        flask.session[S_PHONE] = phone
-                        flask.session[S_PASSWORD] = password
-                    else:
-                        flask.session[S_ERR_MESSAGE] = '修改失败'
-                except ConnectionRefusedError:
-                    flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
-                except socket.timeout:
-                    flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
-                except SyntaxError:
-                    flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
-            else:
-                flask.session[S_ERR_MESSAGE] = forms.get_validator_errors(form)
-        flask.session[S_ACCOUNT_EDIT] = True
-        return flask.redirect(flask.url_for('account', _method='GET'))
+            try:
+                user_id = flask.session[S_CURRENT_USER]
+                name = flask.request.form['name']
+                email = flask.request.form['email']
+                phone = flask.request.form['phone']
+                modify_password = 'modify_password' in flask.request.form
+                if modify_password:
+                    password = flask.request.form['new_password']
+                else:
+                    password = flask.session['password']
+                result = backend.get_result('modify_profile {} {} {} {} {} {}'
+                                            .format(user_id, user_id, password, name, email, phone),
+                                            SZ_MODIFY_PROFILE, RE_MODIFY_PROFILE)
+                if result == '1':
+                    flask.session[S_SUCCESS_MESSAGE] = '修改成功'
+                    flask.session[S_NAME] = name
+                    flask.session[S_EMAIL] = email
+                    flask.session[S_PHONE] = phone
+                    flask.session[S_PASSWORD] = password
+                else:
+                    flask.session[S_ERR_MESSAGE] = '修改失败'
+            except ConnectionRefusedError:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
+            except socket.timeout:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
+            except SyntaxError:
+                flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
+        return flask.redirect(flask.url_for('account', _method='GET', edit=True))
     else:
         if S_ERR_MESSAGE in flask.session:
             message = flask.session[S_ERR_MESSAGE]
             flask.session.pop(S_ERR_MESSAGE)
-            return flask.render_template('account.html', form=form, fail_alert=True, message=message, edit=True,
+            return flask.render_template('account.html', form=form, fail_alert=True, message=message, edit=edit,
                                          username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR],
-                                         verified=flask.session[S_VERIFY] == 'account', verify_form=verify_form,
+                                         verified=flask.session[S_VERIFY] == 'account',
                                          id=flask.session[S_CURRENT_USER],
                                          email=flask.session[S_EMAIL], phone=flask.session[S_PHONE])
         elif S_SUCCESS_MESSAGE in flask.session:
             message = flask.session[S_SUCCESS_MESSAGE]
             flask.session.pop(S_SUCCESS_MESSAGE)
-            return flask.render_template('account.html', form=form, success_alert=True, message=message, edit=False,
+            return flask.render_template('account.html', success_alert=True, message=message, edit=edit,
                                          username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR],
-                                         verified=flask.session[S_VERIFY] == 'account', verify_form=verify_form,
+                                         verified=flask.session[S_VERIFY] == 'account',
                                          id=flask.session[S_CURRENT_USER],
                                          email=flask.session[S_EMAIL], phone=flask.session[S_PHONE])
         else:
-            if S_ACCOUNT_EDIT in flask.session:
-                edit = True
-                flask.session.pop(S_ACCOUNT_EDIT)
-            else:
-                edit = False
-            return flask.render_template('account.html', form=form, edit=edit,
+            return flask.render_template('account.html', edit=edit,
                                          username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR],
-                                         verified=flask.session[S_VERIFY] == 'account', verify_form=verify_form,
+                                         verified=flask.session[S_VERIFY] == 'account',
                                          id=flask.session[S_CURRENT_USER],
                                          email=flask.session[S_EMAIL], phone=flask.session[S_PHONE])
 

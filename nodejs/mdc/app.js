@@ -9,11 +9,17 @@ import {MDCTextFieldHelperText} from '@material/textfield/helper-text';
 
 window.account_init = function () {
     window.id_text_field = new MDCTextField(document.getElementById('id-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('id-helper-text'));
     window.name_text_field = new MDCTextField(document.getElementById('name-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('name-helper-text'));
     window.email_text_field = new MDCTextField(document.getElementById('email-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('email-helper-text'));
     window.phone_text_field = new MDCTextField(document.getElementById('phone-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('phone-helper-text'));
     window.new_password_text_field = new MDCTextField(document.getElementById('new_password-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('new_password-helper-text'));
     window.new_password_repeat_text_field = new MDCTextField(document.getElementById('new_password_repeat-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('new_password_repeat-helper-text'));
     new MDCRipple(document.getElementById('modify-reset-button'));
     new MDCRipple(document.getElementById('modify-button'));
     const start_edit_button = new MDCRipple(document.getElementById('start-edit'));
@@ -22,18 +28,18 @@ window.account_init = function () {
     window.modify_password_checkbox = new MDCCheckbox(document.getElementById('modify_password-checkbox'));
     const modify_password_form_field = new MDCFormField(document.getElementById('modify_password-form-field'));
     modify_password_form_field.input = modify_password_checkbox;
-    window.start_edit = function () {
-        document.getElementById('show_info').classList.add('hidden');
-        document.getElementById('edit_info').classList.remove('hidden');
-    };
     window.modify_password_handle = function () {
-        // console.log(modify_password_checkbox.checked);
         if (modify_password_checkbox.checked) {
             document.getElementById('new_password-text-field').classList.remove('hidden');
             document.getElementById('new_password_repeat-text-field').classList.remove('hidden');
+            document.getElementById('new_password').required = true;
+            document.getElementById('new_password_repeat').required = true;
         } else {
             document.getElementById('new_password-text-field').classList.add('hidden');
             document.getElementById('new_password_repeat-text-field').classList.add('hidden');
+            document.getElementById('new_password').required = false;
+            document.getElementById('new_password_repeat').required = false;
+            document.getElementById('new_password_repeat').setCustomValidity('');
             new_password_text_field.value = '';
             new_password_repeat_text_field.value = '';
         }
@@ -46,12 +52,17 @@ window.account_init = function () {
 
 window.register_init = function () {
     new MDCTextField(document.getElementById('id-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('id-helper-text'));
     new MDCTextField(document.getElementById('password-text-field'));
     new MDCTextFieldHelperText(document.getElementById('password-helper-text'));
     new MDCTextField(document.getElementById('password_repeat-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('password_repeat-helper-text'));
     window.name_text_field = new MDCTextField(document.getElementById('name-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('name-helper-text'));
     window.email_text_field = new MDCTextField(document.getElementById('email-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('email-helper-text'));
     window.phone_text_field = new MDCTextField(document.getElementById('phone-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('phone-helper-text'));
     new MDCRipple(document.getElementById('register-button'));
     new MDCRipple(document.getElementById('register-reset-button'));
     new MDCRipple(document.getElementById('jump-login-button'));
@@ -63,7 +74,9 @@ window.register_info_init = function () {
 
 window.login_init = function () {
     window.id_text_field = new MDCTextField(document.getElementById('id-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('id-helper-text'));
     window.password_text_field = new MDCTextField(document.getElementById('password-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('password-helper-text'));
     new MDCRipple(document.getElementById('login-button'));
     new MDCRipple(document.getElementById('jump-register-button'));
 };
@@ -87,7 +100,7 @@ window.base_info_init = function () {
 
 window.verify_init = function () {
     window.verify_dialog = new MDCDialog(document.getElementById('verify-dialog'));
-    const text_field = new MDCTextField(document.getElementById('verify-password-text-field'));
+    const text_field = new MDCTextField(document.getElementById('verify_password-text-field'));
     verify_dialog.listen('MDCDialog:opened', () => {
         text_field.layout();
     });
