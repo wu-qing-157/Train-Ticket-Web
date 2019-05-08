@@ -18,7 +18,7 @@ SZ_QUERY_PROFILE = 100
 SZ_MODIFY_PROFILE = 10
 
 RE_USER_ID = r'\d{4,20}'
-RE_PASSWORD = r'[\u0020-\u007e]{6,20}'
+RE_PASSWORD = r'[\u0021-\u007e]{6,20}'
 RE_NAME = r'\S{1,10}'
 RE_EMAIL = r'\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*'
 RE_PHONE = r'\+?[0-9]{3,}'
