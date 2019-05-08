@@ -18,6 +18,7 @@ def index():
 @app.route('/logout')
 def logout():
     flask.session.pop(S_CURRENT_USER)
+    flask.session.pop(S_ADMINISTRATOR)
     return flask.redirect(flask.url_for('login'))
 
 
@@ -224,7 +225,15 @@ def train_manage():
 
 @app.route('/account_manage')
 def account_manage():
-    return flask.render_template('account_manage.html', username=flask.session[S_NAME])
+    return flask.render_template('account_manage.html', username=flask.session[S_NAME],
+                                 administrator=flask.session[S_ADMINISTRATOR])
+
+
+@app.route('/ajax_query_profile')
+def ajax_query_profile():
+    if not S_ADMINISTRATOR in flask.session or not flask.session[S_ADMINISTRATOR]:
+        return 'document.body.innerText = "{}"'.format(E_NOT_ADMINISTRATOR)
+    return flask.render_template('ajax_query_profile.js')
 
 
 app.config.from_object('config')

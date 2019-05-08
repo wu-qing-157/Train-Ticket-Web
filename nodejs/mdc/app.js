@@ -50,6 +50,11 @@ window.account_init = function () {
     };
 };
 
+window.account_manage_init = function () {
+    new MDCTextField(document.getElementById('input-text-field'));
+    new MDCTextFieldHelperText(document.getElementById('input-helper-text'));
+};
+
 window.register_init = function () {
     new MDCTextField(document.getElementById('id-text-field'));
     new MDCTextFieldHelperText(document.getElementById('id-helper-text'));

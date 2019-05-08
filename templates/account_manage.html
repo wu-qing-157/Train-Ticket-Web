@@ -9,33 +9,73 @@
     <div class="wrapper max-width-800" id="account_info">
         <div class="surface">
             <h3 class="mdc-typography--headline3">管理账号信息</h3>
+            <span class="mdc-typography--body1 crimson">此功能为管理员功能</span>
+            <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                 id="input-text-field">
+                <i class="material-icons mdc-text-field__icon">account_box</i>
+                <input type="text" class="mdc-text-field__input" id="input" name="input"
+                       pattern="^\d{4,20}$" required
+                       oninput="
+                           document.getElementById('input-text-field').classList.remove('mdc-text-field--invalid');
+                           document.getElementById('input-icon').innerText = 'arrow_forward';
+                           this.reportValidity();"
+                       oninvalid="
+                               event.preventDefault();
+                               document.getElementById('input-text-field').classList.add('mdc-text-field--invalid');
+                               document.getElementById('input-icon').innerText = 'error';"
+                       aria-controls="input-helper-text"
+                       aria-describedby="input-helper-text">
+                <i class="material-icons mdc-text-field__icon" tabindex="0" onclick="$.getScript('/ajax_query_profile')"
+                   id="input-icon">error</i>
+                <div class="mdc-notched-outline">
+                    <div class="mdc-notched-outline__leading"></div>
+                    <div class="mdc-notched-outline__notch">
+                        <label class="mdc-floating-label" for="input">用户ID</label>
+                    </div>
+                    <div class="mdc-notched-outline__trailing"></div>
+                </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                     id="input-helper-text"
+                     aria-hidden="true">
+                    请输入符合格式的用户ID
+                </div>
+            </div>
             <table id="info_table">
                 <tr>
-                    <td><span class="mdc-typography--headline5">姓名</span></td>
-                    <td><span class="mdc-typography--body1" id="name_info">
+                    <td><span class="mdc-typography--headline5">用户ID</span></td>
+                    <td><span class="mdc-typography--body1" id="id-info">
                         <i class="material-icons">clear</i>
-                        <span>请先输入需要查询的用户</span>
+                        <span>请先输入查询的用户</span>
+                    </span></td>
+                </tr>
+                <tr>
+                    <td><span class="mdc-typography--headline5">姓名</span></td>
+                    <td><span class="mdc-typography--body1" id="name-info">
+                        <i class="material-icons">clear</i>
+                        <span>　　　然后按回车键</span>
                     </span></td>
                 </tr>
                 <tr>
                     <td><span class="mdc-typography--headline5">邮箱地址</span></td>
-                    <td><span class="mdc-typography--body1">
+                    <td><span class="mdc-typography--body1" id="email-info">
                         <i class="material-icons">clear</i>
-                        <span>请先输入需要查询的用户</span>
+                        <span>　　　或点击右箭头</span>
                     </span></td>
                 </tr>
                 <tr>
                     <td><span class="mdc-typography--headline5">电话号码</span></td>
-                    <td><span class="mdc-typography--body1">
+                    <td><span class="mdc-typography--body1" id="phone-info">
                         <i class="material-icons">clear</i>
-                        <span>请先输入需要查询的用户</span>
+                        <span>　　将会查询其数据</span>
                     </span></td>
                 </tr>
                 <tr>
                     <td><span class="mdc-typography--headline5">用户权限</span></td>
-                    <td><span class="mdc-typography--body1" id="administrator_info">
+                    <td><span class="mdc-typography--body1" id="administrator-info">
                         <i class="material-icons">clear</i>
-                        <span>请先输入需要查询的用户</span>
+                        <span>　　　并显示在这里</span>
                     </span></td>
                 </tr>
             </table>
@@ -43,4 +83,5 @@
     </div>
 {% endblock %}
 {% block script %}
+    account_manage_init();
 {% endblock %}
