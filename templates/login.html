@@ -15,7 +15,7 @@
 <div class="center-wrapper" id="login-wrapper">
     <div class="surface">
         <h3 class="mdc-typography--headline3 padding-20">登录</h3>
-        <form action="" method="post" name="login">
+        <form action="" method="post" name="login" id="login-form">
             <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
                  id="id-text-field">
                 <i class="material-icons mdc-text-field__icon">account_box</i>
@@ -77,7 +77,11 @@
                 </div>
             </div>
             <div class="button-wrapper">
-                <button type="submit" class="mdc-button mdc-button--raised width-120px" id="login-button">
+                <button type="submit" class="mdc-button mdc-button--raised width-120px" id="login-button"
+                        onclick="if (document.getElementById('login-form').reportValidity()) {
+                            document.getElementById('login-form').submit();
+                            this.disabled = true
+                        }">
                     <i class="material-icons mdc-button__icon" aria-hidden="true">check</i>
                     <span class="mdc-button__label">登录</span>
                 </button>

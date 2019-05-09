@@ -15,7 +15,7 @@
 <div class="center-wrapper" id="register-wrapper">
     <div class="surface">
         <h3 class="mdc-typography--headline3 padding-20">注册</h3>
-        <form action="" method="post" name="register">
+        <form action="" method="post" name="register" id="register-form">
             <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
                  id="id-text-field">
                 <i class="material-icons mdc-text-field__icon">account_box</i>
@@ -89,7 +89,7 @@
                                document.getElementById('password_repeat-text-field').classList.remove('mdc-text-field--invalid');
                                document.getElementById('password_repeat-icon').innerText = 'check';
                                setCustomValidity('');
-                           }" \
+                           }"
                        aria-controls="password_repeat-helper-text"
                        aria-describedby="password_repeat-helper-text">
                 <i class="material-icons mdc-text-field__icon" id="password_repeat-icon">error</i>
@@ -141,7 +141,7 @@
                  id="email-text-field">
                 <i class="material-icons mdc-text-field__icon">email</i>
                 <input type="text" class="mdc-text-field__input" id="email" name="email"
-                       pattern="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" required
+                       pattern="^(?!\S{21})\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" required
                        oninput="
                            document.getElementById('email-text-field').classList.remove('mdc-text-field--invalid');
                            document.getElementById('email-icon').innerText = 'check';
@@ -171,7 +171,7 @@
                  id="phone-text-field">
                 <i class="material-icons mdc-text-field__icon">phone</i>
                 <input type="text" class="mdc-text-field__input" id="phone" name="phone"
-                       pattern="^\+?[0-9]{3,}$" required
+                       pattern="^(?!\S{21})\+?[0-9]{3,}$" required
                        oninput="
                            document.getElementById('phone-text-field').classList.remove('mdc-text-field--invalid');
                            document.getElementById('phone-icon').innerText = 'check';
@@ -202,7 +202,11 @@
                     <i class="material-icons mdc-button__icon" aria-hidden="true">clear</i>
                     <span class="mdc-button__label">重置</span>
                 </button>
-                <button type="submit" class="mdc-button mdc-button--raised width-120px" id="register-button">
+                <button type="submit" class="mdc-button mdc-button--raised width-120px" id="register-button"
+                        onclick="if (document.getElementById('register-form').reportValidity()) {
+                            document.getElementById('register-form').submit();
+                            this.disabled = true
+                        }">
                     <i class="material-icons mdc-button__icon" aria-hidden="true">check</i>
                     <span class="mdc-button__label">注册</span>
                 </button>

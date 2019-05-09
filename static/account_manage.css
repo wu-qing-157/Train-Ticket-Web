@@ -1,0 +1,23 @@
+.table-title {
+    width: 30%;
+}
+
+#info_table {
+    padding: 20px 0;
+    margin: 0 auto;
+    width: 80%;
+    box-sizing: border-box;
+    border-collapse: collapse;
+}
+
+#info_table td {
+    padding: 8px 0;
+}
+
+#info_table tr:nth-child(odd) {
+    background-color: white;
+}
+
+#info_table tr:hover {
+    background-color: bisque;
+}

@@ -11,15 +11,15 @@
             <h3 class="mdc-typography--headline3">个人信息</h3>
             <table id="info_table">
                 <tr>
-                    <td><span class="mdc-typography--headline5">姓名</span></td>
+                    <td><span class="mdc-typography--body1">姓名</span></td>
                     <td><span class="mdc-typography--body1">{{ username }}</span></td>
                 </tr>
                 <tr>
-                    <td><span class="mdc-typography--headline5">邮箱地址</span></td>
+                    <td><span class="mdc-typography--body1">邮箱地址</span></td>
                     <td><span class="mdc-typography--body1">{{ email }}</span></td>
                 </tr>
                 <tr>
-                    <td><span class="mdc-typography--headline5">电话号码</span></td>
+                    <td><span class="mdc-typography--body1">电话号码</span></td>
                     <td><span class="mdc-typography--body1">{{ phone }}</span></td>
                 </tr>
             </table>
@@ -32,7 +32,7 @@
     </div>
     <div class="wrapper max-width-800 {% if not edit %}hidden{% endif %}" id="edit_info">
         <div class="surface">
-            <h5 class="mdc-typography--headline5 padding-20">修改用户信息</h5>
+            <h5 class="mdc-typography--body1 padding-20">修改用户信息</h5>
             <div class="button-wrapper {% if verified %}hidden{% endif %}" id="verify-edit-div">
                 <button onclick="show_verify('修改个人信息', '个人信息（包括密码）将可以被修改')"
                         class="mdc-button mdc-button--raised width-80"
@@ -40,7 +40,7 @@
                     <span class="mdc-button__label">验证</span>
                 </button>
             </div>
-            <form action="" method="post" name="login">
+            <form action="" method="post" name="modify-profile" id="modify-form">
                 <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
                      id="id-text-field">
                     <i class="material-icons mdc-text-field__icon">account_box</i>
@@ -97,7 +97,7 @@
                      id="email-text-field">
                     <i class="material-icons mdc-text-field__icon">email</i>
                     <input type="text" class="mdc-text-field__input" id="email" name="email" value="{{ email }}"
-                           pattern="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" required
+                           pattern="^(?!\S{21})\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" required
                            oninput="
                                document.getElementById('email-text-field').classList.remove('mdc-text-field--invalid');
                                document.getElementById('email-icon').innerText = 'check';
@@ -127,7 +127,7 @@
                      id="phone-text-field">
                     <i class="material-icons mdc-text-field__icon">phone</i>
                     <input type="text" class="mdc-text-field__input" id="phone" name="phone" value="{{ phone }}"
-                           pattern="^\+?[0-9]{3,}$" required
+                           pattern="^(?!\S{21})\+?[0-9]{3,}$" required
                            oninput="
                                document.getElementById('phone-text-field').classList.remove('mdc-text-field--invalid');
                                document.getElementById('phone-icon').innerText = 'check';
@@ -244,7 +244,11 @@
                     <button type="button" class="mdc-button" id="modify-reset-button" onclick="reset_text_field()">
                         <span class="mdc-button__label">重置</span>
                     </button>
-                    <button type="submit" class="mdc-button mdc-button--raised width-120px" id="modify-button">
+                    <button type="submit" class="mdc-button mdc-button--raised width-120px" id="modify-button"
+                            onclick="if (document.getElementById('modify-form').reportValidity()) {
+                                document.getElementById('modify-form').submit();
+                                this.disabled = true
+                            }">
                         <span class="mdc-button__label">修改</span>
                     </button>
                 </div>

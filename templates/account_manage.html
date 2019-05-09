@@ -3,13 +3,13 @@
     个人信息 - Train Ticket
 {% endblock %}
 {% block child_header %}
-    <link href="../static/account.css" rel="stylesheet">
+    <link href="../static/account_manage.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
     <div class="wrapper max-width-800" id="account_info">
         <div class="surface">
             <h3 class="mdc-typography--headline3">管理账号信息</h3>
-            <span class="mdc-typography--body1 crimson">此功能为管理员功能</span>
+            <p class="mdc-typography--body1 crimson">此功能为管理员功能</p>
             <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
                  id="input-text-field">
                 <i class="material-icons mdc-text-field__icon">account_box</i>
@@ -20,12 +20,17 @@
                            document.getElementById('input-icon').innerText = 'arrow_forward';
                            this.reportValidity();"
                        oninvalid="
-                               event.preventDefault();
-                               document.getElementById('input-text-field').classList.add('mdc-text-field--invalid');
-                               document.getElementById('input-icon').innerText = 'error';"
+                           event.preventDefault();
+                           document.getElementById('input-text-field').classList.add('mdc-text-field--invalid');
+                           document.getElementById('input-icon').innerText = 'error';"
+                       onkeydown="if (event.keyCode === 13) document.getElementById('input-icon').click()"
                        aria-controls="input-helper-text"
                        aria-describedby="input-helper-text">
-                <i class="material-icons mdc-text-field__icon" tabindex="0" onclick="$.getScript('/ajax_query_profile')"
+                <i class="material-icons mdc-text-field__icon" tabindex="0"
+                   onclick="if (this.innerText === 'arrow_forward') {
+                       document.getElementById('hint').classList.add('hidden');
+                       $.getScript('/ajax_query_profile?user_id=' + document.getElementById('input').value)
+                   }"
                    id="input-icon">error</i>
                 <div class="mdc-notched-outline">
                     <div class="mdc-notched-outline__leading"></div>
@@ -42,46 +47,204 @@
                     请输入符合格式的用户ID
                 </div>
             </div>
+            <p id="hint"><span class="mdc-typography--body1">请输入需要查询的用户ID，然后点击右边的按钮（或者按Enter）。</span></p>
             <table id="info_table">
                 <tr>
-                    <td><span class="mdc-typography--headline5">用户ID</span></td>
+                    <td class="table-title"><span class="mdc-typography--body1">用户ID</span></td>
                     <td><span class="mdc-typography--body1" id="id-info">
                         <i class="material-icons">clear</i>
-                        <span>请先输入查询的用户</span>
                     </span></td>
                 </tr>
                 <tr>
-                    <td><span class="mdc-typography--headline5">姓名</span></td>
+                    <td class="table-title"><span class="mdc-typography--body1">姓名</span></td>
                     <td><span class="mdc-typography--body1" id="name-info">
                         <i class="material-icons">clear</i>
-                        <span>　　　然后按回车键</span>
                     </span></td>
                 </tr>
                 <tr>
-                    <td><span class="mdc-typography--headline5">邮箱地址</span></td>
+                    <td class="table-title"><span class="mdc-typography--body1">邮箱地址</span></td>
                     <td><span class="mdc-typography--body1" id="email-info">
                         <i class="material-icons">clear</i>
-                        <span>　　　或点击右箭头</span>
                     </span></td>
                 </tr>
                 <tr>
-                    <td><span class="mdc-typography--headline5">电话号码</span></td>
+                    <td class="table-title"><span class="mdc-typography--body1">电话号码</span></td>
                     <td><span class="mdc-typography--body1" id="phone-info">
                         <i class="material-icons">clear</i>
-                        <span>　　将会查询其数据</span>
                     </span></td>
                 </tr>
                 <tr>
-                    <td><span class="mdc-typography--headline5">用户权限</span></td>
+                    <td class="table-title"><span class="mdc-typography--body1">用户权限</span></td>
                     <td><span class="mdc-typography--body1" id="administrator-info">
                         <i class="material-icons">clear</i>
-                        <span>　　　并显示在这里</span>
                     </span></td>
                 </tr>
             </table>
         </div>
     </div>
+    <div class="wrapper max-width-800" id="edit-info">
+        <div class="surface">
+            <h3 class="mdc-typography--headline3">修改账号信息</h3>
+            <p class="mdc-typography--body1 crimson">此功能为管理员功能</p>
+            <p class="mdc-typography--body1" id="modify-status">请先查询想要修改的用户</p>
+            <form action="" method="post" name="modify-profile" id="modify-form">
+                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                     id="id-text-field">
+                    <i class="material-icons mdc-text-field__icon">account_box</i>
+                    <input type="text" class="mdc-text-field__input" id="id" name="id"
+                           aria-controls="id-helper-text" aria-describedby="id-helper-text" disabled>
+                    <i class="material-icons mdc-text-field__icon" id="id-icon">check</i>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label" for="id">用户ID（无法修改）</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </div>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                         id="id-helper-text"
+                         aria-hidden="true">
+                        (+_+)?
+                    </div>
+                </div>
+                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                     id="new_password-text-field">
+                    <i class="material-icons mdc-text-field__icon">vpn_key</i>
+                    <input type="text" class="mdc-text-field__input" id="new_password" name="new_password"
+                           pattern="^[\u0021-\u007e]{6,20}$" required disabled
+                           oninput="
+                               document.getElementById('new_password-text-field').classList.remove('mdc-text-field--invalid');
+                               document.getElementById('new_password-icon').innerText = 'check';
+                               this.reportValidity();"
+                           oninvalid="
+                               event.preventDefault();
+                               document.getElementById('new_password-text-field').classList.add('mdc-text-field--invalid');
+                               document.getElementById('new_password-icon').innerText = 'error';"
+                           aria-controls="new_password-helper-text"
+                           aria-describedby="new_password-helper-text">
+                    <i class="material-icons mdc-text-field__icon" id="new_password-icon">error</i>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label" for="new_password">新密码</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </div>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                         id="new_password-helper-text" aria-hidden="true">
+                        长度在6-20位之间，允许包含特殊字符
+                    </div>
+                </div>
+                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                     id="name-text-field">
+                    <i class="material-icons mdc-text-field__icon">face</i>
+                    <input type="text" class="mdc-text-field__input" id="name" name="name"
+                           pattern="^\S{1,10}$" required disabled
+                           oninput="
+                               document.getElementById('name-text-field').classList.remove('mdc-text-field--invalid');
+                               document.getElementById('name-icon').innerText = 'check';
+                               this.reportValidity();"
+                           oninvalid="
+                               event.preventDefault();
+                               document.getElementById('name-text-field').classList.add('mdc-text-field--invalid');
+                               document.getElementById('name-icon').innerText = 'error';"
+                           aria-controls="name-helper-text"
+                           aria-describedby="name-helper-text">
+                    <i class="material-icons mdc-text-field__icon" id="name-icon">error</i>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label" for="name">姓名</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </div>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                         id="name-helper-text"
+                         aria-hidden="true">
+                        姓名长度必须在1-10之间，且不包括空格
+                    </div>
+                </div>
+                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                     id="email-text-field">
+                    <i class="material-icons mdc-text-field__icon">email</i>
+                    <input type="text" class="mdc-text-field__input" id="email" name="email"
+                           pattern="^(?!\S{21})\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" required disabled
+                           oninput="
+                               document.getElementById('email-text-field').classList.remove('mdc-text-field--invalid');
+                               document.getElementById('email-icon').innerText = 'check';
+                               this.reportValidity();"
+                           oninvalid="
+                               event.preventDefault();
+                               document.getElementById('email-text-field').classList.add('mdc-text-field--invalid');
+                               document.getElementById('email-icon').innerText = 'error';"
+                           aria-controls="email-helper-text"
+                           aria-describedby="email-helper-text">
+                    <i class="material-icons mdc-text-field__icon" id="email-icon">error</i>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label" for="email">电子邮箱</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </div>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                         id="email-helper-text" aria-hidden="true">
+                        请输入正确的电子邮箱地址
+                    </div>
+                </div>
+                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                     id="phone-text-field">
+                    <i class="material-icons mdc-text-field__icon">phone</i>
+                    <input type="text" class="mdc-text-field__input" id="phone" name="phone"
+                           pattern="^(?!\S{21})\+?[0-9]{3,}$" required disabled
+                           oninput="
+                               document.getElementById('phone-text-field').classList.remove('mdc-text-field--invalid');
+                               document.getElementById('phone-icon').innerText = 'check';
+                               this.reportValidity();"
+                           oninvalid="
+                               event.preventDefault();
+                               document.getElementById('phone-text-field').classList.add('mdc-text-field--invalid');
+                               document.getElementById('phone-icon').innerText = 'error';"
+                           aria-controls="phone-helper-text"
+                           aria-describedby="phone-helper-text">
+                    <i class="material-icons mdc-text-field__icon" id="phone-icon">error</i>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label" for="phone">联系电话</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </div>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                         id="phone-helper-text" aria-hidden="true">
+                        请输入正确的联系电话
+                    </div>
+                </div>
+                <div class="button-wrapper" id="modify-buttons">
+                    <button type="submit" class="mdc-button mdc-button--raised width-120px" id="modify-button" disabled
+                            onclick="if (document.getElementById('modify-form').reportValidity()) {
+                                document.getElementById('modify-form').submit();
+                                this.disabled = true
+                            }">
+                        <span class="mdc-button__label">修改</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
 {% block script %}
     account_manage_init();
+    document.getElementById('account_manage').onclick = function (a, b) {};
+    document.getElementById('account_manage').classList.add('mdc-list-item--activated');
 {% endblock %}

@@ -175,8 +175,8 @@ def account():
                     password = flask.request.form['new_password']
                 else:
                     password = flask.session['password']
-                result = backend.get_result('modify_profile {} {} {} {} {} {}'
-                                            .format(user_id, user_id, password, name, email, phone),
+                result = backend.get_result('modify_profile {} {} {} {} {}'
+                                            .format(user_id, password, name, email, phone),
                                             SZ_MODIFY_PROFILE, RE_MODIFY_PROFILE)
                 if result == '1':
                     flask.session[S_SUCCESS_MESSAGE] = '修改成功'
@@ -225,6 +225,8 @@ def train_manage():
 
 @app.route('/account_manage')
 def account_manage():
+    if not S_ADMINISTRATOR in flask.session or not flask.session[S_ADMINISTRATOR]:
+        return E_NOT_ADMINISTRATOR
     return flask.render_template('account_manage.html', username=flask.session[S_NAME],
                                  administrator=flask.session[S_ADMINISTRATOR])
 
@@ -233,7 +235,23 @@ def account_manage():
 def ajax_query_profile():
     if not S_ADMINISTRATOR in flask.session or not flask.session[S_ADMINISTRATOR]:
         return 'document.body.innerText = "{}"'.format(E_NOT_ADMINISTRATOR)
-    return flask.render_template('ajax_query_profile.js')
+    if not 'user_id' in flask.request.args:
+        return flask.render_template('ajax_bad_request.jinja', info=E_INVALID_REQUEST)
+    user_id = flask.request.args['user_id']
+    try:
+        result = backend.get_result("query_profile {}".format(user_id), SZ_QUERY_PROFILE, RE_QUERY_PROFILE_OR_NONE)
+        if result == '0':
+            return flask.render_template('ajax_query_profile.jinja', not_exist=True, user_id=user_id)
+        else:
+            [name, email, phone, administrator] = result.split(' ')
+            return flask.render_template('ajax_query_profile.jinja', user_id=user_id, name=name, email=email,
+                                         phone=phone, administrator=administrator)
+    except ConnectionRefusedError:
+        return flask.render_template('ajax_exception.jinja', info=E_CONNECTION_REFUSED)
+    except socket.timeout:
+        return flask.render_template('ajax_exception.jinja', info=E_CONNECTION_TIMEOUT)
+    except SyntaxError:
+        return flask.render_template('ajax_exception.jinja', info=E_BAD_RETURN)
 
 
 app.config.from_object('config')

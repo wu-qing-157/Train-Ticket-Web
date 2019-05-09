@@ -20,12 +20,13 @@ SZ_MODIFY_PROFILE = 10
 RE_USER_ID = r'\d{4,20}'
 RE_PASSWORD = r'[\u0021-\u007e]{6,20}'
 RE_NAME = r'\S{1,10}'
-RE_EMAIL = r'\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*'
-RE_PHONE = r'\+?[0-9]{3,}'
+RE_EMAIL = r'(?!\S{21})\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*'
+RE_PHONE = r'(?!\S{21})\+?[0-9]{3,}'
 
 RE_LOGIN = r'^[01]$'
 RE_REGISTER = r'^(-1)|({})$'.format(RE_USER_ID)
 RE_QUERY_PROFILE = r'^{} {} {} [12]$'.format(RE_NAME, RE_EMAIL, RE_PHONE)
+RE_QUERY_PROFILE_OR_NONE = r'^0|({} {} {} [12])$'.format(RE_NAME, RE_EMAIL, RE_PHONE)
 RE_MODIFY_PROFILE = r'^[01]$'
 
 E_PASSWORD_NOT_MATCH = '用户名或密码错误'
@@ -34,4 +35,5 @@ E_CONNECTION_REFUSED = '无法连接到服务器'
 E_CONNECTION_TIMEOUT = '服务器超时'
 E_BAD_RETURN = '服务器返回数据时出现异常'
 E_REGISTER_REJECTED = '当前拒绝注册新用户'
-E_NOT_ADMINISTRATOR = '你没有权限进行这一操作，请不要通过直接输入地址进行访问。'
+E_NOT_ADMINISTRATOR = '你没有权限进行这一操作'
+E_INVALID_REQUEST = '请求的内容不合法'
