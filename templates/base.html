@@ -75,7 +75,7 @@
      aria-describedby="dialog-content">
     <div class="mdc-dialog__container">
         <div class="mdc-dialog__surface" id="verify-surface">
-            <form action="" method="post" name="register">
+            <form action="" method="post" name="register" id="verify-form">
                 <h2 class="mdc-dialog__title" id="dialog-title">需要再次验证你的密码...</h2>
                 <div class="mdc-dialog__content" id="dialog-content">
                     <p><span class="mdc-typography--body1">涉及到的操作：<span id="verify-operation"></span></span>
@@ -113,55 +113,46 @@
                     </div>
                 </div>
                 <footer class="mdc-dialog__actions">
-                    <button type="submit" class="mdc-button mdc-dialog__button" id="verify-submit">
+                    <button type="submit" class="mdc-button mdc-dialog__button" id="verify-submit"
+                            onclick="if (document.getElementById('verify-form').reportValidity()) {
+                                document.getElementById('verify-form').submit();
+                                this.disabled = true
+                            }">
                         <span class="mdc-button__label">好啦~(￣▽￣)~*</span>
+                    </button>
+                    <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                        <span class="mdc-button__label">算了算了╮(╯▽╰)╭</span>
                     </button>
                 </footer>
             </form>
         </div>
     </div>
 </div>
-{% if success_alert or fail_alert %}
-    <div class="alert-wrapper">
-        <div class="mdc-dialog"
-             id="base-info-dialog"
-             role="alertdialog"
-             aria-modal="true"
-             aria-labelledby="dialog-title"
-             aria-describedby="dialog-content">
-            <div class="mdc-dialog__container">
-                <div class="mdc-dialog__surface">
-                    <h2 class="mdc-dialog__title" id="dialog-title">
-                        {% if success_alert %}
-                            ( •̀ ω •́ )y
-                        {% elif fail_alert %}
-                            Oops...
-                        {% endif %}
-                    </h2>
-                    <div class="mdc-dialog__content" id="dialog-content">
-                        {% if success_alert or fail_alert %}
-                            {{ message }}
-                        {% endif %}
-                    </div>
-                    <footer class="mdc-dialog__actions">
-                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close"
-                                {% if success_alert and success_redirect %}
-                                onclick="location.href='{{ success_redirect }}'"
-                                {% endif %}>
-                            <span class="mdc-button__label">
-                                {% if success_alert %}
-                                    b（￣▽￣）d　
-                                {% elif fail_alert %}
-                                    ╮(╯-╰)╭
-                                {% endif %}
-                            </span>
-                        </button>
-                    </footer>
+<div class="alert-wrapper">
+    <div class="mdc-dialog"
+         id="base-info-dialog"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="alert-dialog-title"
+         aria-describedby="alert-dialog-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title" id="alert-dialog-title">
+                    <span id="alert-dialog-title-text"></span>
+                </h2>
+                <div class="mdc-dialog__content" id="alert-dialog-content">
+                    <span id="alert-dialog-content-text"></span>
                 </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close"
+                            id="alert-dialog-button">
+                        <span class="mdc-button__label" id="alert-dialog-button-label"></span>
+                    </button>
+                </footer>
             </div>
         </div>
     </div>
-{% endif %}
+</div>
 <script async>
     base_init();
     verify_init();
@@ -173,9 +164,11 @@
             drawer.open = true;
     };
     {% block script %}{% endblock %}
-    {% if success_alert or fail_alert %}
-        window.base_info_init();
-        window.base_info_dialog.open();
+    window.base_info_init();
+    {% if success_alert %}
+        show_dialog('( •̀ ω •́ )y', '{{ message }}', 'b（￣▽￣）d', '{{ success_redirect }}');
+    {% elif fail_alert %}
+        show_dialog('Oops...', '{{ message }}', '╮(╯-╰)╭', '');
     {% endif %}
 </script>
 </body>

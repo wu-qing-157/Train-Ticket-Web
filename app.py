@@ -223,12 +223,68 @@ def train_manage():
     return 'train_manage'
 
 
-@app.route('/account_manage')
+@app.route('/account_manage', methods=['GET', 'POST'])
 def account_manage():
+    if flask.request.method == 'POST':
+        if 'verify_password' in flask.request.form:
+            try:
+                verify_password = flask.request.form['verify_password']
+                result = backend.get_result('login {} {}'.format(flask.session[S_CURRENT_USER], verify_password),
+                                            SZ_LOGIN, RE_LOGIN)
+                if result == '1':
+                    flask.session[S_VERIFY] = 'account_manage'
+                else:
+                    flask.session[S_ERR_MESSAGE] = E_PASSWORD_ERROR
+            except ConnectionRefusedError:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
+            except socket.timeout:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
+            except SyntaxError:
+                flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
+            return flask.redirect(flask.url_for('account_manage', _method='GET'))
+        else:
+            try:
+                user_id = flask.session[S_MANAGED_USER_ID]
+                name = flask.request.form['name']
+                email = flask.request.form['email']
+                phone = flask.request.form['phone']
+                password = flask.request.form['new_password']
+                result = backend.get_result('modify_profile {} {} {} {} {}'
+                                            .format(user_id, password, name, email, phone),
+                                            SZ_MODIFY_PROFILE, RE_MODIFY_PROFILE)
+                if result == '1':
+                    flask.session[S_SUCCESS_MESSAGE] = '修改成功'
+                else:
+                    flask.session[S_ERR_MESSAGE] = '修改失败'
+            except ConnectionRefusedError:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
+            except socket.timeout:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
+            except SyntaxError:
+                flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
+            return flask.redirect(flask.url_for('account_manage', _method='GET'))
     if not S_ADMINISTRATOR in flask.session or not flask.session[S_ADMINISTRATOR]:
         return E_NOT_ADMINISTRATOR
-    return flask.render_template('account_manage.html', username=flask.session[S_NAME],
-                                 administrator=flask.session[S_ADMINISTRATOR])
+    if S_SUCCESS_MESSAGE in flask.session:
+        message = flask.session[S_SUCCESS_MESSAGE]
+        flask.session.pop(S_SUCCESS_MESSAGE)
+        return flask.render_template('account_manage.html', username=flask.session[S_NAME],
+                                     verified=flask.session[S_VERIFY] == 'account_manage',
+                                     administrator=flask.session[S_ADMINISTRATOR],
+                                     initial_query=flask.session[S_MANAGED_USER_ID], success_alert=True,
+                                     message=message)
+    elif S_ERR_MESSAGE in flask.session:
+        message = flask.session[S_ERR_MESSAGE]
+        flask.session.pop(S_ERR_MESSAGE)
+        return flask.render_template('account_manage.html', username=flask.session[S_NAME],
+                                     verified=flask.session[S_VERIFY] == 'account_manage',
+                                     administrator=flask.session[S_ADMINISTRATOR],
+                                     initial_query=flask.session[S_MANAGED_USER_ID], fail_alert=True,
+                                     message=message)
+    else:
+        return flask.render_template('account_manage.html', username=flask.session[S_NAME],
+                                     verified=flask.session[S_VERIFY] == 'account_manage',
+                                     administrator=flask.session[S_ADMINISTRATOR])
 
 
 @app.route('/ajax_query_profile')
@@ -238,6 +294,7 @@ def ajax_query_profile():
     if not 'user_id' in flask.request.args:
         return flask.render_template('ajax_bad_request.jinja', info=E_INVALID_REQUEST)
     user_id = flask.request.args['user_id']
+    flask.session[S_MANAGED_USER_ID] = user_id
     try:
         result = backend.get_result("query_profile {}".format(user_id), SZ_QUERY_PROFILE, RE_QUERY_PROFILE_OR_NONE)
         if result == '0':
@@ -246,6 +303,28 @@ def ajax_query_profile():
             [name, email, phone, administrator] = result.split(' ')
             return flask.render_template('ajax_query_profile.jinja', user_id=user_id, name=name, email=email,
                                          phone=phone, administrator=administrator == '2')
+    except ConnectionRefusedError:
+        return flask.render_template('ajax_exception.jinja', info=E_CONNECTION_REFUSED)
+    except socket.timeout:
+        return flask.render_template('ajax_exception.jinja', info=E_CONNECTION_TIMEOUT)
+    except SyntaxError:
+        return flask.render_template('ajax_exception.jinja', info=E_BAD_RETURN)
+
+
+@app.route('/ajax_modify_privilege')
+def ajax_modify_privilege():
+    if not S_ADMINISTRATOR in flask.session or not flask.session[S_ADMINISTRATOR]:
+        return 'document.body.innerText = "{}"'.format(E_NOT_ADMINISTRATOR)
+    if not 'target' in flask.request.args:
+        return flask.render_template('ajax_bad_request.jinja', info=E_INVALID_REQUEST)
+    user_id = flask.request.args['target']
+    try:
+        result = backend.get_result("modify_privilege {} {} 2".format(flask.session[S_CURRENT_USER], user_id),
+                                    SZ_MODIFY_PRIVILEGE, RE_MODIFY_PRIVILEGE)
+        if result == '0':
+            return flask.render_template('ajax_exception.jinja', info=E_UNKNOWN)
+        else:
+            return flask.render_template('ajax_modify_privilege.jinja', user_id=user_id)
     except ConnectionRefusedError:
         return flask.render_template('ajax_exception.jinja', info=E_CONNECTION_REFUSED)
     except socket.timeout:

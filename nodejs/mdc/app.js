@@ -51,7 +51,7 @@ window.account_init = function () {
 };
 
 window.account_manage_init = function () {
-    new MDCTextField(document.getElementById('input-text-field'));
+    window.input_text_field = new MDCTextField(document.getElementById('input-text-field'));
     new MDCTextFieldHelperText(document.getElementById('input-helper-text'));
     window.id_text_field = new MDCTextField(document.getElementById('id-text-field'));
     new MDCTextFieldHelperText(document.getElementById('id-helper-text'));
@@ -112,6 +112,17 @@ window.base_init = function () {
 
 window.base_info_init = function () {
     window.base_info_dialog = new MDCDialog(document.getElementById('base-info-dialog'));
+    window.show_dialog = (title, content, button_label, redirect) => {
+        document.getElementById('alert-dialog-title-text').innerText = title;
+        document.getElementById('alert-dialog-content-text').innerText = content;
+        document.getElementById('alert-dialog-button-label').innerText = button_label;
+        if (redirect !== '') {
+            document.getElementById('alert-dialog-button').onclick = () => {
+                location.href = redirect;
+            };
+        }
+        base_info_dialog.open();
+    };
 };
 
 window.verify_init = function () {
