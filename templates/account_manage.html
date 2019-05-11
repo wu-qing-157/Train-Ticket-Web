@@ -8,7 +8,7 @@
 {% block content %}
     <div class="wrapper max-width-800" id="account_info">
         <div class="surface">
-            <h3 class="mdc-typography--headline3">管理账号信息</h3>
+            <h3 class="mdc-typography--headline3">查询账号信息</h3>
             <p class="mdc-typography--body1 crimson">此功能为管理员功能</p>
             <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
                  id="input-text-field">
@@ -242,9 +242,20 @@
             </form>
         </div>
     </div>
+    <div class="wrapper max-width-800" id="grant_administrator">
+        <div class="surface">
+            <h3 class="mdc-typography--headline3">授予管理员权限</h3>
+            <p class="mdc-typography--body1 crimson">此功能为管理员功能</p>
+            <p class="mdc-typography--body1" id="grant-status">请先查询想要修改的用户</p>
+            <div class="button-wrapper">
+                <button class="mdc-button mdc-button--raised width-80" id="grant-button" disabled>授予管理员权限</button>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block script %}
     account_manage_init();
     document.getElementById('account_manage').onclick = function (a, b) {};
     document.getElementById('account_manage').classList.add('mdc-list-item--activated');
+    show_verify('管理账号信息', '将被允许查询、修改其他用户的个人信息；将被允许授予其他用户管理员权限');
 {% endblock %}

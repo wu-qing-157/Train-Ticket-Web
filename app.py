@@ -245,7 +245,7 @@ def ajax_query_profile():
         else:
             [name, email, phone, administrator] = result.split(' ')
             return flask.render_template('ajax_query_profile.jinja', user_id=user_id, name=name, email=email,
-                                         phone=phone, administrator=administrator)
+                                         phone=phone, administrator=administrator == '2')
     except ConnectionRefusedError:
         return flask.render_template('ajax_exception.jinja', info=E_CONNECTION_REFUSED)
     except socket.timeout:

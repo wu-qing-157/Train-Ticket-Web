@@ -1,102 +1,3 @@
-/* single property */
-.crimson {
-    color: crimson;
-}
-
-.width-33 {
-    width: 33%;
-}
-
-.width-66 {
-    width: 66%;
-}
-
-.width-80 {
-    width: 80%;
-}
-
-.width-120px {
-    width: 120px;
-}
-
-.max-width-800 {
-    max-width: 800px;
-}
-
-.hidden {
-    display: none !important;
-}
-
-.scale-8 {
-    width: 80%;
-}
-
-.align-center {
-    text-align: center;
-}
-
-.padding-8 {
-    padding: 8px;
-}
-
-.padding-20 {
-    padding: 20px;
-}
-
-.margin-8 {
-    margin: 8px;
-}
-
-@media only screen and (max-width: 1000px) {
-    .width-100-if-max-width-1000 {
-        width: 100% !important;
-    }
-}
-
-/* for base.html */
-
-body {
-    display: flex;
-    height: 100vh;
-    margin: 0;
-}
-
-.mdc-top-app-bar {
-    z-index: 7;
-}
-
-.mdc-drawer-app-content {
-    flex: auto;
-    overflow: auto;
-    position: relative;
-}
-
-@media only screen and (max-width: 800px) {
-    .main-dev-no-margin {
-        margin-left: 0 !important;
-    }
-
-    #verify-surface {
-        width: available !important;
-    }
-
-    #verify-dialog {
-        width: 80% !important;
-        position: absolute;
-        margin: auto;
-        left: 0;
-        right: 0;
-    }
-}
-
-.mdc-dialog__surface {
-    background: #ffffffff;
-}
-
-#verify-surface {
-    width: 600px;
-}
-
 /* common wrapper */
 
 .wrapper {
@@ -174,4 +75,99 @@ body {
     box-sizing: border-box;
     left: 0;
     right: 0;
+}
+
+/* single property */
+.crimson {
+    color: crimson;
+}
+
+.width-33 {
+    width: 33%;
+}
+
+.width-66 {
+    width: 66%;
+}
+
+.width-80 {
+    width: 80%;
+}
+
+.width-120px {
+    width: 120px;
+}
+
+.max-width-800 {
+    max-width: 800px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.padding-8 {
+    padding: 8px;
+}
+
+.padding-20 {
+    padding: 20px;
+}
+
+.margin-8 {
+    margin: 8px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .width-100-if-max-width-1000 {
+        width: 100% !important;
+    }
+}
+
+/* for base.html */
+
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+}
+
+.mdc-top-app-bar {
+    z-index: 7;
+}
+
+.mdc-drawer-app-content {
+    flex: auto;
+    overflow: auto;
+    position: relative;
+}
+
+@media only screen and (max-width: 800px) {
+    .main-dev-no-margin {
+        margin-left: 0 !important;
+    }
+
+    #verify-surface {
+        width: available !important;
+    }
+
+    #verify-dialog {
+        width: 80% !important;
+        position: absolute;
+        margin: auto;
+        left: 0;
+        right: 0;
+    }
+}
+
+.mdc-dialog__surface {
+    background: #ffffffff;
+}
+
+#verify-surface {
+    width: 600px;
 }
