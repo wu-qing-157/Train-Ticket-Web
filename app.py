@@ -1,10 +1,14 @@
 import flask, socket
 
-import backend
+import backend, station_match
 
 from const import *
 
 app = flask.Flask(__name__)
+
+print('initialize station list...', end='')
+station_match.init()
+print(' complete!')
 
 
 @app.route('/')
@@ -331,6 +335,17 @@ def ajax_modify_privilege():
         return flask.render_template('ajax_exception.jinja', info=E_CONNECTION_TIMEOUT)
     except SyntaxError:
         return flask.render_template('ajax_exception.jinja', info=E_BAD_RETURN)
+
+
+@app.route('/ajax_suggest_station')
+def ajax_suggest_station():
+    if not 'keyword' in flask.request.args:
+        keyword = ''
+    else:
+        keyword = flask.request.args['keyword']
+    app.logger.debug(keyword)
+    return ' '.join(station_match.match(keyword))
+
 
 
 app.config.from_object('config')
