@@ -343,7 +343,6 @@ def ajax_suggest_station():
         keyword = ''
     else:
         keyword = flask.request.args['keyword']
-    app.logger.debug(keyword)
     return ' '.join(station_match.match(keyword))
 
 
