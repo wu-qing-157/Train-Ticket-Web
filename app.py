@@ -346,6 +346,10 @@ def ajax_suggest_station():
     return ' '.join(station_match.match(keyword))
 
 
+@app.route('/favicon.ico')
+def favicon():
+    return flask.send_from_directory('static', 'favicon.ico')
+
 
 app.config.from_object('config')
 if __name__ == '__main__':
