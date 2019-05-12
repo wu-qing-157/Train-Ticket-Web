@@ -3,7 +3,7 @@ import pypinyin
 
 def init():
     global station
-    station_raw = open('station_list.txt', 'r').read().strip().split(' ')
+    station_raw = open('station_list.txt', 'r').read().strip().split('\n')
     station = list(map(
         lambda s: tuple([s, ''.join(pypinyin.lazy_pinyin(s)), ''.join(map(lambda y: y[0], pypinyin.lazy_pinyin(s)))]),
         station_raw))
