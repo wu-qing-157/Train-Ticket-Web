@@ -42,7 +42,6 @@ def login():
                 flask.session[S_EMAIL] = result[1]
                 flask.session[S_PHONE] = result[2]
                 flask.session[S_ADMINISTRATOR] = result[3] == '2'
-                flask.session[S_PASSWORD] = password
                 return flask.redirect(flask.url_for('main_page'))
             else:
                 flask.session[S_ERR_MESSAGE] = E_PASSWORD_NOT_MATCH
@@ -84,7 +83,6 @@ def register():
                 flask.session[S_EMAIL] = email
                 flask.session[S_PHONE] = phone
                 flask.session[S_ADMINISTRATOR] = result[3] == '2'
-                flask.session[S_PASSWORD] = password
                 flask.session[S_SUCCESS_MESSAGE] = '您的用户ID是 {} ，请牢记'.format(user_id)
             else:
                 flask.session[S_ERR_MESSAGE] = E_REGISTER_REJECTED
@@ -174,11 +172,7 @@ def account():
                 name = flask.request.form['name']
                 email = flask.request.form['email']
                 phone = flask.request.form['phone']
-                modify_password = 'modify_password' in flask.request.form
-                if modify_password:
-                    password = flask.request.form['new_password']
-                else:
-                    password = flask.session['password']
+                password = flask.request.form['new_password']
                 result = backend.get_result('modify_profile {} {} {} {} {}'
                                             .format(user_id, password, name, email, phone),
                                             SZ_MODIFY_PROFILE, RE_MODIFY_PROFILE)
@@ -187,7 +181,7 @@ def account():
                     flask.session[S_NAME] = name
                     flask.session[S_EMAIL] = email
                     flask.session[S_PHONE] = phone
-                    flask.session[S_PASSWORD] = password
+                    return flask.redirect(flask.url_for('account', _method='GET'))
                 else:
                     flask.session[S_ERR_MESSAGE] = '修改失败'
             except ConnectionRefusedError:
@@ -326,7 +320,7 @@ def ajax_modify_privilege():
         result = backend.get_result("modify_privilege {} {} 2".format(flask.session[S_CURRENT_USER], user_id),
                                     SZ_MODIFY_PRIVILEGE, RE_MODIFY_PRIVILEGE)
         if result == '0':
-            return flask.render_template('ajax_exception.jinja', info=E_UNKNOWN)
+            return flask.render_template('ajax_modify_privilege.jinja', fail=True)
         else:
             return flask.render_template('ajax_modify_privilege.jinja', user_id=user_id)
     except ConnectionRefusedError:

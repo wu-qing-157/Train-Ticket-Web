@@ -37,7 +37,7 @@
                 <button onclick="show_verify('修改个人信息', '个人信息（包括密码）将可以被修改')"
                         class="mdc-button mdc-button--raised width-80"
                         id="verify-edit">
-                    <span class="mdc-button__label">验证</span>
+                    <span class="mdc-button__label">需要两步验证</span>
                 </button>
             </div>
             <form action="" method="post" name="modify-profile" id="modify-form">
@@ -153,31 +153,16 @@
                         请输入正确的联系电话
                     </div>
                 </div>
-                <div class="mdc-form-field checkbox_wrapper" id="modify_password-form-field">
-                    <div class="mdc-checkbox" id="modify_password-checkbox">
-                        <input type="checkbox" class="mdc-checkbox__native-control" id="modify_password"
-                               name="modify_password" onclick="modify_password_handle()">
-                        <div class="mdc-checkbox__background">
-                            <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                                <path class="mdc-checkbox__checkmark-path"
-                                      fill="none"
-                                      d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
-                            </svg>
-                            <div class="mdc-checkbox__mixedmark"></div>
-                        </div>
-                    </div>
-                    <label for="modify_password">修改密码</label>
-                </div>
-                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon hidden"
+                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
                      id="new_password-text-field">
                     <i class="material-icons mdc-text-field__icon">vpn_key</i>
                     <input type="password" class="mdc-text-field__input" id="new_password" name="new_password"
-                           pattern="^[\u0020-\u007e]{6,20}$"
+                           pattern="^[\u0020-\u007e]{6,20}$" required
                            oninput="
                                document.getElementById('new_password-text-field').classList.remove('mdc-text-field--invalid');
                                document.getElementById('new_password-icon').innerText = 'check';
                                this.reportValidity();
-                               if (modify_password_checkbox.checked && this.value !== document.getElementById('new_password_repeat').value) {
+                               if (this.value !== document.getElementById('new_password_repeat').value) {
                                    document.getElementById('new_password_repeat-text-field').classList.add('mdc-text-field--invalid');
                                    document.getElementById('new_password_repeat-icon').innerText = 'error';
                                    document.getElementById('new_password_repeat').setCustomValidity('密码不一致');
@@ -207,14 +192,14 @@
                         长度在6-20位之间，允许包含特殊字符
                     </div>
                 </div>
-                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon hidden"
+                <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
                      id="new_password_repeat-text-field">
                     <i class="material-icons mdc-text-field__icon">vpn_key</i>
                     <input type="password" class="mdc-text-field__input" id="new_password_repeat"
                            name="new_password_repeat"
                            required
                            oninput="
-                               if (modify_password_checkbox.checked && (this.value === '' || this.value !== document.getElementById('new_password').value)) {
+                               if (this.value === '' || this.value !== document.getElementById('new_password').value) {
                                    document.getElementById('new_password_repeat-text-field').classList.add('mdc-text-field--invalid');
                                    document.getElementById('new_password_repeat-icon').innerText = 'error';
                                    setCustomValidity('密码不一致');
@@ -273,7 +258,5 @@
     name_text_field.value = '{{ username }}';
     email_text_field.value = '{{ email }}';
     phone_text_field.value = '{{ phone }}';
-    if (modify_password_checkbox.checked)
-    document.getElementById('modify_password').click();
     };
 {% endblock %}

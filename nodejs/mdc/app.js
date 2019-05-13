@@ -25,29 +25,6 @@ window.account_init = function () {
     const start_edit_button = new MDCRipple(document.getElementById('start-edit'));
     start_edit_button.unbounded = true;
     new MDCRipple(document.getElementById('verify-edit'));
-    window.modify_password_checkbox = new MDCCheckbox(document.getElementById('modify_password-checkbox'));
-    const modify_password_form_field = new MDCFormField(document.getElementById('modify_password-form-field'));
-    modify_password_form_field.input = modify_password_checkbox;
-    window.modify_password_handle = function () {
-        if (modify_password_checkbox.checked) {
-            document.getElementById('new_password-text-field').classList.remove('hidden');
-            document.getElementById('new_password_repeat-text-field').classList.remove('hidden');
-            document.getElementById('new_password').required = true;
-            document.getElementById('new_password_repeat').required = true;
-        } else {
-            document.getElementById('new_password-text-field').classList.add('hidden');
-            document.getElementById('new_password_repeat-text-field').classList.add('hidden');
-            document.getElementById('new_password').required = false;
-            document.getElementById('new_password_repeat').required = false;
-            document.getElementById('new_password_repeat').setCustomValidity('');
-            new_password_text_field.value = '';
-            new_password_repeat_text_field.value = '';
-        }
-    };
-    window.modify_password_hide = function () {
-        document.getElementById('new_password-text-field').classList.add('hidden');
-        document.getElementById('new_password_repeat-text-field').classList.add('hidden');
-    };
 };
 
 window.account_manage_init = function () {

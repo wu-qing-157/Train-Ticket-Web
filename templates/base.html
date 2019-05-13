@@ -154,6 +154,87 @@
         </div>
     </div>
 </div>
+<div class="alert-wrapper">
+    <div class="mdc-dialog"
+         id="base-info-dialog"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="alert-dialog-title"
+         aria-describedby="alert-dialog-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title" id="alert-dialog-title">
+                    <span id="alert-dialog-title-text">车站选择</span>
+                </h2>
+                <div class="mdc-dialog__content" id="alert-dialog-content">
+                    <p><span class="mdc-typography--body1">支持中文、全拼、简拼（不支持三种模式混合）</span></p>
+                    <div id="level0">
+                        <div class="station-suggest-category"><span class="mdc-typography--body1">特等站</span></div>
+                        <div class="station-suggest-button-wrapper" id="level0-button"></div>
+                    </div>
+                    <div id="level1">
+                        <div class="station-suggest-category"><span class="mdc-typography--body1">一等站</span></div>
+                        <div class="station-suggest-button-wrapper" id="level1-button"></div>
+                    </div>
+                    <div id="chinese">
+                        <div class="station-suggest-category"><span class="mdc-typography--body1">中文匹配</span></div>
+                        <div class="station-suggest-button-wrapper" id="chinese-button"></div>
+                    </div>
+                    <div id="full-spell">
+                        <div class="station-suggest-category"><span class="mdc-typography--body1">全拼匹配</span></div>
+                        <div class="station-suggest-button-wrapper" id="full-spell-button"></div>
+                    </div>
+                    <div id="simple-spell">
+                        <div class="station-suggest-category"><span class="mdc-typography--body1">简拼匹配</span></div>
+                        <div class="station-suggest-button-wrapper" id="simple-spell-button"></div>
+                    </div>
+                    <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                         id="verify_password-text-field">
+                        <i class="material-icons mdc-text-field__icon">vpn_key</i>
+                        <input type="text" class="mdc-text-field__input" id="verify_password" name="verify_password"
+                               pattern="^[^\u0000-\u002f\u003a-\u0040\u005b-\u0060\u007b-\u007f]{1,20}$" required
+                               oninput="
+                                   document.getElementById('verify_password-text-field').classList.remove('mdc-text-field--invalid');
+                                   document.getElementById('verify_password-icon').innerText = 'check';
+                                   if (this.reportValidity()) {
+                                       $.getScript('/ajax_suggest_station?type=level0&keyword=' + this.value);
+                                       $.getScript('/ajax_suggest_station?type=level1&keyword=' + this.value);
+                                       $.getScript('/ajax_suggest_station?type=chinese&keyword=' + this.value);
+                                       $.getScript('/ajax_suggest_station?type=full-spell&keyword=' + this.value);
+                                       $.getScript('/ajax_suggest_station?type=simple-spell&keyword=' + this.value);
+                                   }"
+                               oninvalid="
+                                   event.preventDefault();
+                                   document.getElementById('verify_password-text-field').classList.add('mdc-text-field--invalid');
+                                   document.getElementById('verify_password-icon').innerText = 'error';"
+                               aria-controls="verify_password-helper-text"
+                               aria-describedby="verify_password-helper-text">
+                        <i class="material-icons mdc-text-field__icon" id="verify_password-icon">error</i>
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <label class="mdc-floating-label" for="verify_password">查询关键字</label>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <div class="mdc-text-field-helper-line">
+                        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                             id="verify_password-helper-text" aria-hidden="true">
+                            不能包含特殊字符
+                        </div>
+                    </div>
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close"
+                            id="alert-dialog-button">
+                        <span class="mdc-button__label" id="alert-dialog-button-label">算了算了╮(╯▽╰)╭</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
 <script async>
     base_init();
     verify_init();
