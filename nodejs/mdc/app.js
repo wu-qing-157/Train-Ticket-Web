@@ -4,7 +4,7 @@ import {MDCTextField} from '@material/textfield'
 import {MDCRipple} from '@material/ripple/index'
 import {MDCDialog} from '@material/dialog'
 import {MDCTextFieldHelperText} from '@material/textfield/helper-text'
-import $ from 'jquery'
+import {MDCMenu} from '@material/menu';
 
 window.account_init = function () {
     window.id_text_field = new MDCTextField(document.getElementById('id-text-field'))
@@ -101,108 +101,10 @@ window.base_info_init = function () {
     }
 }
 
-window.station_suggest_init = function () {
-    $.get('station_list', function (data) {
-        window.station_list = []
-        data.split('\n').forEach(function (value) {
-            station_list.push(value.split(' '))
-        })
-        console.log('full list')
-    })
-    /*
-    $.get('level0_station_list', function (data) {
-        window.level0_station_list = []
-        data.split('\n').forEach(function (value) {
-            level0_station_list.add(value.split(' '))
-        })
-        console.log('level0')
-    })
-    $.get('level1_station_list', function (data) {
-        window.level1_station_list = []
-        data.split('\n').forEach(function (value) {
-            level1_station_list.add(value.split(' '))
-        })
-        console.log('level1')
-    })
-    */
-    window.station_suggest_dialog = new MDCDialog(document.getElementById('station-suggest-dialog'))
-    window.exsit_station_suggest_button = []
-    for (const item in ['chinese-button', 'full-spell-button', 'simple-spell-button', 'level0-button', 'level1-button'])
-        for (var i = 0; i < 5; i++) {
-            exsit_station_suggest_button.add(new MDCRipple(document.getElementById(item + '__' + i)))
-            document.getElementById(item + '__' + i).classList.add('hidden')
-        }
-    station_suggest_dialog.listen('MDCDialog:opened', function () {
-        exsit_station_suggest_button.forEach(function (value) {
-            value.layout()
-        })
-    })
-    window.open_station_suggest = function (station_suggest_target_) {
-        station_suggest_dialog.open()
-        window.station_suggest_target = station_suggest_target_
-    }
-    window.suggest_station = function () {
-        const keyword = document.getElementById('station-suggest-input').value;
-        document.getElementById('chinese-button').classList.remove('hidden')
-        var cnt
-        var i
-        cnt = 0
-        for (const item in station_list)
-            if (item[0].indexOf(keyword) >= 0) {
-                document.getElementById('chinese-button__' + cnt).value = item[0]
-                document.getElementById('chinese-button__' + cnt).classList.remove('hidden')
-                cnt++
-                if (cnt >= 5)
-                    break
-            }
-        for (i = cnt; i < 5; i++) document.getElementById('chinese-button__' + cnt).classList.add('hidden')
-        if (cnt == 0) document.getElementById('chinese-button').classList.add('hidden')
-        document.getElementById('full-spell-button').classList.remove('hidden')
-        cnt = 0
-        for (const item in station_list)
-            if (item[1] === keyword) {
-                document.getElementById('full-spell-button__' + cnt).value = item[0]
-                document.getElementById('full-spell-button__' + cnt).classList.remove('hidden')
-                cnt++
-                if (cnt >= 5)
-                    break
-            }
-        if (cnt < 5) for (const item in station_list)
-            if (item[1].startsWith(keyword)) {
-                document.getElementById('full-spell-button__' + cnt).value = item[0]
-                document.getElementById('full-spell-button__' + cnt).classList.remove('hidden')
-                cnt++
-                if (cnt >= 5)
-                    break
-            }
-        for (i = cnt; i < 5; i++) document.getElementById('full-spell-button__' + cnt).classList.add('hidden')
-        if (cnt == 0) document.getElementById('full-spell-button').classList.add('hidden')
-        document.getElementById('simple-spell-button').classList.remove('hidden')
-        cnt = 0
-        for (const item in station_list)
-            if (item[1] === keyword) {
-                document.getElementById('simple-spell-button__' + cnt).value = item[0]
-                document.getElementById('simple-spell-button__' + cnt).classList.remove('hidden')
-                cnt++
-                if (cnt >= 5)
-                    break
-            }
-        if (cnt < 5) for (const item in station_list)
-            if (item[1].startsWith(keyword)) {
-                document.getElementById('simple-spell-button__' + cnt).value = item[0]
-                document.getElementById('simple-spell-button__' + cnt).classList.remove('hidden')
-                cnt++
-                if (cnt >= 5)
-                    break
-            }
-        for (i = cnt; i < 5; i++) document.getElementById('simple-spell-button__' + cnt).classList.add('hidden')
-        if (cnt == 0) document.getElementById('simple-spell-button').classList.add('hidden')
-    }
-}
-
 window.verify_init = function () {
     window.verify_dialog = new MDCDialog(document.getElementById('verify-dialog'))
     const text_field = new MDCTextField(document.getElementById('verify_password-text-field'))
+    new MDCTextFieldHelperText(document.getElementById('verify_password-helper-text'))
     verify_dialog.listen('MDCDialog:opened', function () {
         text_field.layout()
     })
@@ -224,4 +126,105 @@ window.main_page_init = function () {
     })
     const refresh_button = new MDCRipple(document.getElementById('refresh'))
     refresh_button.unbounded = true
+}
+
+window.order_init = function () {
+    window.depart_text_field = new MDCTextField(document.getElementById('depart-text-field'))
+    window.depart_menu = new MDCMenu(document.getElementById('depart-menu'))
+}
+
+window.new_menu_item = function (name, input, inputDOM, menu) {
+    const new_item = document.createElement('li')
+    new_item.setAttribute('role', 'menuitem')
+    new_item.onclick = function () {
+        input.value = name
+        inputDOM.oninput()
+        menu.open = false
+    }
+    new_item.classList.add('mdc-list-item')
+    new_item.innerHTML = '<span class="mdc-list-item__text">' + name + '</span>'
+    return new_item
+}
+
+window.level0 = []
+window.level1 = []
+window.level2 = []
+
+window.station_suggest_init = function () {
+    const http0 = new XMLHttpRequest()
+    http0.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var ret = this.responseText
+            if (ret.charAt(ret.length - 1) === '\n')
+                ret = ret.substring(0, ret.length - 1)
+            ret.split('\n').forEach(function (value) {
+                level0.push(value.split(' '))
+            })
+        }
+    }
+    http0.open('GET', 'station_list_0', true)
+    http0.send()
+    const http2 = new XMLHttpRequest()
+    http2.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var ret = this.responseText
+            if (ret.charAt(ret.length - 1) === '\n')
+                ret = ret.substring(0, ret.length - 1)
+            ret.split('\n').forEach(function (value) {
+                level2.push(value.split(' '))
+            })
+        }
+    }
+    http2.open('GET', 'station_list_2', true)
+    http2.send()
+}
+
+function add_station_suggest(keyword, input, inputDOM, menu, menuDOM) {
+    const menu_item_max = 15
+    var cnt = 0
+    var i
+    for (i = 0; i < level0.length; i++)
+        if (level0[i][0].indexOf(keyword) >= 0) {
+            menuDOM.appendChild(new_menu_item(level0[i][0], input, inputDOM, menu))
+            cnt++
+            if (cnt == menu_item_max) return
+        }
+    for (i = 0; i < level0.length; i++)
+        if (!(level0[i][0].indexOf(keyword) >= 0) && level0[i][1].startsWith(keyword)) {
+            menuDOM.appendChild(new_menu_item(level0[i][0], input, inputDOM, menu))
+            cnt++
+            if (cnt == menu_item_max) return
+        }
+    for (i = 0; i < level0.length; i++)
+        if (!(level0[i][0].indexOf(keyword) >= 0) && !(level0[i][1].startsWith(keyword)) && level0[i][2].startsWith(keyword)) {
+            menuDOM.appendChild(new_menu_item(level0[i][0], input, inputDOM, menu))
+            cnt++
+            if (cnt == menu_item_max) return
+        }
+    for (i = 0; i < level2.length; i++)
+        if (level2[i][0].indexOf(keyword) >= 0) {
+            menuDOM.appendChild(new_menu_item(level2[i][0], input, inputDOM, menu))
+            cnt++
+            if (cnt == menu_item_max) return
+        }
+    for (i = 0; i < level2.length; i++)
+        if (!(level2[i][0].indexOf(keyword) >= 0) && level2[i][1].startsWith(keyword)) {
+            menuDOM.appendChild(new_menu_item(level2[i][0], input, inputDOM, menu))
+            cnt++
+            if (cnt == menu_item_max) return
+        }
+    for (i = 0; i < level2.length; i++)
+        if (!(level2[i][0].indexOf(keyword) >= 0) && !(level2[i][1].startsWith(keyword)) && level2[i][2].startsWith(keyword)) {
+            menuDOM.appendChild(new_menu_item(level2[i][0], input, inputDOM, menu))
+            cnt++
+            if (cnt == menu_item_max) return
+        }
+}
+
+window.update_station_suggest = function (input, inputDOM, menu, menuDOM) {
+    const keyword = input.value
+    menuDOM.innerHTML = ''
+    add_station_suggest(keyword, input, inputDOM, menu, menuDOM)
+    menu.initialize()
+    menu.open = true
 }

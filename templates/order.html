@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block webpage_title %}
+    订购车票 - Train Ticket
+{% endblock %}
+{% block child_header %}
+    <link href="{{ url_for('static', filename='order.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div class="station-input-wrapper">
+        <div class="input_wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+             id="depart-text-field">
+            <i class="material-icons mdc-text-field__icon">vpn_key</i>
+            <input type="text" class="mdc-text-field__input" id="depart" name="depart"
+                   pattern=".*" required
+                   oninput="
+                   document.getElementById('depart-text-field').classList.remove('mdc-text-field--invalid');
+                   document.getElementById('depart-icon').innerText = 'check';
+                   this.reportValidity();
+                   update_station_suggest(depart_text_field, this, depart_menu, document.getElementById('depart-menu'))"
+                   oninvalid="
+                   event.preventDefault();
+                   document.getElementById('depart-text-field').classList.add('mdc-text-field--invalid');
+                   document.getElementById('depart-icon').innerText = 'error';">
+            <i class="material-icons mdc-text-field__icon" id="depart-icon">error</i>
+            <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                    <label class="mdc-floating-label" for="depart">密码</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+            </div>
+        </div>
+        <div class="mdc-menu mdc-menu-surface station-suggest-menu" id="depart-menu">
+            <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+                <li class="mdc-list-item" role="menuitem">
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    order_init();
+    station_suggest_init();
+    document.getElementById('order').onclick = function (a, b) {};
+    document.getElementById('order').classList.add('mdc-list-item--activated');
+{% endblock %}

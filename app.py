@@ -1,14 +1,10 @@
 import flask, socket
 
-import backend, station_match
+import backend
 
 from const import *
 
 app = flask.Flask(__name__)
-
-print('initialize station list...', end='')
-station_match.init()
-print(' complete!')
 
 
 @app.route('/')
@@ -135,7 +131,8 @@ def main_page():
 
 @app.route('/order')
 def order():
-    return 'order'
+    return flask.render_template('order.html', username=flask.session[S_NAME],
+                                 administrator=flask.session[S_ADMINISTRATOR])
 
 
 @app.route('/ordered')
@@ -331,33 +328,14 @@ def ajax_modify_privilege():
         return flask.render_template('ajax_exception.js', info=E_BAD_RETURN)
 
 
-@app.route('/station_list')
-def station_list():
-    return flask.send_from_directory('static', 'station_list.txt')
+@app.route('/station_list_0')
+def station_list_0():
+    return flask.send_from_directory('static', 'station_list_0.txt')
 
 
-@app.route('/ajax_suggest_station')
-def ajax_suggest_station():
-    if not 'keyword' in flask.request.args:
-        keyword = ''
-    else:
-        keyword = flask.request.args['keyword']
-    if not 'type' in flask.request.args:
-        t = 'level0'
-    else:
-        t = flask.request.args['type']
-    if t == 'level0':
-        return flask.render_template('ajax_suggest_station.js', ret=station_match.match_level0(keyword), which='level0')
-    elif t == 'level1':
-        return ' '.join(station_match.match_level1(keyword))
-    elif t == 'chinese':
-        return ' '.join(station_match.match_chinese(keyword))
-    elif t == 'full':
-        return ' '.join(station_match.match_full(keyword))
-    elif t == 'simple':
-        return ' '.join(station_match.match_simple(keyword))
-    else:
-        return ' '.join(station_match.match_level0(keyword))
+@app.route('/station_list_2')
+def station_list_2():
+    return flask.send_from_directory('static', 'station_list_2.txt')
 
 
 @app.route('/favicon.ico')

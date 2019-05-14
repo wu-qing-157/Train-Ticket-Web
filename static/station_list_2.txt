@@ -166,9 +166,6 @@
 北滘 beijiao bj
 北京北 beijingbei bjb
 北京东 beijingdong bjd
-北京南 beijingnan bjn
-北京西 beijingxi bjx
-北京 beijing bj
 北井子 beijingzi bjz
 北林 beilin bl
 北流 beiliu bl
@@ -261,8 +258,6 @@
 常平东 changpingdong cpd
 常兴 changxing cx
 常州北 changzhoubei czb
-常州 changzhou cz
-常州 changzhou cz
 超梁沟 chaolianggou clg
 巢湖东 chaohudong chd
 巢湖 chaohu ch
@@ -288,8 +283,6 @@
 陈家湾 chenjiawan cjw
 陈相屯 chenxiangtun cxt
 晨明 chenming cm
-成都 chengdu cd
-成都东 chengdudong cdd
 成都南 chengdunan cdn
 成高子 chenggaozi cgz
 成吉思汗 chengjisihan cjsh
@@ -387,7 +380,6 @@
 大滩 datan dt
 大田边 datianbian dtb
 大通西 datongxi dtx
-大同 datong dt
 大同东 datongdong dtd
 大屯 datun dt
 大湾子 dawanzi dwz
@@ -425,13 +417,12 @@
 丹霞山 danxiashan dxs
 丹阳北 danyangbei dyb
 丹阳 danyang dy
-丹阳 danyang dy
 当雄 dangxiong dx
 当阳 dangyang dy
 砀山 dangshan ds
 刀尔登 daoerdeng ded
 到保 daobao db
-道 清 dao qing d q
+道清 daoqing dq
 道镇 daozhen dz
 道州 daozhou dz
 得耳布尔 deerbuer debe
@@ -776,10 +767,7 @@
 广元 guangyuan gy
 广元东 guangyuandong gyd
 广元南 guangyuannan gyn
-广州 guangzhou gz
 广州北 guangzhoubei gzb
-广州东 guangzhoudong gzd
-广州南 guangzhounan gzn
 归德乡 guidexiang gdx
 归流河 guiliuhe glh
 贵定 guiding gd
@@ -788,21 +776,19 @@
 贵溪 guixi gx
 贵阳 guiyang gy
 桂林 guilin gl
-桂林北 guilinbei glb
 桂林西 guilinxi glx
 桂平 guiping gp
 郭尔奔敖包 guoerbenaobao gebab
 郭家店 guojiadian gjd
 郭家屯 guojiatun gjt
 虢镇 guozhen gz
-果 松 guo song g s
+果松 guosong gs
 哈川 hachuan hc
 哈达 hada hd
 哈达铺 hadapu hdp
 哈达山 hadashan hds
 哈达阳 hadayang hdy
 哈尔巴岭 haerbaling hebl
-哈尔滨 haerbin heb
 哈尔滨北 haerbinbei hebb
 哈尔滨东 haerbindong hebd
 哈尔滨西 haerbinxi hebx
@@ -845,7 +831,6 @@
 寒葱沟 hanconggou hcg
 寒岭 hanling hl
 汉川 hanchuan hc
-汉口 hankou hk
 汉寿 hanshou hs
 汉王山 hanwangshan hws
 汉阴 hanyin hy
@@ -853,14 +838,12 @@
 汉中 hanzhong hz
 汗苏鲁 hansulu hsl
 杭锦旗 hangjinqi hjq
-杭州东 hangzhoudong hzd
 杭州 hangzhou hz
 豪门 haomen hm
 好鲁库 haoluku hlk
 浩良河 haolianghe hlh
 合川 hechuan hc
 合肥北城 hefeibeicheng hfbc
-合肥南 hefeinan hfn
 合肥 hefei hf
 合浦 hepu hp
 合阳北 heyangbei hyb
@@ -909,7 +892,6 @@
 衡山 hengshan hs
 衡山西 hengshanxi hsx
 衡水 hengshui hs
-衡阳 hengyang hy
 衡阳东 hengyangdong hyd
 红安 hongan ha
 红房子 hongfangzi hfz
@@ -1008,7 +990,7 @@
 荒沟西 huanggouxi hgx
 皇德 huangde hd
 皇姑屯 huanggutun hgt
-黄 柏 huang bai h b
+黄柏 huangbai hb
 黄白茨 huangbaici hbc
 黄村 huangcun hc
 黄冈 huanggang hg
@@ -1080,8 +1062,6 @@
 集安 jian ja
 集宁南 jiningnan jnn
 纪家沟 jijiagou jjg
-济南 jinan jn
-济南西 jinanxi jnx
 济宁 jining jn
 济源 jiyuan jy
 绩溪北 jixibei jxb
@@ -1092,7 +1072,6 @@
 加格达奇 jiagedaqi jgdq
 加劳 jialao jl
 加南 jianan jn
-佳木斯 jiamusi jms
 嘉川 jiachuan jc
 嘉峰 jiafeng jf
 嘉善南 jiashannan jsn
@@ -1119,7 +1098,7 @@
 建水 jianshui js
 建阳 jianyang jy
 涧池铺 jianchipu jcp
-江 源 jiang yuan j y
+江源 jiangyuan jy
 江都 jiangdu jd
 江华 jianghua jh
 江津 jiangjin jj
@@ -1282,7 +1261,6 @@
 葵潭 kuitan kt
 昆都仑召 kundoulunzhao kdlz
 昆明 kunming km
-昆明南 kunmingnan kmn
 昆山南 kunshannan ksn
 昆山 kunshan ks
 昆阳 kunyang ky
@@ -1314,7 +1292,6 @@
 兰溪 lanxi lx
 兰州 lanzhou lz
 兰州东 lanzhoudong lzd
-兰州西 lanzhouxi lzx
 兰州新区 lanzhouxinqu lzxq
 蓝村 lancun lc
 滥坝 lanba lb
@@ -1558,7 +1535,6 @@
 洛门 luomen lm
 洛阳 luoyang ly
 洛阳东 luoyangdong lyd
-洛阳龙门 luoyanglongmen lylm
 骆驼巷 luotuoxiang ltx
 珞璜 luohuang lh
 落坡岭 luopoling lpl
@@ -1681,7 +1657,6 @@
 墨冲 mochong mc
 墨玉 moyu my
 牟平 muping mp
-牡丹江 mudanjiang mdj
 木里图 mulitu mlt
 木头营子 mutouyingzi mtyz
 木竹河 muzhuhe mzh
@@ -1722,7 +1697,6 @@
 南华北 nanhuabei nhb
 南江口 nanjiangkou njk
 南峧 nanjiao nj
-南京南 nanjingnan njn
 南京 nanjing nj
 南靖 nanjing nj
 南口前 nankouqian nkq
@@ -1730,7 +1704,6 @@
 南朗 nanlang nl
 南陵 nanling nl
 南木 nanmu nm
-南宁 nanning nn
 南宁东 nanningdong nnd
 南宁西 nanningxi nnx
 南票 nanpiao np
@@ -1897,7 +1870,6 @@
 七营 qiying qy
 戚墅堰 qishuyan qsy
 齐哈日格图 qiharigetu qhrgt
-齐齐哈尔 qiqihaer qqhe
 齐齐哈尔南 qiqihaernan qqhen
 齐岳山 qiyueshan qys
 祁东 qidong qd
@@ -1943,7 +1915,6 @@
 沁县 qinxian qx
 沁阳 qinyang qy
 青城山 qingchengshan qcs
-青岛 qingdao qd
 青岛北 qingdaobei qdb
 青堆 qingdui qd
 青沟子 qinggouzi qgz
@@ -1995,7 +1966,7 @@
 全椒 quanjiao qj
 全胜 quansheng qs
 全州南 quanzhounan qzn
-泉 阳 quan yang q y
+泉阳 quanyang qy
 泉沟 quangou qg
 泉江 quanjiang qj
 泉水屯 quanshuitun qst
@@ -2101,7 +2072,6 @@
 厦门高崎 xiamengaoqi xmgq
 山城镇 shanchengzhen scz
 山丹 shandan sd
-山海关 shanhaiguan shg
 山河屯 shanhetun sht
 山坡东 shanpodong spd
 山市 shanshi ss
@@ -2127,10 +2097,8 @@
 上高镇 shanggaozhen sgz
 上谷 shanggu sg
 上郭关 shangguoguan sgg
-上海虹桥 shanghaihongqiao shhq
 上海南 shanghainan shn
 上海西 shanghaixi shx
-上海 shanghai sh
 上杭 shanghang sh
 上街 shangjie sj
 上普雄 shangpuxiong spx
@@ -2162,7 +2130,6 @@
 绅坊 shenfang sf
 深井子 shenjingzi sjz
 深圳 shenzhen sz
-深圳北 shenzhenbei szb
 深圳东 shenzhendong szd
 深圳坪山 shenzhenpingshan szps
 深圳西 shenzhenxi szx
@@ -2177,8 +2144,6 @@
 沈家 shenjia sj
 沈家河 shenjiahe sjh
 沈丘 shenqiu sq
-沈阳 shenyang sy
-沈阳北 shenyangbei syb
 沈阳东 shenyangdong syd
 升昌 shengchang sc
 生芝渠 shengzhiqu szq
@@ -2196,7 +2161,7 @@
 十家子 shijiazi sjz
 十里坪 shiliping slp
 十堰 shiyan sy
-石 人 shi ren s r
+石人 shiren sr
 石坝 shiba sb
 石板滩 shibantan sbt
 石场 shichang sc
@@ -2205,7 +2170,6 @@
 石湖 shihu sh
 石家 shijia sj
 石家庄北 shijiazhuangbei sjzb
-石家庄 shijiazhuang sjz
 石郎庄 shilangzhuang slz
 石林 shilin sl
 石林南 shilinnan sln
@@ -2263,7 +2227,7 @@
 双鸭山 shuangyashan sys
 双羊店 shuangyangdian syd
 双子河 shuangzihe szh
-水 洞 shui dong s d
+水洞 shuidong sd
 水车湾 shuichewan scw
 水城 shuicheng sc
 水地 shuidi sd
@@ -2318,7 +2282,6 @@
 苏吉达巴 sujidaba sjdb
 苏集 suji sj
 苏家坡 sujiapo sjp
-苏家屯 sujiatun sjt
 苏尼特左旗 sunitezuoqi sntzq
 苏雄 suxiong sx
 苏州北 suzhoubei szb
@@ -2370,7 +2333,6 @@
 太阳沟 taiyanggou tyg
 太阳山 taiyangshan tys
 太阳升 taiyangsheng tys
-太原 taiyuan ty
 太原东 taiyuandong tyd
 太原南 taiyuannan tyn
 太子河 taizihe tzh
@@ -2421,7 +2383,6 @@
 天津北 tianjinbei tjb
 天津南 tianjinnan tjn
 天津西 tianjinxi tjx
-天津 tianjin tj
 天门 tianmen tm
 天门南 tianmennan tmn
 天棚 tianpeng tp
@@ -2441,7 +2402,7 @@
 田心东 tianxindong txd
 田阳 tianyang ty
 田庄镇 tianzhuangzhen tzz
-铁 厂 tie chang t c
+铁厂 tiechang tc
 铁佛寺 tiefosi tfs
 铁口 tiekou tk
 铁力 tieli tl
@@ -2514,7 +2475,7 @@
 歪头山 waitoushan wts
 弯道 wandao wd
 弯坵 wanqiu wq
-湾 沟 wan gou w g
+湾沟 wangou wg
 完工 wangong wg
 万发屯 wanfatun wft
 万家屯 wanjiatun wjt
@@ -2604,7 +2565,6 @@
 无为 wuwei ww
 无锡东 wuxidong wxd
 无锡新区 wuxixinqu wxxq
-无锡 wuxi wx
 芜湖 wuhu wh
 吴堡 wubu wb
 吴官田 wuguantian wgt
@@ -2638,10 +2598,8 @@
 五寨 wuzhai wz
 午汲 wuji wj
 武安 wuan wa
-武昌 wuchang wc
 武当山 wudangshan wds
 武功 wugong wg
-武汉 wuhan wh
 武隆 wulong wl
 武清 wuqing wq
 武山 wushan ws
@@ -2656,8 +2614,6 @@
 武义 wuyi wy
 武陟 wuzhi wz
 婺源 wuyuan wy
-西安 xian xa
-西安北 xianbei xab
 西安南 xiannan xan
 西昌 xichang xc
 西昌南 xichangnan xcn
@@ -2908,7 +2864,7 @@
 旬阳 xunyang xy
 旬阳北 xunyangbei xyb
 巡场 xunchang xc
-鸭 圆 ya yuan y y
+鸭圆 yayuan yy
 鸭江 yajiang yj
 牙克石 yakeshi yks
 牙屯堡 yatunbao ytb
@@ -2964,7 +2920,7 @@
 羊圈子 yangjuanzi yjz
 羊尾哨 yangweishao yws
 羊者窝 yangzhewo yzw
-阳 岔 yang cha y c
+阳岔 yangcha yc
 阳城 yangcheng yc
 阳澄湖 yangchenghu ych
 阳春 yangchun yc
@@ -3054,7 +3010,6 @@
 英德西 yingdexi ydx
 英吉沙 yingjisha yjs
 鹰手营子 yingshouyingzi ysyz
-鹰潭 yingtan yt
 鹰潭北 yingtanbei ytb
 迎宾路 yingbinlu ybl
 迎春 yingchun yc
@@ -3136,9 +3091,8 @@
 玉溪 yuxi yx
 郁南 yunan yn
 郁山 yushan ys
-育 新 yu xin y x
+育新 yuxin yx
 育英 yuying yy
-裕国 yuguo yg
 鸳鸯镇 yuanyangzhen yyz
 元坝 yuanba yb
 元宝山 yuanbaoshan ybs
@@ -3219,7 +3173,6 @@
 樟树东 zhangshudong zsd
 长城 changcheng cc
 长冲 zhangchong zc
-长春 changchun cc
 长春南 changchunnan ccn
 长春西 changchunxi ccx
 长甸 zhangdian zd
@@ -3234,7 +3187,6 @@
 长庆桥 zhangqingqiao zqq
 长沙 changsha cs
 长沙埂 changshageng csg
-长沙南 changshanan csn
 长山屯 zhangshantun zst
 长寿 changshou cs
 长寿北 changshoubei csb
@@ -3274,7 +3226,6 @@
 镇城底 zhenchengdi zcd
 镇江南 zhenjiangnan zjn
 镇江 zhenjiang zj
-镇江 zhenjiang zj
 镇赉 zhenlai zl
 镇平 zhenping zp
 镇西 zhenxi zx
@@ -3284,8 +3235,6 @@
 正定站 zhengdingzhan zdz
 正镶白旗 zhengxiangbaiqi zxbq
 郑家屯 zhengjiatun zjt
-郑州 zhengzhou zz
-郑州东 zhengzhoudong zzd
 郑州西 zhengzhouxi zzx
 枝城 zhicheng zc
 枝江北 zhijiangbei zjb
@@ -3313,7 +3262,6 @@
 钟祥 zhongxiang zx
 仲恺 zhongkai zk
 重庆 chongqing cq
-重庆北 chongqingbei cqb
 重庆东 chongqingdong cqd
 重庆南 chongqingnan cqn
 重庆西 chongqingxi cqx
@@ -3333,7 +3281,6 @@
 珠斯花 zhusihua zsh
 珠窝 zhuwo zw
 珠窝东 zhuwodong zwd
-株洲 zhuzhou zz
 株洲南 zhuzhounan zzn
 株洲西 zhuzhouxi zzx
 诸城 zhucheng zc

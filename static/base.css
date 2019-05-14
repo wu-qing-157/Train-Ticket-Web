@@ -44,6 +44,11 @@
     right: 0;
 }
 
+.right-wrapper {
+    position: absolute;
+    right: 0;
+}
+
 .button-wrapper {
     display: block;
     width: 100%;
@@ -80,6 +85,10 @@
 /* single property */
 .crimson {
     color: crimson;
+}
+
+.dimgray {
+    color: dimgray;
 }
 
 .width-33 {
