@@ -290,23 +290,23 @@ def ajax_query_profile():
     if not S_ADMINISTRATOR in flask.session or not flask.session[S_ADMINISTRATOR]:
         return 'document.body.innerText = "{}"'.format(E_NOT_ADMINISTRATOR)
     if not 'user_id' in flask.request.args:
-        return flask.render_template('ajax_bad_request.jinja', info=E_INVALID_REQUEST)
+        return flask.render_template('ajax_bad_request.js', info=E_INVALID_REQUEST)
     user_id = flask.request.args['user_id']
     flask.session[S_MANAGED_USER_ID] = user_id
     try:
         result = backend.get_result("query_profile {}".format(user_id), SZ_QUERY_PROFILE, RE_QUERY_PROFILE_OR_NONE)
         if result == '0':
-            return flask.render_template('ajax_query_profile.jinja', not_exist=True, user_id=user_id)
+            return flask.render_template('ajax_query_profile.js', not_exist=True, user_id=user_id)
         else:
             [name, email, phone, administrator] = result.split(' ')
-            return flask.render_template('ajax_query_profile.jinja', user_id=user_id, name=name, email=email,
+            return flask.render_template('ajax_query_profile.js', user_id=user_id, name=name, email=email,
                                          phone=phone, administrator=administrator == '2')
     except ConnectionRefusedError:
-        return flask.render_template('ajax_exception.jinja', info=E_CONNECTION_REFUSED)
+        return flask.render_template('ajax_exception.js', info=E_CONNECTION_REFUSED)
     except socket.timeout:
-        return flask.render_template('ajax_exception.jinja', info=E_CONNECTION_TIMEOUT)
+        return flask.render_template('ajax_exception.js', info=E_CONNECTION_TIMEOUT)
     except SyntaxError:
-        return flask.render_template('ajax_exception.jinja', info=E_BAD_RETURN)
+        return flask.render_template('ajax_exception.js', info=E_BAD_RETURN)
 
 
 @app.route('/ajax_modify_privilege')
@@ -314,21 +314,26 @@ def ajax_modify_privilege():
     if not S_ADMINISTRATOR in flask.session or not flask.session[S_ADMINISTRATOR]:
         return 'document.body.innerText = "{}"'.format(E_NOT_ADMINISTRATOR)
     if not 'target' in flask.request.args:
-        return flask.render_template('ajax_bad_request.jinja', info=E_INVALID_REQUEST)
+        return flask.render_template('ajax_bad_request.js', info=E_INVALID_REQUEST)
     user_id = flask.request.args['target']
     try:
         result = backend.get_result("modify_privilege {} {} 2".format(flask.session[S_CURRENT_USER], user_id),
                                     SZ_MODIFY_PRIVILEGE, RE_MODIFY_PRIVILEGE)
         if result == '0':
-            return flask.render_template('ajax_modify_privilege.jinja', fail=True)
+            return flask.render_template('ajax_modify_privilege.js', fail=True)
         else:
-            return flask.render_template('ajax_modify_privilege.jinja', user_id=user_id)
+            return flask.render_template('ajax_modify_privilege.js', user_id=user_id)
     except ConnectionRefusedError:
-        return flask.render_template('ajax_exception.jinja', info=E_CONNECTION_REFUSED)
+        return flask.render_template('ajax_exception.js', info=E_CONNECTION_REFUSED)
     except socket.timeout:
-        return flask.render_template('ajax_exception.jinja', info=E_CONNECTION_TIMEOUT)
+        return flask.render_template('ajax_exception.js', info=E_CONNECTION_TIMEOUT)
     except SyntaxError:
-        return flask.render_template('ajax_exception.jinja', info=E_BAD_RETURN)
+        return flask.render_template('ajax_exception.js', info=E_BAD_RETURN)
+
+
+@app.route('/station_list')
+def station_list():
+    return flask.send_from_directory('static', 'station_list.txt')
 
 
 @app.route('/ajax_suggest_station')
@@ -337,7 +342,22 @@ def ajax_suggest_station():
         keyword = ''
     else:
         keyword = flask.request.args['keyword']
-    return ' '.join(station_match.match(keyword))
+    if not 'type' in flask.request.args:
+        t = 'level0'
+    else:
+        t = flask.request.args['type']
+    if t == 'level0':
+        return flask.render_template('ajax_suggest_station.js', ret=station_match.match_level0(keyword), which='level0')
+    elif t == 'level1':
+        return ' '.join(station_match.match_level1(keyword))
+    elif t == 'chinese':
+        return ' '.join(station_match.match_chinese(keyword))
+    elif t == 'full':
+        return ' '.join(station_match.match_full(keyword))
+    elif t == 'simple':
+        return ' '.join(station_match.match_simple(keyword))
+    else:
+        return ' '.join(station_match.match_level0(keyword))
 
 
 @app.route('/favicon.ico')

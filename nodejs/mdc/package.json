@@ -13,7 +13,8 @@
     "postcss-loader": "latest",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
-    "babel-preset-env": "latest"
+    "babel-preset-env": "latest",
+    "jquery": "latest"
   },
   "scripts": {
     "build": "webpack -p",
