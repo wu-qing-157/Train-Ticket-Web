@@ -149,8 +149,11 @@ window.new_menu_item = function (name, input, inputDOM, menu) {
 window.level0 = []
 window.level1 = []
 window.level2 = []
+window.station_suggest_init_cnt = 0
 
 window.station_suggest_init = function () {
+    if (station_suggest_init_cnt == 2) return
+    window.station_suggest_init_cnt = 0
     const http0 = new XMLHttpRequest()
     http0.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -160,6 +163,7 @@ window.station_suggest_init = function () {
             ret.split('\n').forEach(function (value) {
                 level0.push(value.split(' '))
             })
+            station_suggest_init_cnt++
         }
     }
     http0.open('GET', 'station_list_0', true)
@@ -173,6 +177,7 @@ window.station_suggest_init = function () {
             ret.split('\n').forEach(function (value) {
                 level2.push(value.split(' '))
             })
+            station_suggest_init_cnt++
         }
     }
     http2.open('GET', 'station_list_2', true)
@@ -190,13 +195,13 @@ function add_station_suggest(keyword, input, inputDOM, menu, menuDOM) {
             if (cnt == menu_item_max) return
         }
     for (i = 0; i < level0.length; i++)
-        if (!(level0[i][0].indexOf(keyword) >= 0) && level0[i][1].startsWith(keyword)) {
+        if (level0[i][0].indexOf(keyword) < 0 && level0[i][1].startsWith(keyword)) {
             menuDOM.appendChild(new_menu_item(level0[i][0], input, inputDOM, menu))
             cnt++
             if (cnt == menu_item_max) return
         }
     for (i = 0; i < level0.length; i++)
-        if (!(level0[i][0].indexOf(keyword) >= 0) && !(level0[i][1].startsWith(keyword)) && level0[i][2].startsWith(keyword)) {
+        if (level0[i][0].indexOf(keyword) < 0 && !(level0[i][1].startsWith(keyword)) && level0[i][2].startsWith(keyword)) {
             menuDOM.appendChild(new_menu_item(level0[i][0], input, inputDOM, menu))
             cnt++
             if (cnt == menu_item_max) return
@@ -208,13 +213,25 @@ function add_station_suggest(keyword, input, inputDOM, menu, menuDOM) {
             if (cnt == menu_item_max) return
         }
     for (i = 0; i < level2.length; i++)
-        if (!(level2[i][0].indexOf(keyword) >= 0) && level2[i][1].startsWith(keyword)) {
+        if (level2[i][0].indexOf(keyword) < 0 && level2[i][1].startsWith(keyword)) {
             menuDOM.appendChild(new_menu_item(level2[i][0], input, inputDOM, menu))
             cnt++
             if (cnt == menu_item_max) return
         }
     for (i = 0; i < level2.length; i++)
-        if (!(level2[i][0].indexOf(keyword) >= 0) && !(level2[i][1].startsWith(keyword)) && level2[i][2].startsWith(keyword)) {
+        if (level2[i][0].indexOf(keyword) < 0 && !(level2[i][1].startsWith(keyword)) && level2[i][2].startsWith(keyword)) {
+            menuDOM.appendChild(new_menu_item(level2[i][0], input, inputDOM, menu))
+            cnt++
+            if (cnt == menu_item_max) return
+        }
+    for (i = 0; i < level0.length; i++)
+        if (level0[i][0].indexOf(keyword) < 0 && level0[i][1].indexOf(keyword) > 0 && level0[i][2].indexOf(keyword) < 0) {
+            menuDOM.appendChild(new_menu_item(level0[i][0], input, inputDOM, menu))
+            cnt++
+            if (cnt == menu_item_max) return
+        }
+    for (i = 0; i < level2.length; i++)
+        if (level2[i][0].indexOf(keyword) < 0 && level2[i][1].indexOf(keyword) > 0 && level2[i][2].indexOf(keyword) < 0) {
             menuDOM.appendChild(new_menu_item(level2[i][0], input, inputDOM, menu))
             cnt++
             if (cnt == menu_item_max) return
@@ -222,7 +239,7 @@ function add_station_suggest(keyword, input, inputDOM, menu, menuDOM) {
 }
 
 window.update_station_suggest = function (input, inputDOM, menu, menuDOM) {
-    const keyword = input.value
+    const keyword = input.value.toLowerCase()
     menuDOM.innerHTML = ''
     add_station_suggest(keyword, input, inputDOM, menu, menuDOM)
     menu.initialize()

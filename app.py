@@ -131,9 +131,17 @@ def main_page():
 
 @app.route('/order')
 def order():
+    if flask.session.get(S_VERIFY) != 'order':
+        flask.session[S_VERIFY] = 'none'
+    if not S_CURRENT_USER in flask.session:
+        return flask.redirect(flask.url_for('login'))
     return flask.render_template('order.html', username=flask.session[S_NAME],
                                  administrator=flask.session[S_ADMINISTRATOR])
 
+
+@app.route('/order_test')
+def order_test():
+    return flask.render_template('order.html')
 
 @app.route('/ordered')
 def ordered():
