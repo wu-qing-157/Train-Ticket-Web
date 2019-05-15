@@ -133,14 +133,10 @@ window.order_init = function () {
     window.depart_menu = new MDCMenu(document.getElementById('depart-menu'))
 }
 
-window.new_menu_item = function (name, input, inputDOM, menu) {
+window.new_menu_item = function (name) {
     const new_item = document.createElement('li')
     new_item.setAttribute('role', 'menuitem')
-    new_item.onclick = function () {
-        input.value = name
-        inputDOM.oninput()
-        menu.open = false
-    }
+    new_item.setAttribute('tabindex', '-1')
     new_item.classList.add('mdc-list-item')
     new_item.innerHTML = '<span class="mdc-list-item__text">' + name + '</span>'
     return new_item
@@ -190,58 +186,71 @@ function add_station_suggest(keyword, input, inputDOM, menu, menuDOM) {
     var i
     for (i = 0; i < level0.length; i++)
         if (level0[i][0].indexOf(keyword) >= 0) {
-            menuDOM.appendChild(new_menu_item(level0[i][0], input, inputDOM, menu))
+            menuDOM.appendChild(new_menu_item(level0[i][0]))
             cnt++
             if (cnt == menu_item_max) return
         }
     for (i = 0; i < level0.length; i++)
         if (level0[i][0].indexOf(keyword) < 0 && level0[i][1].startsWith(keyword)) {
-            menuDOM.appendChild(new_menu_item(level0[i][0], input, inputDOM, menu))
+            menuDOM.appendChild(new_menu_item(level0[i][0]))
             cnt++
             if (cnt == menu_item_max) return
         }
     for (i = 0; i < level0.length; i++)
         if (level0[i][0].indexOf(keyword) < 0 && !(level0[i][1].startsWith(keyword)) && level0[i][2].startsWith(keyword)) {
-            menuDOM.appendChild(new_menu_item(level0[i][0], input, inputDOM, menu))
+            menuDOM.appendChild(new_menu_item(level0[i][0]))
             cnt++
             if (cnt == menu_item_max) return
         }
     for (i = 0; i < level2.length; i++)
         if (level2[i][0].indexOf(keyword) >= 0) {
-            menuDOM.appendChild(new_menu_item(level2[i][0], input, inputDOM, menu))
+            menuDOM.appendChild(new_menu_item(level2[i][0]))
             cnt++
             if (cnt == menu_item_max) return
         }
     for (i = 0; i < level2.length; i++)
         if (level2[i][0].indexOf(keyword) < 0 && level2[i][1].startsWith(keyword)) {
-            menuDOM.appendChild(new_menu_item(level2[i][0], input, inputDOM, menu))
+            menuDOM.appendChild(new_menu_item(level2[i][0]))
             cnt++
             if (cnt == menu_item_max) return
         }
     for (i = 0; i < level2.length; i++)
         if (level2[i][0].indexOf(keyword) < 0 && !(level2[i][1].startsWith(keyword)) && level2[i][2].startsWith(keyword)) {
-            menuDOM.appendChild(new_menu_item(level2[i][0], input, inputDOM, menu))
+            menuDOM.appendChild(new_menu_item(level2[i][0]))
             cnt++
             if (cnt == menu_item_max) return
         }
     for (i = 0; i < level0.length; i++)
         if (level0[i][0].indexOf(keyword) < 0 && level0[i][1].indexOf(keyword) > 0 && level0[i][2].indexOf(keyword) < 0) {
-            menuDOM.appendChild(new_menu_item(level0[i][0], input, inputDOM, menu))
+            menuDOM.appendChild(new_menu_item(level0[i][0]))
             cnt++
             if (cnt == menu_item_max) return
         }
     for (i = 0; i < level2.length; i++)
         if (level2[i][0].indexOf(keyword) < 0 && level2[i][1].indexOf(keyword) > 0 && level2[i][2].indexOf(keyword) < 0) {
-            menuDOM.appendChild(new_menu_item(level2[i][0], input, inputDOM, menu))
+            menuDOM.appendChild(new_menu_item(level2[i][0]))
             cnt++
             if (cnt == menu_item_max) return
         }
+    if (cnt == 0) {
+        const new_item = new_menu_item('没有建议')
+        new_item.classList.add('mdc-list-item--disabled')
+        new_item.onclick = function () {
+        }
+        menuDOM.appendChild(new_item)
+    }
 }
 
 window.update_station_suggest = function (input, inputDOM, menu, menuDOM) {
     const keyword = input.value.toLowerCase()
     menuDOM.innerHTML = ''
     add_station_suggest(keyword, input, inputDOM, menu, menuDOM)
+    menu.setDefaultFocusState(0)
     menu.initialize()
+    menu.listen('MDCMenu:selected', function (event) {
+        input.value = event.detail.item.firstChild.innerText
+        inputDOM.oninput(null)
+        document.body.focus()
+    })
     menu.open = true
 }
