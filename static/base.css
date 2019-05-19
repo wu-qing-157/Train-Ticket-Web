@@ -179,6 +179,7 @@
 /* for base.html */
 
 h3 {
+    padding: 20px;
     margin-block-start: 0;
     margin-block-end: 0;
 }
