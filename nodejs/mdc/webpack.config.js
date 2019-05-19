@@ -1,9 +1,13 @@
 const autoprefixer = require('autoprefixer');
 
 module.exports = [{
-    entry: ['./app.scss', './app.js'],
+    entry: ['./app.scss', './account.jsx', './account_manage.jsx', './base.jsx', './login.jsx', './main_page.jsx', './order.jsx', './register.jsx', './station_suggest.js'],
     output: {
         filename: 'mdc-bundle.js'
+    },
+    performance: {
+        maxEntrypointSize: 1048576,
+        maxAssetSize: 1048576
     },
     module: {
         rules: [
@@ -33,10 +37,10 @@ module.exports = [{
                 ]
             },
             {
-                test: /\.js$/,
+                test: /\.(js|jsx)$/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['env']
+                    presets: ['env', 'react']
                 }
             }
         ]
