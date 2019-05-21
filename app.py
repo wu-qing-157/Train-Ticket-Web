@@ -1,4 +1,4 @@
-import flask, socket
+import flask, socket, json
 
 import backend
 
@@ -328,6 +328,69 @@ def ajax_modify_privilege():
             return flask.render_template('ajax_modify_privilege.js', fail=True)
         else:
             return flask.render_template('ajax_modify_privilege.js', user_id=user_id)
+    except ConnectionRefusedError:
+        return flask.render_template('ajax_exception.js', info=E_CONNECTION_REFUSED)
+    except socket.timeout:
+        return flask.render_template('ajax_exception.js', info=E_CONNECTION_TIMEOUT)
+    except SyntaxError:
+        return flask.render_template('ajax_exception.js', info=E_BAD_RETURN)
+
+
+class TicketInfo:
+    kind = ''
+    num = ''
+    price = ''
+
+
+class SingleTicket:
+    id_ = ''
+    name = ''
+    catalog = ''
+    from_ = ''
+    from_date = ''
+    from_time = ''
+    to = ''
+    to_date = ''
+    to_time = ''
+    tickets = []
+
+    def ticket_info(self):
+        return ' / '.join(map(lambda info: '{} {}元 余{}张'.format(info.kind, info.price, info.num), self.tickets))
+
+    def ticket_info_inner(self):
+        return '-'.join(map(lambda info: '{}_{}_{}'.format(info.kind, info.num, info.price), self.tickets))
+
+
+@app.route('/ajax_query_ticket')
+def ajax_query_ticket():
+    if not 'from' in flask.request.args or not 'to' in flask.request.args or not 'date' in flask.request.args or not 'catalog' in flask.request.args:
+        return flask.render_template('ajax_bad_request.js', info=E_INVALID_REQUEST)
+    _from = flask.request.args['from']
+    to = flask.request.args['to']
+    date = flask.request.args['date']
+    catalog = flask.request.args['catalog']
+    if _from == to:
+        return flask.render_template('ajax_query_ticket.js', error_info=E_QUERY_TICKET_SAME_STATION)
+    try:
+        result = backend.get_result("query_ticket {} {} {} {}".format(_from, to, date, catalog),
+                                    SZ_QUERY_TICKET, RE_QUERY_TICKET)
+        if result == '-1':
+            return flask.render_template('ajax_query_ticket.js', error_info=E_QUERY_TICKET_NONE)
+        else:
+            ticket = []
+            for ticket_str in result.split('    '):
+                new_ticket = SingleTicket()
+                app.logger.debug(ticket_str)
+                [new_ticket.id_, new_ticket.name, new_ticket.catalog, new_ticket.from_, new_ticket._from_date,
+                 new_ticket._from_time, new_ticket.to, new_ticket.to_date, new_ticket.to_time, ticket_info_str] = \
+                    ticket_str.split('   ')
+                new_ticket.tickets = []
+                for single_ticket_str in ticket_info_str.split('  '):
+                    new_ticket_info = TicketInfo()
+                    [new_ticket_info.kind, new_ticket_info.num, new_ticket_info.price] = single_ticket_str.split(' ')
+                    new_ticket.tickets.append(new_ticket_info)
+                ticket.append(new_ticket)
+            return flask.render_template('ajax_query_ticket.js', ticket_list=ticket)
     except ConnectionRefusedError:
         return flask.render_template('ajax_exception.js', info=E_CONNECTION_REFUSED)
     except socket.timeout:

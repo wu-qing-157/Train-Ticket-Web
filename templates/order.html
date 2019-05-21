@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
     <div class="wrapper width-80 width-100-if-max-width-1000">
-        <div class="surface align-center width-100-if-max-width-1000">
+        <div class="surface align-center">
             <h3 class="mdc-typography--headline3 padding-20">查询车次</h3>
             <div class="station-input-wrapper width-50 width-100-if-max-width-1000">
                 <div class="station-input-input-wrapper">
@@ -95,13 +95,29 @@
                     </div>
                 </div>
             </div>
-            <div class="input-wrapper width-100" id="date-picker-test"></div>
+            <div class="input-wrapper width-100" id="date-picker"></div>
             <div class="button-wrapper">
-                <button class="mdc-button mdc-button--raised" id="query-ticket-button">
+                <button class="mdc-button mdc-button--raised" id="query-ticket-button"
+                        onclick="if (document.getElementById('depart').reportValidity() &&
+                                     document.getElementById('arrive').reportValidity() &&
+                                     document.querySelector('#date-picker div div input').reportValidity()) {
+                                     document.getElementById('ticket-table').innerHTML = '';
+                                     document.getElementById('query-ticket-error-info').classList.add('hidden');
+                                     this.disabled = true;
+                                     $.getScript('ajax_query_ticket?from=' + document.getElementById('depart').value +
+                                         '&to=' + document.getElementById('arrive').value +
+                                         '&date=' + document.querySelector('#date-picker input').value +
+                                         '&catalog=DGZ', function() {
+                                             document.getElementById('query-ticket-button').disabled = false;
+                                         })
+                                 }">
                     <i class="material-icons mdc-button__icon" aria-hidden="true">search</i>
                     <span class="mdc-button__label">查询车次</span>
                 </button>
             </div>
+            <table id="ticket-table">
+            </table>
+            <span id="query-ticket-error-info" class="mdc-typography--body1 hidden"></span>
         </div>
     </div>
 {% endblock %}

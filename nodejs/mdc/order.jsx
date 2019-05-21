@@ -30,6 +30,11 @@ window.order_init = function () {
     window.depart_menu = new MDCMenu(document.getElementById('depart-menu'));
     window.arrive_text_field = new MDCTextField(document.getElementById('arrive-text-field'));
     window.arrive_menu = new MDCMenu(document.getElementById('arrive-menu'));
-    ReactDOM.render(<QueryDatePicker/>, document.getElementById('date-picker-test'));
+    ReactDOM.render(<QueryDatePicker/>, document.getElementById('date-picker'));
     new MDCRipple(document.getElementById('query-ticket-button'));
+};
+
+window.process_icon_button = function (id) {
+    const button = new MDCRipple(document.getElementById(id));
+    button.unbounded = true;
 };
