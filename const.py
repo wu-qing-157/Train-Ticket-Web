@@ -58,3 +58,6 @@ E_NOT_ADMINISTRATOR = '你没有权限进行这一操作'
 E_INVALID_REQUEST = '请求的内容不合法'
 E_QUERY_TICKET_SAME_STATION = '出发站和到达站是同一个车站，如果您需要从出发区域前往到达区域，您可以选择步行'
 E_QUERY_TICKET_NONE = '没有符合条件的车次'
+E_ORDER_NONE = '找不到该车次'
+
+CATALOG_ALL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'

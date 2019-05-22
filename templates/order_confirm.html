@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block webpage_title %}
+    订购车票 - Train Ticket
+{% endblock %}
+{% block child_header %}
+    <link href="{{ url_for('static', filename='order_confirm.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div class="wrapper max-width-800">
+        <div class="surface">
+            <h3 class="mdc-typography--headline3">订购车票</h3>
+            {% if success %}
+                <table id="train-info-table">
+                    <tr>
+                        <td>
+                            <span class="mdc-typography--body1">{{ from0 }}</span>
+                            <br>
+                            <span class="mdc-typography--body1">{{ from1 }} {{ from2 }}</span>
+                        </td>
+                        <td>
+                            <span class="mdc-typography--body1">{{ train_name }}</span>
+                        </td>
+                        <td>
+                            <span class="mdc-typography--body1">{{ to0 }}</span>
+                            <br>
+                            <span class="mdc-typography--body1">{{ to1 }} {{ to2 }}</span>
+                        </td>
+                    </tr>
+                </table>
+                <div class="mdc-select kind-select" id="kind-select">
+                    <input type="hidden" name="kind">
+                    <i class="mdc-select__dropdown-icon"></i>
+                    <div class="mdc-select__selected-text"></div>
+                    <div class="mdc-select__menu mdc-menu mdc-menu-surface kind-select">
+                        <ul class="mdc-list">
+                            {% for i in range(0, tickets|length) %}
+                                <li class="mdc-list-item {% if i == 0 %}mdc-list-item--selected{% endif %}"
+                                    data-value="{{ tickets[i].kind }}"
+                                        {% if i == 0 %} tabindex="0" aria-selected="true" {% endif %}>
+                                <span class="mdc-list-item__text">
+                                    {{ tickets[i].kind }}（{{ tickets[i].price }}元 余{{ tickets[i].num }}张）
+                                </span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label mdc-floating-label--float-above">票种</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </div>
+                <div class="input-wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                     id="{{ item.kind }}-text-field">
+                    <i class="material-icons mdc-text-field__icon">vpn_key</i>
+                    <input type="number" class="mdc-text-field__input" id="{{ item.kind }}" required
+                           name="{{ item.kind }}" value="0"
+                           oninput="
+                                   this.classList.remove('mdc-text-field--invalid');
+                                   document.getElementById('{{ item.kind }}-icon').innerText = 'check';
+                                   if (this.value === '' || parseInt(this.value) <= {{ item.num }})
+                                   this.setCustomValidity('');
+                                   else
+                                   this.setCustomValidity('数量超过余票');
+                                   this.reportValidity();"
+                           oninvalid="
+                                   event.preventDefault();
+                                   document.getElementById('{{ item.kind }}-text-field').classList.add('mdc-text-field--invalid');
+                                   document.getElementById('{{ item.kind }}-icon').innerText = 'error';"
+                           aria-controls="{{ item.kind }}-helper-text"
+                           aria-describedby="{{ item.kind }}-helper-text">
+                    <i class="material-icons mdc-text-field__icon" id="{{ item.kind }}-icon">check</i>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label"
+                                   for="{{ item.kind }}">数量（余{{ item.num }}）张</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </div>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                         id="{{ item.kind }}-helper-text" aria-hidden="true">
+                        数量不能超过余票（{{ item.num }}张）
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    order_confirm_init();
+    document.getElementById('order').onclick = function (a, b) {};
+    document.getElementById('order').classList.add('mdc-list-item--activated');
+    window.kind = [];
+    window.num = [];
+    window.price = [];
+    {% for i in range(0, tickets|length) %}
+        kind.push('{{ tickets[i].kind }}');
+        num.push('{{ tickets[i].num }}');
+        price.push('{{ tickets[i].price }}');
+    {% endfor %}
+{% endblock %}

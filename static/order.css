@@ -18,10 +18,6 @@
     background-color: bisque !important;
 }
 
-#ticket-table tbody tr td button:hover {
-    background-color: unset;
-}
-
 .icon-button-td {
     width: 48px;
     overflow: hidden;

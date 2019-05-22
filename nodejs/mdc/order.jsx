@@ -33,8 +33,3 @@ window.order_init = function () {
     ReactDOM.render(<QueryDatePicker/>, document.getElementById('date-picker'));
     new MDCRipple(document.getElementById('query-ticket-button'));
 };
-
-window.process_icon_button = function (id) {
-    const button = new MDCRipple(document.getElementById(id));
-    button.unbounded = true;
-};

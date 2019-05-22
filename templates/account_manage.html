@@ -3,7 +3,7 @@
     管理账号信息 - Train Ticket
 {% endblock %}
 {% block child_header %}
-    <link href="../static/account_manage.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='account_manage.css') }}" rel="stylesheet">
 {% endblock %}
 {% block content %}
     <div class="wrapper max-width-800" id="account_info">

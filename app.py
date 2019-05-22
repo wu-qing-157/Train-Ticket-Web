@@ -3,6 +3,7 @@ import flask, socket, json
 import backend
 
 from const import *
+from ticket import *
 
 app = flask.Flask(__name__)
 
@@ -135,7 +136,54 @@ def order():
         flask.session[S_VERIFY] = 'none'
     if not S_CURRENT_USER in flask.session:
         return flask.redirect(flask.url_for('login'))
-    return flask.render_template('order.html', username=flask.session[S_NAME],
+    if flask.request.method == 'GET' and 'id' in flask.request.args and 'from' in flask.request.args \
+            and 'to' in flask.request.args and 'date' in flask.request.args:
+        train_id = flask.request.args['id']
+        from_ = flask.request.args['from']
+        to = flask.request.args['to']
+        date = flask.request.args['date']
+        try:
+            result = backend.get_result("query_ticket {} {} {} {}".format(from_, to, date, CATALOG_ALL),
+                                        SZ_QUERY_TICKET, RE_QUERY_TICKET)
+            if result == '-1':
+                return flask.render_template('order_confirm.html', fail_alert=True, message=E_ORDER_NONE,
+                                             username=flask.session[S_NAME],
+                                             administrator=flask.session[S_ADMINISTRATOR])
+            else:
+                for ticket_str in result.split('    '):
+                    new_ticket = SingleTicket()
+                    [new_ticket.id_, new_ticket.name, new_ticket.catalog, new_ticket.from_, new_ticket.from_date,
+                     new_ticket.from_time, new_ticket.to, new_ticket.to_date, new_ticket.to_time, ticket_info_str] = \
+                        ticket_str.split('   ')
+                    if new_ticket.id_ != train_id:
+                        continue
+                    new_ticket.tickets = []
+                    for single_ticket_str in ticket_info_str.split('  '):
+                        new_ticket_info = TicketInfo()
+                        [new_ticket_info.kind, new_ticket_info.num, new_ticket_info.price] = single_ticket_str.split(
+                            ' ')
+                        new_ticket.tickets.append(new_ticket_info)
+                    return flask.render_template('order_confirm.html', success=True, train_name=new_ticket.name,
+                                                 from0=new_ticket.from_, from1=new_ticket.from_date,
+                                                 from2=new_ticket.from_time,
+                                                 to0=new_ticket.to, to1=new_ticket.to_date, to2=new_ticket.to_time,
+                                                 tickets=new_ticket.tickets,
+                                                 username=flask.session[S_NAME],
+                                                 administrator=flask.session[S_ADMINISTRATOR])
+                return flask.render_template('order_confirm.html', fail_alert=True, message=E_ORDER_NONE,
+                                             username=flask.session[S_NAME],
+                                             administrator=flask.session[S_ADMINISTRATOR])
+        except ConnectionRefusedError:
+            return flask.render_template('order_confirm.html', fail_alert=True, message=E_CONNECTION_REFUSED,
+                                         username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR])
+        except socket.timeout:
+            return flask.render_template('order_confirm.html', fail_alert=True, message=E_CONNECTION_TIMEOUT,
+                                         username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR])
+        except SyntaxError:
+            return flask.render_template('order_confirm.html', fail_alert=True, message=E_BAD_RETURN,
+                                         username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR])
+    else:
+        return flask.render_template('order.html', username=flask.session[S_NAME],
                                  administrator=flask.session[S_ADMINISTRATOR])
 
 
@@ -336,31 +384,6 @@ def ajax_modify_privilege():
         return flask.render_template('ajax_exception.js', info=E_BAD_RETURN)
 
 
-class TicketInfo:
-    kind = ''
-    num = ''
-    price = ''
-
-
-class SingleTicket:
-    id_ = ''
-    name = ''
-    catalog = ''
-    from_ = ''
-    from_date = ''
-    from_time = ''
-    to = ''
-    to_date = ''
-    to_time = ''
-    tickets = []
-
-    def ticket_info(self):
-        return ' / '.join(map(lambda info: '{} {}元 余{}张'.format(info.kind, info.price, info.num), self.tickets))
-
-    def ticket_info_inner(self):
-        return '-'.join(map(lambda info: '{}_{}_{}'.format(info.kind, info.num, info.price), self.tickets))
-
-
 @app.route('/ajax_query_ticket')
 def ajax_query_ticket():
     if not 'from' in flask.request.args or not 'to' in flask.request.args or not 'date' in flask.request.args or not 'catalog' in flask.request.args:
@@ -380,9 +403,8 @@ def ajax_query_ticket():
             ticket = []
             for ticket_str in result.split('    '):
                 new_ticket = SingleTicket()
-                app.logger.debug(ticket_str)
-                [new_ticket.id_, new_ticket.name, new_ticket.catalog, new_ticket.from_, new_ticket._from_date,
-                 new_ticket._from_time, new_ticket.to, new_ticket.to_date, new_ticket.to_time, ticket_info_str] = \
+                [new_ticket.id_, new_ticket.name, new_ticket.catalog, new_ticket.from_, new_ticket.from_date,
+                 new_ticket.from_time, new_ticket.to, new_ticket.to_date, new_ticket.to_time, ticket_info_str] = \
                     ticket_str.split('   ')
                 new_ticket.tickets = []
                 for single_ticket_str in ticket_info_str.split('  '):
