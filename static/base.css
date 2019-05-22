@@ -64,6 +64,14 @@
     box-sizing: border-box;
 }
 
+.select-wrapper {
+    display: inline-flex;
+    width: 300px;
+    padding: 0 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
 .checkbox_wrapper {
     text-align: left;
     padding: 0 20px;
@@ -143,6 +151,14 @@
     width: 120px;
 }
 
+.width-180px {
+    width: 180px;
+}
+
+.width-fit-content {
+    width: fit-content;
+}
+
 .max-width-800 {
     max-width: 800px;
 }
@@ -169,6 +185,10 @@
 
 .margin-8 {
     margin: 8px;
+}
+
+.margin-auto {
+    margin: auto;
 }
 
 @media only screen and (max-width: 1000px) {
