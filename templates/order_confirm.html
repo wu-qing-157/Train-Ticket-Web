@@ -6,10 +6,10 @@
     <link href="{{ url_for('static', filename='order_confirm.css') }}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-    <div class="wrapper max-width-800">
-        <div class="surface">
-            <h3 class="mdc-typography--headline3">订购车票</h3>
-            {% if success %}
+    {% if success %}
+        <div class="wrapper max-width-800">
+            <div class="surface">
+                <h3 class="mdc-typography--headline3">订购车票</h3>
                 <table id="train-info-table">
                     <tr>
                         <td>
@@ -36,7 +36,7 @@
                             <div class="mdc-select__menu mdc-menu mdc-menu-surface kind-select">
                                 <ul class="mdc-list">
                                     {% for i in range(0, tickets|length) %}
-                                        <li class="mdc-list-item {% if i == 0 %}mdc-list-item--selected{% endif %}"
+                                        <li class="mdc-list-item {% if tickets[i].kind == selected_kind %}mdc-list-item--selected{% endif %}"
                                             data-value="{{ tickets[i].kind }}"
                                                 {% if i == 0 %} tabindex="0" aria-selected="true" {% endif %}>
                                 <span class="mdc-list-item__text">
@@ -58,11 +58,12 @@
                     <div class="input-wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon width-180px"
                          id="num-text-field">
                         <input type="number" class="mdc-text-field__input" id="num" required
-                               name="num" value="1"
+                               name="num" value="{% if initial_number %}{{ initial_number }}{% else %}1{% endif %}"
+                               min="1"
                                oninput="
                                    document.getElementById('num-text-field').classList.remove('mdc-text-field--invalid');
                                    document.getElementById('num-icon').innerText = 'check';
-                                   if (this.value === '' || parseInt(this.value) <= left_num[kind_select.selectedIndex]) {
+                                   if (this.value === '' || (parseInt(this.value) > 0 && parseInt(this.value) <= left_num[kind_select.selectedIndex])) {
                                        this.setCustomValidity('');
                                        document.getElementById('submit-button-label').innerText = '订购（' + (parseInt(this.value) * price[kind_select.selectedIndex]).toFixed(2) + '元）';
                                    } else {
@@ -93,31 +94,53 @@
                         </div>
                     </div>
                     <div class="button-wrapper">
-                        <button type="submit" class="mdc-button mdc-button--raised width-66" id="login-button"
+                        <button type="submit" class="mdc-button mdc-button--raised width-66" id="order-button"
                                 onclick="if (document.getElementById('order-form').reportValidity()) {
                                     document.getElementById('order-form').submit();
-                                    this.disabled = true
+                                    this.disabled = true;
                                 }">
                             <i class="material-icons mdc-button__icon" aria-hidden="true">shopping_cart</i>
                             <span class="mdc-button__label" id="submit-button-label">订购</span>
                         </button>
                     </div>
                 </form>
-            {% endif %}
+            </div>
         </div>
-    </div>
+    {% else %}
+        <div class="wrapper max-width-800">
+            <div class="surface">
+                <span class="mdc-typography--body1">未能获取该车次信息，请尝试</span>
+                <button class="mdc-button" id="refresh" onclick="location.reload(true)">
+                    <span class="mdc-button__label">
+                        刷新页面
+                    </span>
+                </button>
+                <span class="mdc-typography--body1">，或</span>
+                <button class="mdc-button" id="jump-order" onclick="location.href='/order'">
+                    <span class="mdc-button__label">
+                        重新查询车次
+                    </span>
+                </button>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
 {% block script %}
-    order_confirm_init();
-    document.getElementById('order').onclick = function (a, b) {};
-    document.getElementById('order').classList.add('mdc-list-item--activated');
-    window.kind = [];
-    window.left_num = [];
-    window.price = [];
-    {% for i in range(0, tickets|length) %}
-        kind.push('{{ tickets[i].kind }}');
-        left_num.push({{ tickets[i].num }});
-        price.push({{ tickets[i].price }});
-    {% endfor %}
-    document.getElementById('num').oninput(null);
+    {% if success %}
+        order_confirm_init();
+        document.getElementById('order').onclick = function (a, b) {};
+        document.getElementById('order').classList.add('mdc-list-item--activated');
+        window.kind = [];
+        window.left_num = [];
+        window.price = [];
+        {% for i in range(0, tickets|length) %}
+            kind.push('{{ tickets[i].kind }}');
+            left_num.push({{ tickets[i].num }});
+            price.push({{ tickets[i].price }});
+        {% endfor %}
+        document.getElementById('num').oninput(null);
+    {% else %}
+        initialize_button('refresh');
+        initialize_button('jump-order');
+    {% endif %}
 {% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block webpage_title %}
+    已购车票 - Train Ticket
+{% endblock %}
+{% block child_header %}
+    <link href="{{ url_for('static', filename='ordered.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div class="wrapper width-80 width-100-if-max-width-1000">
+        <div class="surface align-center">
+            {% if empty %}
+                <span class="mdc-typography--body1">没有查询到您购买的车票，前往</span>
+                <button class="mdc-button" onclick="location.href='/order'" id="jump-order">
+                    <span class="mdc-button__label">订购车票</span>
+                </button>
+            {% else %}
+                <h3 class="mdc-typography--headline3 padding-20">已购车票</h3>
+                <table id="ticket-table">
+                    {% for item in tickets %}
+                        <tr>
+                            <td>
+                                <span class="mdc-typography--body1">{{ item.from0 }}</span>
+                                <br>
+                                <span class="mdc-typography--body1">{{ item.from1 }} {{ item.from2 }}</span>
+                            </td>
+                            <td>
+                                <span class="mdc-typography--body1">{{ item.name }}</span>
+                            </td>
+                            <td>
+                                <span class="mdc-typography--body1">{{ item.to0 }}</span>
+                                <br>
+                                <span class="mdc-typography--body1">{{ item.to1 }} {{ item.to2 }}</span>
+                            </td>
+                            <td>
+                                <span class="mdc-typography--body1">{{ item.kind }}{{ item.num }}张</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    {% if empty %}
+        initialize_button('jump-order');
+    {% endif %}
+{% endblock %}

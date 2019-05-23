@@ -130,13 +130,40 @@ def main_page():
                                  username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR])
 
 
-@app.route('/order')
+@app.route('/order', methods=['GET', 'POST'])
 def order():
     if flask.session.get(S_VERIFY) != 'order':
         flask.session[S_VERIFY] = 'none'
     if not S_CURRENT_USER in flask.session:
         return flask.redirect(flask.url_for('login'))
-    if flask.request.method == 'GET' and 'id' in flask.request.args and 'from' in flask.request.args \
+    if flask.request.method == 'POST':
+        if not ('id' in flask.request.args and 'from' in flask.request.args
+                and 'to' in flask.request.args and 'date' in flask.request.args):
+            flask.session[S_ERR_MESSAGE] = E_INVALID_REQUEST
+            return flask.redirect(flask.url_for('order', _method='GET'))
+        train_id = flask.request.args['id']
+        from_ = flask.request.args['from']
+        to = flask.request.args['to']
+        date = flask.request.args['date']
+        num = flask.request.form['num']
+        kind = flask.request.form['kind']
+        try:
+            result = backend.get_result("buy_ticket {} {} {} {} {} {} {}".format(flask.session[S_CURRENT_USER], num,
+                                                                                 train_id, from_, to, date, kind),
+                                        SZ_BUY_TICKET, RE_BUY_TICKET)
+            if result == '1':
+                flask.session[S_SUCCESS_MESSAGE] = '订购成功'
+                return flask.redirect(flask.url_for('ordered', _method='GET'))
+            else:
+                flask.session[S_ERR_MESSAGE] = E_REGISTER_REJECTED
+        except ConnectionRefusedError:
+            flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
+        except socket.timeout:
+            flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
+        except SyntaxError:
+            flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
+        return flask.redirect(flask.url_for('order', _method='GET'))
+    elif flask.request.method == 'GET' and 'id' in flask.request.args and 'from' in flask.request.args \
             and 'to' in flask.request.args and 'date' in flask.request.args:
         train_id = flask.request.args['id']
         from_ = flask.request.args['from']
@@ -164,6 +191,7 @@ def order():
                             ' ')
                         new_ticket.tickets.append(new_ticket_info)
                     return flask.render_template('order_confirm.html', success=True, train_name=new_ticket.name,
+                                                 selected_kind=new_ticket.tickets[0].kind,
                                                  from0=new_ticket.from_, from1=new_ticket.from_date,
                                                  from2=new_ticket.from_time,
                                                  to0=new_ticket.to, to1=new_ticket.to_date, to2=new_ticket.to_time,
@@ -183,17 +211,27 @@ def order():
             return flask.render_template('order_confirm.html', fail_alert=True, message=E_BAD_RETURN,
                                          username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR])
     else:
-        return flask.render_template('order.html', username=flask.session[S_NAME],
+        if S_ERR_MESSAGE in flask.session:
+            message = flask.session[S_ERR_MESSAGE]
+            flask.session.pop(S_ERR_MESSAGE)
+            return flask.render_template('order.html', fail_alert=True, message=message,
+                                         username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR])
+        else:
+            return flask.render_template('order.html', username=flask.session[S_NAME],
                                  administrator=flask.session[S_ADMINISTRATOR])
 
 
-@app.route('/order_test')
-def order_test():
-    return flask.render_template('order.html')
-
 @app.route('/ordered')
 def ordered():
-    return 'ordered'
+    if flask.session.get(S_VERIFY) != 'ordered':
+        flask.session[S_VERIFY] = 'ordered'
+    if not S_CURRENT_USER in flask.session:
+        return flask.redirect(flask.url_for('login'))
+    if flask.request.method == 'POST':
+        return 'refund_ticket'
+    else:
+        return flask.render_template('ordered.html', empty=True, username=flask.session[S_NAME],
+                                     administrator=flask.session[S_ADMINISTRATOR])
 
 
 @app.route('/account', methods=['GET', 'POST'])
