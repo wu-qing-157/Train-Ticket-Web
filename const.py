@@ -19,6 +19,8 @@ SZ_MODIFY_PROFILE = 10
 SZ_MODIFY_PRIVILEGE = 10
 SZ_QUERY_TICKET = 8192
 SZ_BUY_TICKET = 10
+SZ_QUERY_ORDER = 8192
+SZ_REFUND_TICKET = 10
 
 RE_USER_ID = r'\d{4,20}'
 RE_PASSWORD = r'[\u0021-\u007e]{6,20}'
@@ -36,6 +38,8 @@ RE_SINGLE_TICKET = r'{}   {}   {}(   {}   {}   {}){}   ({} {} {})(  {} {} {})*' 
             RE_NUM, RE_PRICE)
 RE_SINGLE_STATION = r'{}  {}  {}  {}  {}( {})*' \
     .format(RE_NAME, RE_TIME, RE_TIME, RE_TIME, RE_PRICE, RE_PRICE)
+RE_SINGLE_BOUGHT_TICKET = r'{} {} {} {} {} {} {} {} {} {}' \
+    .format(RE_TRAIN_ID, RE_NAME, RE_NAME, RE_DATE, RE_TIME, RE_NAME, RE_DATE, RE_TIME, RE_NAME, RE_NUM)
 
 RE_LOGIN = r'^[01]$'
 RE_REGISTER = r'^(-1)|({})$'.format(RE_USER_ID)
@@ -48,6 +52,8 @@ RE_QUERY_TRANSFER = r'^{}    {}$'.format(RE_SINGLE_TICKET, RE_SINGLE_TICKET)
 RE_QUERY_TRAIN = r'^{}  {}  {}  {}( {})*    {}(   {})*$' \
     .format(RE_TRAIN_ID, RE_NAME, RE_CATALOG, RE_NAME, RE_NAME, RE_SINGLE_TICKET, RE_SINGLE_TICKET)
 RE_BUY_TICKET = r'^[01]$'
+RE_QUERY_ORDER = r'^(-1)|({}(  {})*)$'.format(RE_SINGLE_BOUGHT_TICKET, RE_SINGLE_BOUGHT_TICKET)
+RE_REFUND_TICKET = r'^[01]$'
 
 E_UNKNOWN = '未知错误原因'
 E_PASSWORD_NOT_MATCH = '用户名或密码错误'
@@ -62,5 +68,6 @@ E_QUERY_TICKET_SAME_STATION = '出发站和到达站是同一个车站，如果�
 E_QUERY_TICKET_NONE = '没有符合条件的车次'
 E_ORDER_NONE = '找不到该车次'
 E_BUY_TICKET_REJECTED = '购买失败，请重试'
+E_REFUND_TICKET_REJECTED = '退票失败，请重试'
 
 CATALOG_ALL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'

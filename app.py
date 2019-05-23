@@ -1,4 +1,4 @@
-import flask, socket, json
+import flask, socket
 
 import backend
 
@@ -218,20 +218,100 @@ def order():
                                          username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR])
         else:
             return flask.render_template('order.html', username=flask.session[S_NAME],
-                                 administrator=flask.session[S_ADMINISTRATOR])
+                                         administrator=flask.session[S_ADMINISTRATOR])
 
 
-@app.route('/ordered')
+@app.route('/ordered', methods=['GET', 'POST'])
 def ordered():
     if flask.session.get(S_VERIFY) != 'ordered':
         flask.session[S_VERIFY] = 'ordered'
     if not S_CURRENT_USER in flask.session:
         return flask.redirect(flask.url_for('login'))
     if flask.request.method == 'POST':
-        return 'refund_ticket'
+        if 'verify_password' in flask.request.form:
+            try:
+                verify_password = flask.request.form['verify_password']
+                result = backend.get_result('login {} {}'.format(flask.session[S_CURRENT_USER], verify_password),
+                                            SZ_LOGIN, RE_LOGIN)
+                if result == '1':
+                    flask.session[S_VERIFY] = 'account'
+                else:
+                    flask.session[S_ERR_MESSAGE] = E_PASSWORD_ERROR
+            except ConnectionRefusedError:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
+            except socket.timeout:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
+            except SyntaxError:
+                flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
+        else:
+            try:
+                train_id = flask.request.form['train_id']
+                from_ = flask.request.form['from']
+                to = flask.request.form['to']
+                date = flask.request.form['date']
+                kind = flask.request.form['kind']
+                num = flask.request.form['num']
+                result = backend.get_result(
+                    'refund_ticket {} {} {} {} {} {} {}'.format(flask.session[S_CURRENT_USER], num, train_id, from_, to,
+                                                                date, kind), SZ_REFUND_TICKET, RE_REFUND_TICKET)
+                if result == '0':
+                    flask.session[S_ERR_MESSAGE] = E_REFUND_TICKET_REJECTED
+                else:
+                    flask.session[S_SUCCESS_MESSAGE] = '退订成功'
+            except ConnectionRefusedError:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
+            except socket.timeout:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
+            except SyntaxError:
+                flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
+        return flask.redirect(flask.url_for('ordered', _method='GET'))
     else:
-        return flask.render_template('ordered.html', empty=True, username=flask.session[S_NAME],
-                                     administrator=flask.session[S_ADMINISTRATOR])
+        if S_SUCCESS_MESSAGE in flask.session:
+            message = flask.session[S_SUCCESS_MESSAGE]
+            flask.session.pop(S_SUCCESS_MESSAGE)
+            return flask.render_template('ordered.html', success_alert=True, message=message,
+                                         success_redirect='/ordered', verified=flask.session[S_VERIFY] == 'ordered',
+                                         username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR])
+        elif S_ERR_MESSAGE in flask.session:
+            message = flask.session[S_ERR_MESSAGE]
+            flask.session.pop(S_ERR_MESSAGE)
+            return flask.render_template('ordered.html', fail_alert=True, message=message,
+                                         fail_redirect='/ordered', verified=flask.session[S_VERIFY] == 'ordered',
+                                         username=flask.session[S_NAME], administrator=flask.session[S_ADMINISTRATOR])
+        else:
+            try:
+                result = backend.get_result('query_order {}'.format(flask.session[S_CURRENT_USER]), SZ_QUERY_ORDER,
+                                            RE_QUERY_ORDER)
+                if result == '-1':
+                    return flask.render_template('ordered.html', empty=True, username=flask.session[S_NAME],
+                                                 verified=flask.session[S_VERIFY] == 'ordered',
+                                                 administrator=flask.session[S_ADMINISTRATOR])
+                else:
+                    tickets = []
+                    for single_str in result.split('  '):
+                        new_ticket = BoughtTicket()
+                        [new_ticket.train_id, new_ticket.name, new_ticket.from0, new_ticket.from1, new_ticket.from2,
+                         new_ticket.to0, new_ticket.to1, new_ticket.to2, new_ticket.kind,
+                         new_ticket.num] = single_str.split(' ')
+                        tickets.append(new_ticket)
+                    return flask.render_template('ordered.html', tickets=tickets, username=flask.session[S_NAME],
+                                                 verified=flask.session[S_VERIFY] == 'ordered',
+                                                 administrator=flask.session[S_ADMINISTRATOR])
+            except ConnectionRefusedError:
+                return flask.render_template('ordered.html', empty=True, fail_alert=True, message=E_CONNECTION_REFUSED,
+                                             verified=flask.session[S_VERIFY] == 'ordered',
+                                             username=flask.session[S_NAME],
+                                             administrator=flask.session[S_ADMINISTRATOR])
+            except socket.timeout:
+                return flask.render_template('ordered.html', empty=True, fail_alert=True, message=E_CONNECTION_TIMEOUT,
+                                             verified=flask.session[S_VERIFY] == 'ordered',
+                                             username=flask.session[S_NAME],
+                                             administrator=flask.session[S_ADMINISTRATOR])
+            except SyntaxError:
+                return flask.render_template('ordered.html', empty=True, fail_alert=True, message=E_BAD_RETURN,
+                                             verified=flask.session[S_VERIFY] == 'ordered',
+                                             username=flask.session[S_NAME],
+                                             administrator=flask.session[S_ADMINISTRATOR])
 
 
 @app.route('/account', methods=['GET', 'POST'])

@@ -169,7 +169,7 @@
     {% if success_alert %}
         show_dialog('( •̀ ω •́ )y', '{{ message }}', 'b（￣▽￣）d', '{{ success_redirect }}');
     {% elif fail_alert %}
-        show_dialog('Oops...', '{{ message }}', '╮(╯-╰)╭', '');
+        show_dialog('Oops...', '{{ message }}', '╮(╯-╰)╭', '{{ fail_redirect }}');
     {% endif %}
 </script>
 </body>

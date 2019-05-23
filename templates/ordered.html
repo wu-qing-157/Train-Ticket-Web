@@ -16,23 +16,41 @@
             {% else %}
                 <h3 class="mdc-typography--headline3 padding-20">已购车票</h3>
                 <table id="ticket-table">
-                    {% for item in tickets %}
+                    {% for i in range(0, tickets|length) %}
                         <tr>
                             <td>
-                                <span class="mdc-typography--body1">{{ item.from0 }}</span>
+                                <span class="mdc-typography--body1">{{ tickets[i].from0 }}</span>
                                 <br>
-                                <span class="mdc-typography--body1">{{ item.from1 }} {{ item.from2 }}</span>
+                                <span class="mdc-typography--body1">{{ tickets[i].from1 }} {{ tickets[i].from2 }}</span>
                             </td>
                             <td>
-                                <span class="mdc-typography--body1">{{ item.name }}</span>
+                                <span class="mdc-typography--body1">{{ tickets[i].name }}</span>
                             </td>
                             <td>
-                                <span class="mdc-typography--body1">{{ item.to0 }}</span>
+                                <span class="mdc-typography--body1">{{ tickets[i].to0 }}</span>
                                 <br>
-                                <span class="mdc-typography--body1">{{ item.to1 }} {{ item.to2 }}</span>
+                                <span class="mdc-typography--body1">{{ tickets[i].to1 }} {{ tickets[i].to2 }}</span>
                             </td>
                             <td>
-                                <span class="mdc-typography--body1">{{ item.kind }}{{ item.num }}张</span>
+                                <span class="mdc-typography--body1">{{ tickets[i].kind }}{{ tickets[i].num }}张</span>
+                            </td>
+                            <td class="icon-button-td">
+                                <form action="" method="post" name="refund" id="refund-form-{{ i }}">
+                                    <input type="hidden" name="train_id" value="{{ tickets[i].train_id }}">
+                                    <input type="hidden" name="from" value="{{ tickets[i].from0 }}">
+                                    <input type="hidden" name="to" value="{{ tickets[i].to0 }}">
+                                    <input type="hidden" name="date" value="{{ tickets[i].from1 }}">
+                                    <input type="hidden" name="kind" value="{{ tickets[i].kind }}">
+                                    <input type="hidden" name="num" value="{{ tickets[i].num }}">
+                                </form>
+                                <button onclick="
+                                        {% if verified %}
+                                            document.getElementById('refund-form-{{ i }}').submit();
+                                        {% else %}
+                                            show_verify('退订车票', '将被允许可以退订您的车票');
+                                        {% endif %}" class="material-icons mdc-icon-button"
+                                        id="refund-button-{{ i }}">cancel
+                                </button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -42,7 +60,13 @@
     </div>
 {% endblock %}
 {% block script %}
+    document.getElementById('ordered').onclick = function (a, b) {};
+    document.getElementById('ordered').classList.add('mdc-list-item--activated');
     {% if empty %}
         initialize_button('jump-order');
+    {% else %}
+        {% for i in range(0, tickets|length) %}
+            initialize_icon_button('refund-button-{{ i }}');
+        {% endfor %}
     {% endif %}
 {% endblock %}

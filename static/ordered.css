@@ -1,0 +1,24 @@
+#ticket-table {
+    padding: 20px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    border-collapse: collapse;
+}
+
+#ticket-table tr:nth-child(even) {
+    background-color: white;
+}
+
+#ticket-table tr:nth-child(odd) {
+    background-color: floralwhite;
+}
+
+#ticket-table tr:hover {
+    background-color: bisque !important;
+}
+
+.icon-button-td {
+    width: 48px;
+    overflow: hidden;
+}
