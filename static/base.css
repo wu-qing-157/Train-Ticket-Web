@@ -155,6 +155,10 @@
     width: 180px;
 }
 
+.width-300px {
+    width: 300px;
+}
+
 .width-fit-content {
     width: fit-content;
 }

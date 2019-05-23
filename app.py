@@ -411,7 +411,7 @@ def account_manage():
             except SyntaxError:
                 flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
             return flask.redirect(flask.url_for('account_manage', _method='GET'))
-        else:
+        elif 'modify_profile' in flask.request.form:
             try:
                 user_id = flask.session[S_MANAGED_USER_ID]
                 name = flask.request.form['name']
@@ -425,6 +425,51 @@ def account_manage():
                     flask.session[S_SUCCESS_MESSAGE] = '修改成功'
                 else:
                     flask.session[S_ERR_MESSAGE] = '修改失败'
+            except ConnectionRefusedError:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
+            except socket.timeout:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
+            except SyntaxError:
+                flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
+            return flask.redirect(flask.url_for('account_manage', _method='GET'))
+        elif 'refund_ticket' in flask.request.form:
+            try:
+                user_id = flask.session[S_MANAGED_USER_ID]
+                train_id = flask.request.form['train_id']
+                from_ = flask.request.form['from']
+                to = flask.request.form['to']
+                date = flask.request.form['date']
+                kind = flask.request.form['kind']
+                num = flask.request.form['num']
+                result = backend.get_result(
+                    'refund_ticket {} {} {} {} {} {} {}'.format(user_id, num, train_id, from_, to,
+                                                                date, kind), SZ_REFUND_TICKET, RE_REFUND_TICKET)
+                if result == '1':
+                    flask.session[S_SUCCESS_MESSAGE] = '退订成功'
+                else:
+                    flask.session[S_ERR_MESSAGE] = '退订失败'
+            except ConnectionRefusedError:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
+            except socket.timeout:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
+            except SyntaxError:
+                flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
+            return flask.redirect(flask.url_for('account_manage', _method='GET'))
+        elif 'buy_ticket' in flask.request.form:
+            train_id = flask.request.form['train_id']
+            from_ = flask.request.form['depart']
+            to = flask.request.form['arrive']
+            date = flask.request.form['date']
+            num = flask.request.form['num']
+            kind = flask.request.form['kind']
+            try:
+                result = backend.get_result("buy_ticket {} {} {} {} {} {} {}".format(flask.session[S_CURRENT_USER], num,
+                                                                                     train_id, from_, to, date, kind),
+                                            SZ_BUY_TICKET, RE_BUY_TICKET)
+                if result == '1':
+                    flask.session[S_SUCCESS_MESSAGE] = '添加成功'
+                else:
+                    flask.session[S_ERR_MESSAGE] = '添加失败'
             except ConnectionRefusedError:
                 flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
             except socket.timeout:
@@ -470,8 +515,20 @@ def ajax_query_profile():
             return flask.render_template('ajax_query_profile.js', not_exist=True, user_id=user_id)
         else:
             [name, email, phone, administrator] = result.split(' ')
-            return flask.render_template('ajax_query_profile.js', user_id=user_id, name=name, email=email,
-                                         phone=phone, administrator=administrator == '2')
+            result = backend.get_result('query_order {}'.format(user_id), SZ_QUERY_ORDER, RE_QUERY_ORDER)
+            if result == '-1':
+                return flask.render_template('ajax_query_profile.js', user_id=user_id, name=name, email=email,
+                                             phone=phone, administrator=administrator == '2', empty=True)
+            else:
+                tickets = []
+                for single_str in result.split('  '):
+                    new_ticket = BoughtTicket()
+                    [new_ticket.train_id, new_ticket.name, new_ticket.from0, new_ticket.from1, new_ticket.from2,
+                     new_ticket.to0, new_ticket.to1, new_ticket.to2, new_ticket.kind,
+                     new_ticket.num] = single_str.split(' ')
+                    tickets.append(new_ticket)
+                return flask.render_template('ajax_query_profile.js', user_id=user_id, name=name, email=email,
+                                             phone=phone, administrator=administrator == '2', tickets=tickets)
     except ConnectionRefusedError:
         return flask.render_template('ajax_exception.js', info=E_CONNECTION_REFUSED)
     except socket.timeout:

@@ -2,7 +2,7 @@
     width: 30%;
 }
 
-#info-table {
+table {
     padding: 20px 0;
     margin: 0 auto;
     width: 80%;
@@ -10,14 +10,18 @@
     border-collapse: collapse;
 }
 
-#info-table td {
+table td {
     padding: 8px 0;
 }
 
-#info-table tr:nth-child(odd) {
+table tr:nth-child(odd) {
     background-color: white;
 }
 
-#info-table tr:hover {
+table tr:nth-child(even) {
+    background-color: floralwhite;
+}
+
+table tr:hover {
     background-color: bisque;
 }

@@ -37,7 +37,9 @@
                    onclick="if (this.innerText === 'arrow_forward') {
                        document.getElementById('hint').classList.add('hidden');
                        input_text_field.disabled = true;
-                       $.getScript('/ajax_query_profile?user_id=' + document.getElementById('input').value);
+                       $.getScript('/ajax_query_profile?user_id=' + document.getElementById('input').value, function() {
+                           input_text_field.disabled = false;
+                       });
                    }"
                    id="input-icon">error</i>
                 <div class="mdc-notched-outline">
@@ -56,7 +58,7 @@
                 </div>
             </div>
             <p id="hint"><span class="mdc-typography--body1">请输入需要查询的用户ID，然后点击右边的按钮（或者按Enter）。</span></p>
-            <table id="info_table">
+            <table id="info-table">
                 <tr>
                     <td class="table-title"><span class="mdc-typography--body1">用户ID</span></td>
                     <td><span class="mdc-typography--body1" id="id-info">
@@ -88,6 +90,212 @@
                     </span></td>
                 </tr>
             </table>
+            <p id="ticket-hint" class="mdc-typography--body1"></p>
+            <table id="ticket-table">
+            </table>
+        </div>
+    </div>
+    <div class="wrapper max-width-800" id="buy-ticket">
+        <div class="surface">
+            <h3 class="mdc-typography--headline3">添加车票</h3>
+            <p class="mdc-typography--body1 crimson">此功能为管理员功能</p>
+            <p class="mdc-typography--body1" id="buy-ticket-status">请先查询想要修改的用户</p>
+            <form action="" method="post" name="buy-ticket" id="buy-ticket-form">
+                <input type="hidden" name="buy_ticket">
+                <input type="hidden" name="date" id="date">
+                <div class="input-wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                     id="train_id-text-field">
+                    <i class="material-icons mdc-text-field__icon">train</i>
+                    <input type="text" class="mdc-text-field__input" id="train_id" name="train_id"
+                           pattern="^.*$" required
+                           oninput="
+                               document.getElementById('train_id-text-field').classList.remove('mdc-text-field--invalid');
+                               document.getElementById('train_id-icon').innerText = 'check';
+                               this.reportValidity();"
+                           oninvalid="
+                               event.preventDefault();
+                               document.getElementById('train_id-text-field').classList.add('mdc-text-field--invalid');
+                               document.getElementById('train_id-icon').innerText = 'error';"
+                           aria-controls="train_id-helper-text"
+                           aria-describedby="train_id-helper-text">
+                    <i class="material-icons mdc-text-field__icon" id="train_id-icon">error</i>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label" for="train_id">车次ID</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </div>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                         id="train_id-helper-text" aria-hidden="true">
+                        请输入正确的车次ID
+                    </div>
+                </div>
+                <div class="station-input-wrapper width-50 width-100-if-max-width-1000">
+                    <div class="station-input-input-wrapper">
+                        <div class="input-wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                             id="depart-text-field">
+                            <i class="material-icons mdc-text-field__icon">call_made</i>
+                            <input type="text" class="mdc-text-field__input" id="depart" name="depart"
+                                   pattern=".*" required
+                                   oninput="
+                                           document.getElementById('depart-text-field').classList.remove('mdc-text-field--invalid');
+                                           document.getElementById('depart-icon').innerText = 'check';
+                                           this.reportValidity();
+                                           update_station_suggest(depart_text_field, this, depart_menu, document.getElementById('depart-menu-list'))"
+                                   onclick="
+                                           setTimeout(function () {
+                                               update_station_suggest(depart_text_field, document.getElementById('depart'), depart_menu, document.getElementById('depart-menu-list'))
+                                           }, 100)"
+                                   onkeydown="if (event.keyCode === 40) {
+                                               document.getElementById('depart-menu-list').firstChild.focus()
+                                           }"
+                                   oninvalid="
+                                           event.preventDefault();
+                                           document.getElementById('depart-text-field').classList.add('mdc-text-field--invalid');
+                                           document.getElementById('depart-icon').innerText = 'error';">
+                            <i class="material-icons mdc-text-field__icon" id="depart-icon">error</i>
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label class="mdc-floating-label" for="depart">出发站</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="station-suggest-menu-wrapper">
+                        <div class="mdc-menu mdc-menu-surface station-suggest-menu" id="depart-menu">
+                            <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical"
+                                tabindex="-1"
+                                id="depart-menu-list">
+                                <li class="mdc-list-item" role="menuitem">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="station-input-wrapper width-50 width-100-if-max-width-1000">
+                    <div class="station-input-input-wrapper">
+                        <div class="input-wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                             id="arrive-text-field">
+                            <i class="material-icons mdc-text-field__icon">flag</i>
+                            <input type="text" class="mdc-text-field__input" id="arrive" name="arrive"
+                                   pattern=".*" required
+                                   oninput="
+                               document.getElementById('arrive-text-field').classList.remove('mdc-text-field--invalid');
+                               document.getElementById('arrive-icon').innerText = 'check';
+                               this.reportValidity();
+                               update_station_suggest(arrive_text_field, this, arrive_menu, document.getElementById('arrive-menu-list'))"
+                                   onclick="setTimeout(function () {
+                                   update_station_suggest(arrive_text_field, document.getElementById('arrive'), arrive_menu, document.getElementById('arrive-menu-list'))
+                               }, 100)"
+                                   onkeydown="if (event.keyCode === 40) {
+                                   document.getElementById('arrive-menu-list').firstChild.focus()
+                               }"
+                                   oninvalid="
+                               event.preventDefault();
+                               document.getElementById('arrive-text-field').classList.add('mdc-text-field--invalid');
+                               document.getElementById('arrive-icon').innerText = 'error';">
+                            <i class="material-icons mdc-text-field__icon" id="arrive-icon">error</i>
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label class="mdc-floating-label" for="arrive">到达站</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="station-suggest-menu-wrapper">
+                        <div class="mdc-menu mdc-menu-surface station-suggest-menu" id="arrive-menu">
+                            <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical"
+                                tabindex="-1"
+                                id="arrive-menu-list">
+                                <li class="mdc-list-item" role="menuitem">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-wrapper width-100" id="date-picker"></div>
+                <div class="inline-wrapper width-66">
+                    <div class="input-wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                         id="kind-text-field">
+                        <i class="material-icons mdc-text-field__icon">airline_seat_legroom_normal</i>
+                        <input type="text" class="mdc-text-field__input" id="kind" name="kind"
+                               pattern="^.*$" required
+                               oninput="
+                               document.getElementById('kind-text-field').classList.remove('mdc-text-field--invalid');
+                               document.getElementById('kind-icon').innerText = 'check';
+                               this.reportValidity();"
+                               oninvalid="
+                               event.preventDefault();
+                               document.getElementById('kind-text-field').classList.add('mdc-text-field--invalid');
+                               document.getElementById('kind-icon').innerText = 'error';"
+                               aria-controls="kind-helper-text"
+                               aria-describedby="kind-helper-text">
+                        <i class="material-icons mdc-text-field__icon" id="kind-icon">error</i>
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <label class="mdc-floating-label" for="kind">车票种类</label>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <div class="mdc-text-field-helper-line">
+                        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                             id="kind-helper-text" aria-hidden="true">
+                            请输入正确的车票种类
+                        </div>
+                    </div>
+                </div>
+                <div class="inline-wrapper width-33">
+                    <div class="input-wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon"
+                         id="num-text-field">
+                        <input type="number" class="mdc-text-field__input" id="num" name="num"
+                               pattern="^.*$" required min="1" value="1"
+                               oninput="
+                               document.getElementById('num-text-field').classList.remove('mdc-text-field--invalid');
+                               document.getElementById('num-icon').innerText = 'check';
+                               this.reportValidity();"
+                               oninvalid="
+                               event.preventDefault();
+                               document.getElementById('num-text-field').classList.add('mdc-text-field--invalid');
+                               document.getElementById('num-icon').innerText = 'error';"
+                               aria-controls="num-helper-text"
+                               aria-describedby="num-helper-text">
+                        <i class="material-icons mdc-text-field__icon" id="num-icon">check</i>
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <label class="mdc-floating-label" for="num">数量</label>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <div class="mdc-text-field-helper-line">
+                        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                             id="num-helper-text" aria-hidden="true">
+                            至少添加1张车票
+                        </div>
+                    </div>
+                </div>
+                <div class="button-wrapper">
+                    <button type="submit" class="mdc-button mdc-button--raised width-120px" id="buy-ticket-button"
+                            onclick="if (document.getElementById('buy-ticket-form').reportValidity()) {
+                                        document.getElementById('date').value = document.querySelector('#date-picker input').value;
+                                        document.getElementById('buy-ticket-button').disabled = true;
+                                        document.getElementById('buy-ticket-form').submit();
+                                    }" disabled>
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">add_circle_outline</i>
+                        <span class="mdc-button__label">添加车票</span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
     <div class="wrapper max-width-800" id="edit-info">
@@ -96,6 +304,7 @@
             <p class="mdc-typography--body1 crimson">此功能为管理员功能</p>
             <p class="mdc-typography--body1" id="modify-status">请先查询想要修改的用户</p>
             <form action="" method="post" name="modify-profile" id="modify-form">
+                <input type="hidden" name="modify_profile">
                 <div class="input-wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
                      id="id-text-field">
                     <i class="material-icons mdc-text-field__icon">account_box</i>
@@ -272,4 +481,5 @@
         document.getElementById('input').oninput();
         document.getElementById('input-icon').click();
     {% endif %}
+    station_suggest_init();
 {% endblock %}
