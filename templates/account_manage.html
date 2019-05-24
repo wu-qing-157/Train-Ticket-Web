@@ -139,7 +139,7 @@
                              id="depart-text-field">
                             <i class="material-icons mdc-text-field__icon">call_made</i>
                             <input type="text" class="mdc-text-field__input" id="depart" name="depart"
-                                   pattern=".*" required
+                                   pattern=".*" required autocomplete="off"
                                    oninput="
                                            document.getElementById('depart-text-field').classList.remove('mdc-text-field--invalid');
                                            document.getElementById('depart-icon').innerText = 'check';
@@ -183,7 +183,7 @@
                              id="arrive-text-field">
                             <i class="material-icons mdc-text-field__icon">flag</i>
                             <input type="text" class="mdc-text-field__input" id="arrive" name="arrive"
-                                   pattern=".*" required
+                                   pattern=".*" required autocomplete="off"
                                    oninput="
                                document.getElementById('arrive-text-field').classList.remove('mdc-text-field--invalid');
                                document.getElementById('arrive-icon').innerText = 'check';

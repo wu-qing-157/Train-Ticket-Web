@@ -4,6 +4,7 @@ import {MDCRipple} from "@material/ripple/component";
 import React, {useState} from "react";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import zhLocale from "date-fns/locale/zh-CN";
 import {MDCMenu} from "@material/menu/component";
 import ReactDOM from "react-dom";
 
@@ -11,7 +12,7 @@ function QueryDatePicker() {
     const [selectedDate, handleDateChange] = useState(new Date());
 
     return (
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={zhLocale}>
             <KeyboardDatePicker
                 autoOk
                 variant="inline"

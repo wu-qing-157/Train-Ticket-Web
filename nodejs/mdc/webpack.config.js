@@ -2,7 +2,8 @@ const autoprefixer = require('autoprefixer');
 
 module.exports = [{
     entry: ['./app.scss', './account.jsx', './account_manage.jsx', './base.jsx', './login.jsx', './main_page.jsx',
-        './mdc_initialize.jsx', './order.jsx', './order_confirm.jsx', './register.jsx', './station_suggest.js'],
+        './mdc_initialize.jsx', './order.jsx', './order_confirm.jsx', './register.jsx', './station_suggest.js',
+        './train_manage.jsx'],
     output: {
         filename: 'mdc-bundle.js'
     },
