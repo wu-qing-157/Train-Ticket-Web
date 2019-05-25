@@ -95,7 +95,47 @@
                     </div>
                 </div>
             </div>
-            <div class="input-wrapper width-100" id="date-picker"></div>
+            <div class="wrapper width-100">
+                <div class="inline-wrapper width-280px">
+                    <div class="input-wrapper width-100" id="date-picker"></div>
+                </div>
+                <input type="hidden" name="catalog-inner" id="catalog-inner" value="GD">
+                <div class="inline-wrapper width-480px">
+                    <div class="input-wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                         id="catalog-text-field">
+                        <i class="material-icons mdc-text-field__icon">face</i>
+                        <input type="text" class="mdc-text-field__input" id="catalog" name="catalog"
+                               required value="G 高铁/D 动车"
+                               oninput="
+                                   document.getElementById('catalog-text-field').classList.remove('mdc-text-field--invalid');
+                                   document.getElementById('catalog-icon').innerText = 'check';
+                                   this.reportValidity();"
+                               onkeypress="return false;"
+                               onclick="catalog_dialog.open()"
+                               oninvalid="
+                                   event.preventDefault();
+                                   document.getElementById('catalog-text-field').classList.add('mdc-text-field--invalid');
+                                   document.getElementById('catalog-icon').innerText = 'error';"
+                               aria-controls="catalog-helper-text"
+                               aria-describedby="catalog-helper-text">
+                        <i class="material-icons mdc-text-field__icon" id="catalog-icon">error</i>
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <label class="mdc-floating-label" for="catalog">列车种类</label>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <div class="mdc-text-field-helper-line">
+                        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                             id="name-helper-text"
+                             aria-hidden="true">
+                            请指定查询的列车种类
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="button-wrapper">
                 <button class="mdc-button mdc-button--raised" id="query-ticket-button"
                         onclick="if (document.getElementById('depart').reportValidity() &&
@@ -108,7 +148,7 @@
                                      $.getScript('ajax_query_ticket?from=' + document.getElementById('depart').value +
                                          '&to=' + document.getElementById('arrive').value +
                                          '&date=' + document.querySelector('#date-picker input').value +
-                                         '&catalog=DGZ', function() {
+                                         '&catalog=' + document.getElementById('catalog-inner').value, function() {
                                              document.getElementById('query-ticket-button').disabled = false;
                                              document.getElementById('query-transfer-button').disabled = false;
                                          })
@@ -127,7 +167,7 @@
                                      $.getScript('ajax_query_ticket?transfer&from=' + document.getElementById('depart').value +
                                          '&to=' + document.getElementById('arrive').value +
                                          '&date=' + document.querySelector('#date-picker input').value +
-                                         '&catalog=DGZ', function() {
+                                         '&catalog=' + document.getElementById('catalog-inner').value, function() {
                                              document.getElementById('query-ticket-button').disabled = false;
                                              document.getElementById('query-transfer-button').disabled = false;
                                          })
@@ -248,11 +288,8 @@
                     </ul>
                 </div>
                 <footer class="mdc-dialog__actions">
-                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
-                        <span class="mdc-button__label">Cancel</span>
-                    </button>
                     <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
-                        <span class="mdc-button__label">OK</span>
+                        <span class="mdc-button__label">好了o(*￣▽￣*)ブ</span>
                     </button>
                 </footer>
             </div>

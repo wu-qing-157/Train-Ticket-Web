@@ -161,6 +161,14 @@
     width: 180px;
 }
 
+.width-480px {
+    width: 480px;
+}
+
+.width-280px {
+    width: 280px;
+}
+
 .width-300px {
     width: 300px;
 }
@@ -169,8 +177,12 @@
     width: fit-content;
 }
 
-.max-width-800 {
+.max-width-800px {
     max-width: 800px;
+}
+
+.max-width-560px {
+    max-width: 560px;
 }
 
 .hidden {
@@ -187,6 +199,10 @@
 
 .padding-20 {
     padding: 20px;
+}
+
+.padding-1em {
+    padding: 1em;
 }
 
 .padding-bottom-0 {

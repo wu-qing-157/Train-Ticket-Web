@@ -22,6 +22,7 @@ SZ_BUY_TICKET = 10
 SZ_QUERY_ORDER = 8192
 SZ_REFUND_TICKET = 10
 SZ_QUERY_TRAIN = 8192
+SZ_ADD_TRAIN = 10
 
 RE_USER_ID = r'\d{4,20}'
 RE_PASSWORD = r'[\u0021-\u007e]{6,20}'
@@ -55,6 +56,7 @@ RE_QUERY_ORDER = r'^(-1)|({}(  {})*)$'.format(RE_SINGLE_BOUGHT_TICKET, RE_SINGLE
 RE_REFUND_TICKET = r'^[01]$'
 RE_QUERY_TRAIN = r'^0|([01]  {}  {}  {} ( {})+ (   {}  {}  {}  {} ( {})+)+)$' \
     .format(RE_TRAIN_ID, RE_NAME, RE_CATALOG, RE_NAME, RE_NAME, RE_TIME, RE_TIME, RE_TIME, RE_PRICE)
+RE_ADD_TRAIN = r'^[01]$'
 
 E_UNKNOWN = '未知错误原因'
 E_PASSWORD_NOT_MATCH = '用户名或密码错误'

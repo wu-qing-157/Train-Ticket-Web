@@ -410,10 +410,56 @@ def train_manage():
             except SyntaxError:
                 flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
             return flask.redirect(flask.url_for('train_manage', _method='GET'))
+        elif 'request-type' in flask.request.form:
+            try:
+                train_id = flask.request.form['train_id']
+                request_type = flask.request.form['request-type']
+                name = flask.request.form['name']
+                catalog = flask.request.form['catalog']
+                station_cnt = int(flask.request.form['station-cnt'])
+                kind_cnt = int(flask.request.form['kind-cnt'])
+                result = backend.get_result('{}_train {} {} {} {} {} {} {}'.format(
+                    request_type, train_id, name, catalog, station_cnt, kind_cnt,
+                    ' '.join(map(lambda j: flask.request.form['kind-' + str(j)], range(0, kind_cnt))),
+                    ' '.join(map(lambda i: '{} {} {} {} {}'.format(
+                        flask.request.form['station-' + str(i)], flask.request.form['arrive-' + str(i)],
+                        flask.request.form['depart-' + str(i)], flask.request.form['stopover-' + str(i)],
+                        ' '.join(
+                            map(lambda j: flask.request.form['price-' + str(i) + '-' + str(j)], range(0, kind_cnt)))
+                    ), range(0, station_cnt)))
+                ), SZ_ADD_TRAIN, RE_ADD_TRAIN)
+                if result == '1':
+                    flask.session[S_SUCCESS_MESSAGE] = '添加/修改成功'
+                else:
+                    flask.session[S_ERR_MESSAGE] = '添加/修改失败'
+            except ConnectionRefusedError:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
+            except socket.timeout:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
+            except SyntaxError:
+                flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
+            return flask.redirect(flask.url_for('train_manage', _method='GET'))
     else:
-        return flask.render_template('train_manage.html', username=flask.session[S_NAME],
-                                     administrator=flask.session[S_ADMINISTRATOR],
-                                     verified=flask.session[S_VERIFY] == 'train_manage')
+        if S_SUCCESS_MESSAGE in flask.session:
+            message = flask.session[S_SUCCESS_MESSAGE]
+            flask.session.pop(S_SUCCESS_MESSAGE)
+            return flask.render_template('train_manage.html', username=flask.session[S_NAME],
+                                         verified=flask.session[S_VERIFY] == 'train_manage',
+                                         administrator=flask.session[S_ADMINISTRATOR],
+                                         success_alert=True,
+                                         message=message)
+        elif S_ERR_MESSAGE in flask.session:
+            message = flask.session[S_ERR_MESSAGE]
+            flask.session.pop(S_ERR_MESSAGE)
+            return flask.render_template('train_manage.html', username=flask.session[S_NAME],
+                                         verified=flask.session[S_VERIFY] == 'train_manage',
+                                         administrator=flask.session[S_ADMINISTRATOR],
+                                         fail_alert=True,
+                                         message=message)
+        else:
+            return flask.render_template('train_manage.html', username=flask.session[S_NAME],
+                                         verified=flask.session[S_VERIFY] == 'train_manage',
+                                         administrator=flask.session[S_ADMINISTRATOR])
 
 
 @app.route('/account_manage', methods=['GET', 'POST'])
@@ -638,8 +684,8 @@ def ajax_query_train():
     query_id = flask.request.args['train_id']
     try:
         result = backend.get_result('query_train {}'.format(query_id), SZ_QUERY_TRAIN, RE_QUERY_TRAIN)
-        if result == 0:
-            return flask.render_template('ajax_query_train.js', not_exsit=True)
+        if result == '0':
+            return flask.render_template('ajax_query_train.js', not_exsit=True, train_id=query_id)
         else:
             [train_info, ticket_info] = result.split('    ')
             [sold, train_id, name, catalog, all_kind] = train_info.split('  ')
