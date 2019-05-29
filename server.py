@@ -36,9 +36,6 @@ class MyServer(socketserver.BaseRequestHandler):
 
 if __name__ == "__main__":
     # exe = Popen(['./server'], shell = True, stdin = PIPE, stdout = PIPE)
-<<<<<<< HEAD
     server = socketserver.ThreadingTCPServer(("0.0.0.0", 5009), MyServer)
-=======
     server = socketserver.ThreadingTCPServer(("0.0.0.0", 8081), MyServer)
->>>>>>> 45782539b33d41256b6045566afce7855fb5aa75
     server.serve_forever()
