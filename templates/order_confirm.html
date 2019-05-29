@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
     {% if success %}
-        <div class="wrapper max-width-800">
+        <div class="wrapper max-width-800px">
             <div class="surface">
                 <h3 class="mdc-typography--headline3">订购车票</h3>
                 <table id="train-info-table">
@@ -107,7 +107,7 @@
             </div>
         </div>
     {% else %}
-        <div class="wrapper max-width-800">
+        <div class="wrapper max-width-800px">
             <div class="surface">
                 <span class="mdc-typography--body1">未能获取该车次信息，请尝试</span>
                 <button class="mdc-button" id="refresh" onclick="location.reload(true)">

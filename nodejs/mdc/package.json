@@ -13,6 +13,7 @@
     "@material/ripple": "latest",
     "@material/dialog": "latest",
     "@material/select": "latest",
+    "@material/list": "latest",
     "@material-ui/pickers": "latest",
     "@date-io/moment": "latest",
     "moment": "latest",

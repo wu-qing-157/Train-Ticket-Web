@@ -1,0 +1,10 @@
+#station-table {
+    width: 100%;
+    display: block;
+    overflow-x: scroll;
+}
+
+#station-table::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}

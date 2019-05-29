@@ -387,13 +387,87 @@ def account():
                                          email=flask.session[S_EMAIL], phone=flask.session[S_PHONE])
 
 
-@app.route('/train_manage')
+@app.route('/train_manage', methods=['GET', 'POST'])
 def train_manage():
-    return 'train_manage'
+    if flask.session.get(S_VERIFY) != 'train_manage':
+        flask.session[S_VERIFY] = 'none'
+    if not S_ADMINISTRATOR in flask.session or not flask.session[S_ADMINISTRATOR]:
+        return E_NOT_ADMINISTRATOR
+    if flask.request.method == 'POST':
+        if 'verify_password' in flask.request.form:
+            try:
+                verify_password = flask.request.form['verify_password']
+                result = backend.get_result('login {} {}'.format(flask.session[S_CURRENT_USER], verify_password),
+                                            SZ_LOGIN, RE_LOGIN)
+                if result == '1':
+                    flask.session[S_VERIFY] = 'train_manage'
+                else:
+                    flask.session[S_ERR_MESSAGE] = E_PASSWORD_ERROR
+            except ConnectionRefusedError:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
+            except socket.timeout:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
+            except SyntaxError:
+                flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
+            return flask.redirect(flask.url_for('train_manage', _method='GET'))
+        elif 'request-type' in flask.request.form:
+            try:
+                train_id = flask.request.form['train_id']
+                request_type = flask.request.form['request-type']
+                name = flask.request.form['name']
+                catalog = flask.request.form['catalog']
+                station_cnt = int(flask.request.form['station-cnt'])
+                kind_cnt = int(flask.request.form['kind-cnt'])
+                result = backend.get_result('{}_train {} {} {} {} {} {} {}'.format(
+                    request_type, train_id, name, catalog, station_cnt, kind_cnt,
+                    ' '.join(map(lambda j: flask.request.form['kind-' + str(j)], range(0, kind_cnt))),
+                    ' '.join(map(lambda i: '{} {} {} {} {}'.format(
+                        flask.request.form['station-' + str(i)], flask.request.form['arrive-' + str(i)],
+                        flask.request.form['depart-' + str(i)], flask.request.form['stopover-' + str(i)],
+                        ' '.join(
+                            map(lambda j: flask.request.form['price-' + str(i) + '-' + str(j)], range(0, kind_cnt)))
+                    ), range(0, station_cnt)))
+                ), SZ_ADD_TRAIN, RE_ADD_TRAIN)
+                if result == '1':
+                    flask.session[S_SUCCESS_MESSAGE] = '添加/修改成功'
+                else:
+                    flask.session[S_ERR_MESSAGE] = '添加/修改失败'
+            except ConnectionRefusedError:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
+            except socket.timeout:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
+            except SyntaxError:
+                flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
+            return flask.redirect(flask.url_for('train_manage', _method='GET'))
+    else:
+        if S_SUCCESS_MESSAGE in flask.session:
+            message = flask.session[S_SUCCESS_MESSAGE]
+            flask.session.pop(S_SUCCESS_MESSAGE)
+            return flask.render_template('train_manage.html', username=flask.session[S_NAME],
+                                         verified=flask.session[S_VERIFY] == 'train_manage',
+                                         administrator=flask.session[S_ADMINISTRATOR],
+                                         success_alert=True,
+                                         message=message)
+        elif S_ERR_MESSAGE in flask.session:
+            message = flask.session[S_ERR_MESSAGE]
+            flask.session.pop(S_ERR_MESSAGE)
+            return flask.render_template('train_manage.html', username=flask.session[S_NAME],
+                                         verified=flask.session[S_VERIFY] == 'train_manage',
+                                         administrator=flask.session[S_ADMINISTRATOR],
+                                         fail_alert=True,
+                                         message=message)
+        else:
+            return flask.render_template('train_manage.html', username=flask.session[S_NAME],
+                                         verified=flask.session[S_VERIFY] == 'train_manage',
+                                         administrator=flask.session[S_ADMINISTRATOR])
 
 
 @app.route('/account_manage', methods=['GET', 'POST'])
 def account_manage():
+    if flask.session.get(S_VERIFY) != 'account_manage':
+        flask.session[S_VERIFY] = 'none'
+    if not S_ADMINISTRATOR in flask.session or not flask.session[S_ADMINISTRATOR]:
+        return E_NOT_ADMINISTRATOR
     if flask.request.method == 'POST':
         if 'verify_password' in flask.request.form:
             try:
@@ -567,10 +641,14 @@ def ajax_query_ticket():
     to = flask.request.args['to']
     date = flask.request.args['date']
     catalog = flask.request.args['catalog']
+    if 'transfer' in flask.request.args:
+        word = 'transfer'
+    else:
+        word = 'ticket'
     if _from == to:
         return flask.render_template('ajax_query_ticket.js', error_info=E_QUERY_TICKET_SAME_STATION)
     try:
-        result = backend.get_result("query_ticket {} {} {} {}".format(_from, to, date, catalog),
+        result = backend.get_result("query_{} {} {} {} {}".format(word, _from, to, date, catalog),
                                     SZ_QUERY_TICKET, RE_QUERY_TICKET)
         if result == '-1':
             return flask.render_template('ajax_query_ticket.js', error_info=E_QUERY_TICKET_NONE)
@@ -587,7 +665,40 @@ def ajax_query_ticket():
                     [new_ticket_info.kind, new_ticket_info.num, new_ticket_info.price] = single_ticket_str.split(' ')
                     new_ticket.tickets.append(new_ticket_info)
                 ticket.append(new_ticket)
-            return flask.render_template('ajax_query_ticket.js', ticket_list=ticket)
+            return flask.render_template('ajax_query_ticket.js', ticket_list=ticket,
+                                         transfer='transfer' in flask.request.args)
+    except ConnectionRefusedError:
+        return flask.render_template('ajax_exception.js', info=E_CONNECTION_REFUSED)
+    except socket.timeout:
+        return flask.render_template('ajax_exception.js', info=E_CONNECTION_TIMEOUT)
+    except SyntaxError:
+        return flask.render_template('ajax_exception.js', info=E_BAD_RETURN)
+
+
+@app.route('/ajax_query_train')
+def ajax_query_train():
+    if not S_ADMINISTRATOR in flask.session or not flask.session[S_ADMINISTRATOR]:
+        return 'document.body.innerText = "{}"'.format(E_NOT_ADMINISTRATOR)
+    if not 'train_id' in flask.request.args:
+        return flask.render_template('ajax_bad_request.js', info=E_INVALID_REQUEST)
+    query_id = flask.request.args['train_id']
+    try:
+        result = backend.get_result('query_train {}'.format(query_id), SZ_QUERY_TRAIN, RE_QUERY_TRAIN)
+        if result == '0':
+            return flask.render_template('ajax_query_train.js', not_exsit=True, train_id=query_id)
+        else:
+            [train_info, ticket_info] = result.split('    ')
+            [sold, train_id, name, catalog, all_kind] = train_info.split('  ')
+            kinds = all_kind.split(' ')
+            stations = []
+            for station_str in ticket_info.split('   '):
+                new_station = SingleStation()
+                [new_station.name, new_station.arrive, new_station.depart, new_station.stopover,
+                 all_price] = station_str.split('  ')
+                new_station.prices = all_price.split(' ')
+                stations.append(new_station)
+            return flask.render_template('ajax_query_train.js', train_id=train_id, name=name, catalog=catalog,
+                                         kinds=kinds, stations=stations, sold=sold == '1')
     except ConnectionRefusedError:
         return flask.render_template('ajax_exception.js', info=E_CONNECTION_REFUSED)
     except socket.timeout:

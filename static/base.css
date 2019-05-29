@@ -49,7 +49,13 @@
     right: 0;
 }
 
+.right-15-wrapper {
+    position: absolute;
+    right: 15%;
+}
+
 .button-wrapper {
+    position: relative;
     display: block;
     width: 100%;
     padding: 8px;
@@ -155,6 +161,14 @@
     width: 180px;
 }
 
+.width-480px {
+    width: 480px;
+}
+
+.width-280px {
+    width: 280px;
+}
+
 .width-300px {
     width: 300px;
 }
@@ -163,8 +177,12 @@
     width: fit-content;
 }
 
-.max-width-800 {
+.max-width-800px {
     max-width: 800px;
+}
+
+.max-width-560px {
+    max-width: 560px;
 }
 
 .hidden {
@@ -181,6 +199,10 @@
 
 .padding-20 {
     padding: 20px;
+}
+
+.padding-1em {
+    padding: 1em;
 }
 
 .padding-bottom-0 {

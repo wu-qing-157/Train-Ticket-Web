@@ -6,7 +6,7 @@
     <link href="{{ url_for('static', filename='account.css') }}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-    <div class="wrapper max-width-800 {% if edit %}hidden{% endif %}" id="show_info">
+    <div class="wrapper max-width-800px {% if edit %}hidden{% endif %}" id="show_info">
         <div class="surface">
             <h3 class="mdc-typography--headline3">个人信息</h3>
             <table id="info-table">
@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <div class="wrapper max-width-800 {% if not edit %}hidden{% endif %}" id="edit_info">
+    <div class="wrapper max-width-800px {% if not edit %}hidden{% endif %}" id="edit_info">
         <div class="surface">
             <h3 class="mdc-typography--headline3 padding-20">修改用户信息</h3>
             <div class="button-wrapper {% if verified %}hidden{% endif %}" id="verify-edit-div">

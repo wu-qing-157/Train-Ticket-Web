@@ -31,3 +31,11 @@ class BoughtTicket:
     to2 = ''
     kind = ''
     num = ''
+
+
+class SingleStation:
+    name = ''
+    arrive = ''
+    depart = ''
+    stopover = ''
+    prices = []

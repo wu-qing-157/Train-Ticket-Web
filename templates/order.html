@@ -15,7 +15,7 @@
                          id="depart-text-field">
                         <i class="material-icons mdc-text-field__icon">call_made</i>
                         <input type="text" class="mdc-text-field__input" id="depart" name="depart"
-                               pattern=".*" required
+                               pattern="^[^ +=?#&/\\]{1,20}$" required autocomplete="off"
                                oninput="
                                document.getElementById('depart-text-field').classList.remove('mdc-text-field--invalid');
                                document.getElementById('depart-icon').innerText = 'check';
@@ -58,7 +58,7 @@
                          id="arrive-text-field">
                         <i class="material-icons mdc-text-field__icon">flag</i>
                         <input type="text" class="mdc-text-field__input" id="arrive" name="arrive"
-                               pattern=".*" required
+                               pattern="^[^ +=?#&/\\]{1,20}$" required autocomplete="off"
                                oninput="
                                document.getElementById('arrive-text-field').classList.remove('mdc-text-field--invalid');
                                document.getElementById('arrive-icon').innerText = 'check';
@@ -95,7 +95,47 @@
                     </div>
                 </div>
             </div>
-            <div class="input-wrapper width-100" id="date-picker"></div>
+            <div class="wrapper width-100">
+                <div class="inline-wrapper width-280px">
+                    <div class="input-wrapper width-100" id="date-picker"></div>
+                </div>
+                <input type="hidden" name="catalog-inner" id="catalog-inner" value="GD">
+                <div class="inline-wrapper width-480px">
+                    <div class="input-wrapper mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon"
+                         id="catalog-text-field">
+                        <i class="material-icons mdc-text-field__icon">face</i>
+                        <input type="text" class="mdc-text-field__input" id="catalog" name="catalog"
+                               required value="G 高铁/D 动车"
+                               oninput="
+                                   document.getElementById('catalog-text-field').classList.remove('mdc-text-field--invalid');
+                                   document.getElementById('catalog-icon').innerText = 'check';
+                                   this.reportValidity();"
+                               onkeypress="return false;"
+                               onclick="catalog_dialog.open()"
+                               oninvalid="
+                                   event.preventDefault();
+                                   document.getElementById('catalog-text-field').classList.add('mdc-text-field--invalid');
+                                   document.getElementById('catalog-icon').innerText = 'error';"
+                               aria-controls="catalog-helper-text"
+                               aria-describedby="catalog-helper-text">
+                        <i class="material-icons mdc-text-field__icon" id="catalog-icon">error</i>
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <label class="mdc-floating-label" for="catalog">列车种类</label>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <div class="mdc-text-field-helper-line">
+                        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+                             id="name-helper-text"
+                             aria-hidden="true">
+                            请指定查询的列车种类
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="button-wrapper">
                 <button class="mdc-button mdc-button--raised" id="query-ticket-button"
                         onclick="if (document.getElementById('depart').reportValidity() &&
@@ -103,22 +143,158 @@
                                      document.querySelector('#date-picker div div input').reportValidity()) {
                                      document.getElementById('ticket-table').innerHTML = '';
                                      document.getElementById('query-ticket-error-info').classList.add('hidden');
-                                     this.disabled = true;
+                                     document.getElementById('query-ticket-button').disabled = true;
+                                     document.getElementById('query-transfer-button').disabled = true;
                                      $.getScript('ajax_query_ticket?from=' + document.getElementById('depart').value +
                                          '&to=' + document.getElementById('arrive').value +
                                          '&date=' + document.querySelector('#date-picker input').value +
-                                         '&catalog=DGZ', function() {
+                                         '&catalog=' + document.getElementById('catalog-inner').value, function() {
                                              document.getElementById('query-ticket-button').disabled = false;
+                                             document.getElementById('query-transfer-button').disabled = false;
                                          })
                                  }">
                     <i class="material-icons mdc-button__icon" aria-hidden="true">search</i>
                     <span class="mdc-button__label">查询车次</span>
                 </button>
+                <button class="mdc-button right-15-wrapper" id="query-transfer-button"
+                        onclick="if (document.getElementById('depart').reportValidity() &&
+                                     document.getElementById('arrive').reportValidity() &&
+                                     document.querySelector('#date-picker div div input').reportValidity()) {
+                                     document.getElementById('ticket-table').innerHTML = '';
+                                     document.getElementById('query-ticket-error-info').classList.add('hidden');
+                                     document.getElementById('query-ticket-button').disabled = true;
+                                     document.getElementById('query-transfer-button').disabled = true;
+                                     $.getScript('ajax_query_ticket?transfer&from=' + document.getElementById('depart').value +
+                                         '&to=' + document.getElementById('arrive').value +
+                                         '&date=' + document.querySelector('#date-picker input').value +
+                                         '&catalog=' + document.getElementById('catalog-inner').value, function() {
+                                             document.getElementById('query-ticket-button').disabled = false;
+                                             document.getElementById('query-transfer-button').disabled = false;
+                                         })
+                                 }">
+                    <i class="material-icons mdc-button__icon" aria-hidden="true">search</i>
+                    <span class="mdc-button__label">查询换乘</span>
+                </button>
             </div>
+            <span id="query-ticket-error-info" class="mdc-typography--body1 hidden padding-20"></span>
             <table id="ticket-table">
             </table>
-            <span id="query-ticket-error-info" class="mdc-typography--body1 hidden"></span>
         </div>
+    </div>
+    <div class="mdc-dialog" id="catalog-dialog" role="alertdialog" aria-modal="true"
+         aria-labelledby="catalog-dialog-title"
+         aria-describedby="catalog-dialog-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title" id="catalog-dialog-title">选择列车种类</h2>
+                <div class="mdc-dialog__content" id="catalog-dialog-content">
+                    <ul class="mdc-list" id="catalog-list" role="group" aria-label="选择列车种类">
+                        <li class="mdc-list-item" role="checkbox" tabindex="0" aria-checked="true">
+                            <span class="mdc-list-item__graphic">
+                                <div class="mdc-checkbox">
+                                    <input class="mdc-checkbox__native-control" type="checkbox" id="catalog-G"
+                                           name="catalog-G" checked>
+                                    <div class="mdc-checkbox__background">
+                                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                            <path class="mdc-checkbox__checkmark-path" fill="none"
+                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+                                        </svg>
+                                        <div class="mdc-checkbox__mixedmark"></div>
+                                    </div>
+                                </div>
+                            </span>
+                            <label id="catalog-G-label" for="catalog-G" class="mdc-list-item__text">G 高铁</label>
+                        </li>
+                        <li class="mdc-list-item" role="checkbox" aria-checked="true">
+                            <span class="mdc-list-item__graphic">
+                                <div class="mdc-checkbox">
+                                    <input class="mdc-checkbox__native-control" type="checkbox" id="catalog-D"
+                                           name="catalog-D" checked>
+                                    <div class="mdc-checkbox__background">
+                                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                            <path class="mdc-checkbox__checkmark-path" fill="none"
+                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+                                        </svg>
+                                        <div class="mdc-checkbox__mixedmark"></div>
+                                    </div>
+                                </div>
+                            </span>
+                            <label id="catalog-D-label" for="catalog-D" class="mdc-list-item__text">D 动车</label>
+                        </li>
+                        <li class="mdc-list-item" role="checkbox" aria-checked="false">
+                            <span class="mdc-list-item__graphic">
+                                <div class="mdc-checkbox">
+                                    <input class="mdc-checkbox__native-control" type="checkbox" id="catalog-Z"
+                                           name="catalog-Z">
+                                    <div class="mdc-checkbox__background">
+                                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                            <path class="mdc-checkbox__checkmark-path" fill="none"
+                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+                                        </svg>
+                                        <div class="mdc-checkbox__mixedmark"></div>
+                                    </div>
+                                </div>
+                            </span>
+                            <label id="catalog-Z-label" for="catalog-Z" class="mdc-list-item__text">Z 直达</label>
+                        </li>
+                        <li class="mdc-list-item" role="checkbox" aria-checked="false">
+                            <span class="mdc-list-item__graphic">
+                                <div class="mdc-checkbox">
+                                    <input class="mdc-checkbox__native-control" type="checkbox" id="catalog-T"
+                                           name="catalog-T">
+                                    <div class="mdc-checkbox__background">
+                                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                            <path class="mdc-checkbox__checkmark-path" fill="none"
+                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+                                        </svg>
+                                        <div class="mdc-checkbox__mixedmark"></div>
+                                    </div>
+                                </div>
+                            </span>
+                            <label id="catalog-T-label" for="catalog-T" class="mdc-list-item__text">T 特快</label>
+                        </li>
+                        <li class="mdc-list-item" role="checkbox" aria-checked="false">
+                            <span class="mdc-list-item__graphic">
+                                <div class="mdc-checkbox">
+                                    <input class="mdc-checkbox__native-control" type="checkbox" id="catalog-K"
+                                           name="catalog-K">
+                                    <div class="mdc-checkbox__background">
+                                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                            <path class="mdc-checkbox__checkmark-path" fill="none"
+                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+                                        </svg>
+                                        <div class="mdc-checkbox__mixedmark"></div>
+                                    </div>
+                                </div>
+                            </span>
+                            <label id="catalog-K-label" for="catalog-K" class="mdc-list-item__text">K 快速</label>
+                        </li>
+                        <li class="mdc-list-item" role="checkbox" aria-checked="false">
+                            <span class="mdc-list-item__graphic">
+                                <div class="mdc-checkbox">
+                                    <input class="mdc-checkbox__native-control" type="checkbox" id="catalog-L"
+                                           name="catalog-L">
+                                    <div class="mdc-checkbox__background">
+                                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                            <path class="mdc-checkbox__checkmark-path" fill="none"
+                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+                                        </svg>
+                                        <div class="mdc-checkbox__mixedmark"></div>
+                                    </div>
+                                </div>
+                            </span>
+                            <label id="catalog-L-label" for="catalog-L" class="mdc-list-item__text">L 临客</label>
+                        </li>
+                    </ul>
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
+                        <span class="mdc-button__label">好了o(*￣▽￣*)ブ</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
     </div>
 {% endblock %}
 {% block script %}
