@@ -4,15 +4,22 @@ document.getElementById('train-manage-button-icon').innerText = 'check';
 document.getElementById('train-manage-button-label').innerText = '添加车次';
 document.getElementById('train-id').value = '{{ train_id }}';
 document.getElementById('request-type').value = 'add';
+document.getElementById('train-manage-button').disabled = false;
+document.getElementById('sale-train-button').classList.add('hidden');
 {% else %}
 {% if sold %}
 document.getElementById('hint').innerText = '以下为车次 {{ train_id }} 的信息（该车次已开售，任何修改均无法提交）';
 document.getElementById('train-manage-button-icon').innerText = 'cancel';
 document.getElementById('train-manage-button-label').innerText = '车次已开售';
+document.getElementById('train-manage-button').disabled = true;
+document.getElementById('sale-train-button').classList.add('hidden');
 {% else %}
 document.getElementById('hint').innerText = '以下为车次 {{ train_id }} 的信息';
 document.getElementById('train-manage-button-icon').innerText = 'check';
 document.getElementById('train-manage-button-label').innerText = '提交修改';
+document.getElementById('sale-train-id').value = '{{ train_id }}';
+document.getElementById('train-manage-button').disabled = false;
+document.getElementById('sale-train-button').classList.remove('hidden');
 {% endif %}
 document.getElementById('train-id').value = '{{ train_id }}';
 document.getElementById('request-type').value = 'modify';

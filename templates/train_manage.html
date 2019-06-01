@@ -59,6 +59,7 @@
             </div>
             <p id="hint" class="mdc-typography--body1">请输入需要添加、查询、修改或删除的车次ID，然后点击右边的按钮（或者按Enter）。</p>
             <form action="" method="post" name="train-manage" id="train-manage-form">
+                <input type="hidden" name="add_train">
                 <input type="hidden" name="train_id" id="train-id">
                 <input type="hidden" name="request-type" id="request-type">
                 <input type="hidden" name="station-cnt" id="station-cnt">
@@ -242,7 +243,7 @@
                                     <input type="text" value="--:--"
                                            class="mdc-text-field__input"
                                            id="arrive-{{ i }}" name="arrive-{{ i }}"
-                                           pattern="^\d{2}:\d{2}$" required
+                                           pattern="^(\d{2}:\d{2})|(xx:xx)$" required
                                            onfocus="if (this.value === '--:--') this.value = ''"
                                            oninput="
                                                    document.getElementById('arrive-{{ i }}-text-field').classList.remove('mdc-text-field--invalid');
@@ -270,7 +271,7 @@
                                     <input type="text" value="--:--"
                                            class="mdc-text-field__input"
                                            id="depart-{{ i }}" name="depart-{{ i }}"
-                                           pattern="^\d{2}:\d{2}$" required
+                                           pattern="^(\d{2}:\d{2})|(xx:xx)$" required
                                            onfocus="if (this.value === '--:--') this.value = ''"
                                            oninput="
                                                    document.getElementById('depart-{{ i }}-text-field').classList.remove('mdc-text-field--invalid');
@@ -360,10 +361,24 @@
                                 document.getElementById('station-cnt').value = station_cnt;
                                 document.getElementById('kind-cnt').value = kind_cnt;
                                 document.getElementById('train-manage-form').submit();
-                                this.disabled = true
+                                this.disabled = true;
+                                document.getElementById('sale-train-button').disabled = true;
                             }">
                         <i class="material-icons mdc-button__icon" aria-hidden="true" id="train-manage-button-icon">cancel</i>
                         <span class="mdc-button__label" id="train-manage-button-label">请先输入车次</span>
+                    </button>
+                </div>
+            </form>
+            <form action="" method="post" name="sale-train" id="sale-train-form">
+                <input type="hidden" name="sale_train">
+                <input type="hidden" name="train_id" id="sale-train-id">
+                <div class="button-wrapper">
+                    <button type="submit" class="mdc-button mdc-button--raised width-180px hidden"
+                            id="sale-train-button"
+                            onclick="document.getElementById('sale-train-form').submit();
+                                this.disabled = true;
+                                document.getElementById('train-manage-button').disabled = true;">
+                        <span class="mdc-button__label">公开车次</span>
                     </button>
                 </div>
             </form>

@@ -11,6 +11,7 @@ S_SET_NAME = 'set_name'
 S_SET_EMAIL = 'set_email'
 S_SET_PHONE = 'set_phone'
 S_MANAGED_USER_ID = 'managed_user_id'
+S_MANAGED_TRAIN_ID = 'managed_train_id'
 
 SZ_LOGIN = 10
 SZ_REGISTER = 10
@@ -23,6 +24,7 @@ SZ_QUERY_ORDER = 8192
 SZ_REFUND_TICKET = 10
 SZ_QUERY_TRAIN = 8192
 SZ_ADD_TRAIN = 10
+SZ_SALE_TRAIN = 10
 
 RE_USER_ID = r'\d{4,20}'
 RE_PASSWORD = r'[\u0021-\u007e]{6,20}'
@@ -52,11 +54,12 @@ RE_MODIFY_PRIVILEGE = r'^[01]$'
 RE_QUERY_TICKET = r'^(-1)|({}(    {})*)$'.format(RE_SINGLE_TICKET, RE_SINGLE_TICKET)
 RE_QUERY_TRANSFER = r'^{}    {}$'.format(RE_SINGLE_TICKET, RE_SINGLE_TICKET)
 RE_BUY_TICKET = r'^[01]$'
-RE_QUERY_ORDER = r'^(-1)|({}(  {})*)$'.format(RE_SINGLE_BOUGHT_TICKET, RE_SINGLE_BOUGHT_TICKET)
+RE_QUERY_ORDER = r'^((-1)|({}(  {})*))$'.format(RE_SINGLE_BOUGHT_TICKET, RE_SINGLE_BOUGHT_TICKET)
 RE_REFUND_TICKET = r'^[01]$'
-RE_QUERY_TRAIN = r'^0|([01]  {}  {}  {} ( {})+ (   {}  {}  {}  {} ( {})+)+)$' \
+RE_QUERY_TRAIN = r'^(0|([01]  {}  {}  {} ( {})+ (   {}  {}  {}  {} ( {})+)+))$' \
     .format(RE_TRAIN_ID, RE_NAME, RE_CATALOG, RE_NAME, RE_NAME, RE_TIME, RE_TIME, RE_TIME, RE_PRICE)
 RE_ADD_TRAIN = r'^[01]$'
+RE_SALE_TRAIN = r'^[01]$'
 
 E_UNKNOWN = '未知错误原因'
 E_PASSWORD_NOT_MATCH = '用户名或密码错误'

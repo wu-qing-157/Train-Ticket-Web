@@ -410,9 +410,10 @@ def train_manage():
             except SyntaxError:
                 flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
             return flask.redirect(flask.url_for('train_manage', _method='GET'))
-        elif 'request-type' in flask.request.form:
+        elif 'add_train' in flask.request.form:
             try:
                 train_id = flask.request.form['train_id']
+                flask.session[S_MANAGED_TRAIN_ID] = train_id
                 request_type = flask.request.form['request-type']
                 name = flask.request.form['name']
                 catalog = flask.request.form['catalog']
@@ -439,6 +440,23 @@ def train_manage():
             except SyntaxError:
                 flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
             return flask.redirect(flask.url_for('train_manage', _method='GET'))
+        elif 'sale_train' in flask.request.form:
+            try:
+                train_id = flask.request.form['train_id']
+                flask.session[S_MANAGED_TRAIN_ID] = train_id
+                result = backend.get_result('sale_train {}'.format(train_id),
+                                            SZ_SALE_TRAIN, RE_SALE_TRAIN)
+                if result == '1':
+                    flask.session[S_SUCCESS_MESSAGE] = '公开车次成功'
+                else:
+                    flask.session[S_ERR_MESSAGE] = E_UNKNOWN
+            except ConnectionRefusedError:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_REFUSED
+            except socket.timeout:
+                flask.session[S_ERR_MESSAGE] = E_CONNECTION_TIMEOUT
+            except SyntaxError:
+                flask.session[S_ERR_MESSAGE] = E_BAD_RETURN
+            return flask.redirect(flask.url_for('train_manage', _method='GET'))
     else:
         if S_SUCCESS_MESSAGE in flask.session:
             message = flask.session[S_SUCCESS_MESSAGE]
@@ -446,7 +464,7 @@ def train_manage():
             return flask.render_template('train_manage.html', username=flask.session[S_NAME],
                                          verified=flask.session[S_VERIFY] == 'train_manage',
                                          administrator=flask.session[S_ADMINISTRATOR],
-                                         success_alert=True,
+                                         success_alert=True, initial_query=flask.session.get(S_MANAGED_TRAIN_ID),
                                          message=message)
         elif S_ERR_MESSAGE in flask.session:
             message = flask.session[S_ERR_MESSAGE]
@@ -454,11 +472,12 @@ def train_manage():
             return flask.render_template('train_manage.html', username=flask.session[S_NAME],
                                          verified=flask.session[S_VERIFY] == 'train_manage',
                                          administrator=flask.session[S_ADMINISTRATOR],
-                                         fail_alert=True,
+                                         fail_alert=True, initial_query=flask.session.get(S_MANAGED_TRAIN_ID),
                                          message=message)
         else:
             return flask.render_template('train_manage.html', username=flask.session[S_NAME],
                                          verified=flask.session[S_VERIFY] == 'train_manage',
+                                         initial_query=flask.session.get(S_MANAGED_TRAIN_ID),
                                          administrator=flask.session[S_ADMINISTRATOR])
 
 
