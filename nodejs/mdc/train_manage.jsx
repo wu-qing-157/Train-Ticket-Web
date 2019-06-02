@@ -108,7 +108,7 @@ window.set_dimension = function (station, kind) {
             price_text_field[station_cnt - 1][j].disabled = true;
         station_cnt--;
     }
-    while (kind_cnt < station) {
+    while (kind_cnt < kind) {
         for (let i = 0; i < station_cnt; i++)
             price_text_field[i][kind_cnt].disabled = false;
         kind_text_field[kind_cnt].disabled = false;
@@ -117,7 +117,7 @@ window.set_dimension = function (station, kind) {
         });
         kind_cnt++;
     }
-    while (kind_cnt > station) {
+    while (kind_cnt > kind) {
         for (let i = 0; i < station_cnt; i++)
             price_text_field[i][kind_cnt - 1].disabled = true;
         kind_text_field[kind_cnt - 1].disabled = true;

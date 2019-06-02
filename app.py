@@ -170,7 +170,7 @@ def order():
         to = flask.request.args['to']
         date = flask.request.args['date']
         try:
-            result = backend.get_result("query_ticket {} {} {} {}".format(from_, to, date, CATALOG_ALL),
+            result = backend.get_result("query_ticket {} {} {} {}".format(from_, to, date, "GDZTKLC"),
                                         SZ_QUERY_TICKET, RE_QUERY_TICKET)
             if result == '-1':
                 return flask.render_template('order_confirm.html', fail_alert=True, message=E_ORDER_NONE,
@@ -281,20 +281,25 @@ def ordered():
         else:
             try:
                 result = backend.get_result('query_order {}'.format(flask.session[S_CURRENT_USER]), SZ_QUERY_ORDER,
-                                            RE_QUERY_ORDER)
+                                            RE_QUERY_TICKET)
                 if result == '-1':
                     return flask.render_template('ordered.html', empty=True, username=flask.session[S_NAME],
                                                  verified=flask.session[S_VERIFY] == 'ordered',
                                                  administrator=flask.session[S_ADMINISTRATOR])
                 else:
-                    tickets = []
-                    for single_str in result.split('  '):
-                        new_ticket = BoughtTicket()
-                        [new_ticket.train_id, new_ticket.name, new_ticket.from0, new_ticket.from1, new_ticket.from2,
-                         new_ticket.to0, new_ticket.to1, new_ticket.to2, new_ticket.kind,
-                         new_ticket.num] = single_str.split(' ')
-                        tickets.append(new_ticket)
-                    return flask.render_template('ordered.html', tickets=tickets, username=flask.session[S_NAME],
+                    ticket = []
+                    for ticket_str in result.split('    '):
+                        [id_, name, catalog, from_, from_date, from_time, to, to_date, to_time, ticket_info_str] = \
+                            ticket_str.split('   ')
+                        for single_ticket_str in ticket_info_str.split('  '):
+                            new_ticket = BoughtTicket()
+                            [new_ticket.train_id, new_ticket.name, _, new_ticket.from0,
+                             new_ticket.from1, new_ticket.from2, new_ticket.to0, new_ticket.to1, new_ticket.to2,
+                             ] = [id_, name, catalog, from_, from_date, from_time, to, to_date, to_time]
+                            [new_ticket.kind, new_ticket.num, _] = single_ticket_str.split(' ')
+                            if int(new_ticket.num) > 0:
+                                ticket.append(new_ticket)
+                    return flask.render_template('ordered.html', tickets=ticket, username=flask.session[S_NAME],
                                                  verified=flask.session[S_VERIFY] == 'ordered',
                                                  administrator=flask.session[S_ADMINISTRATOR])
             except ConnectionRefusedError:
@@ -345,7 +350,7 @@ def account():
                 phone = flask.request.form['phone']
                 password = flask.request.form['new_password']
                 result = backend.get_result('modify_profile {} {} {} {} {}'
-                                            .format(user_id, password, name, email, phone),
+                                            .format(user_id, name, password, email, phone),
                                             SZ_MODIFY_PROFILE, RE_MODIFY_PROFILE)
                 if result == '1':
                     flask.session[S_SUCCESS_MESSAGE] = '修改成功'
@@ -426,7 +431,8 @@ def train_manage():
                         flask.request.form['station-' + str(i)], flask.request.form['arrive-' + str(i)],
                         flask.request.form['depart-' + str(i)], flask.request.form['stopover-' + str(i)],
                         ' '.join(
-                            map(lambda j: flask.request.form['price-' + str(i) + '-' + str(j)], range(0, kind_cnt)))
+                            map(lambda j: '￥' + flask.request.form['price-' + str(i) + '-' + str(j)],
+                                range(0, kind_cnt)))
                     ), range(0, station_cnt)))
                 ), SZ_ADD_TRAIN, RE_ADD_TRAIN)
                 if result == '1':
@@ -608,20 +614,25 @@ def ajax_query_profile():
             return flask.render_template('ajax_query_profile.js', not_exist=True, user_id=user_id)
         else:
             [name, email, phone, administrator] = result.split(' ')
-            result = backend.get_result('query_order {}'.format(user_id), SZ_QUERY_ORDER, RE_QUERY_ORDER)
+            result = backend.get_result('query_order {}'.format(user_id), SZ_QUERY_ORDER, RE_QUERY_TICKET)
             if result == '-1':
                 return flask.render_template('ajax_query_profile.js', user_id=user_id, name=name, email=email,
                                              phone=phone, administrator=administrator == '2', empty=True)
             else:
-                tickets = []
-                for single_str in result.split('  '):
-                    new_ticket = BoughtTicket()
-                    [new_ticket.train_id, new_ticket.name, new_ticket.from0, new_ticket.from1, new_ticket.from2,
-                     new_ticket.to0, new_ticket.to1, new_ticket.to2, new_ticket.kind,
-                     new_ticket.num] = single_str.split(' ')
-                    tickets.append(new_ticket)
+                ticket = []
+                for ticket_str in result.split('    '):
+                    [id_, name, catalog, from_, from_date, from_time, to, to_date, to_time, ticket_info_str] = \
+                        ticket_str.split('   ')
+                    for single_ticket_str in ticket_info_str.split('  '):
+                        new_ticket = BoughtTicket()
+                        [new_ticket.train_id, new_ticket.name, _, new_ticket.from0,
+                         new_ticket.from1, new_ticket.from2, new_ticket.to0, new_ticket.to1, new_ticket.to2,
+                         ] = [id_, name, catalog, from_, from_date, from_time, to, to_date, to_time]
+                        [new_ticket.kind, new_ticket.num, _] = single_ticket_str.split(' ')
+                        if int(new_ticket.num) > 0:
+                            ticket.append(new_ticket)
                 return flask.render_template('ajax_query_profile.js', user_id=user_id, name=name, email=email,
-                                             phone=phone, administrator=administrator == '2', tickets=tickets)
+                                             phone=phone, administrator=administrator == '2', tickets=ticket)
     except ConnectionRefusedError:
         return flask.render_template('ajax_exception.js', info=E_CONNECTION_REFUSED)
     except socket.timeout:
